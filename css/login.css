@@ -1,0 +1,103 @@
+
+        /* Background toàn trang */
+        body {
+            background-image: url('https://images.unsplash.com/photo-1529148482759-b35b25c5f217?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Form đăng nhập */
+        .login-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: rgb(255, 255, 255);
+            width: 440px;
+        }
+        
+        /* Tiêu đề */
+        .login-container h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Ô nhập input */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            outline: none;
+        }
+
+        /* Biểu tượng input */
+        .input-group-text {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        /* Nút Login */
+        .btn-login {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background: rgba(255, 255, 255, 0.5);
+            color: black;
+        }
+
+        /* Link */
+        .forgot-password {
+            margin-top: 10px;
+        }
+
+        .forgot-password a {
+            color: rgba(248, 248, 248, 0.7);
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            color: white;
+        }
+
+        .glass-header {
+            background: rgba(0, 0, 0, 0.1); /* Nền trắng trong suốt */
+            backdrop-filter: blur(0px); /* Hiệu ứng kính mờ */
+            -webkit-backdrop-filter: blur(10px); /* Tương thích trên Safari */
+            padding: 15px;
+            border-radius: 10px; /* Bo góc cho header */
+            max-width: 100%; /* Để header không quá dài */
+            margin: 20px auto; /* Căn giữa header */
+        }
+        
