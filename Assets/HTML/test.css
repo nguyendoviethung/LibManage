@@ -1,0 +1,9 @@
+.box{
+    display: flex;
+}
+.box1{
+    background-color: aqua;
+}
+.box2{
+    background-color: blue;
+}

@@ -1,0 +1,115 @@
+.container1{
+    display: flex;
+    margin-top: 10px;
+}
+.box1{
+   
+}
+.box2{
+    width: 180px;
+    background-color: blue;
+    height: 100vh;
+    margin-right: 10px;
+    background-color: #fdfeff;
+}
+.box3{
+    flex: 1;
+    background-color: green;
+    height: 100vh;
+    background-color: #fdfeff;
+} 
+.custom-hover {
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+  /* Hover state: toàn bộ item thay đổi nền, chữ và icon */
+  .custom-hover:hover {
+    background-color: #92d0eb; /* Màu nền khi hover */
+    transform: translateX(5px); /* Dịch nhẹ sang phải */
+  }
+  .custom-hover:hover .nav-link span {
+    color: #ff1900; /* Màu chữ khi hover */
+    transition: color 0.3s ease;
+  }
+  .custom-hover:hover svg {
+    fill: white !important; /* Đổi màu icon khi hover */
+    transition: fill 0.3s ease;
+  }
+  /* Active state: toàn bộ item (nền, chữ và icon) có hiệu ứng */
+  .custom-hover.active {
+    background-color: #ffcccc; /* Ví dụ: nền active là màu hồng nhạt */
+  }
+  .custom-hover.active .nav-link span {
+    color: #fa0202 !important;
+  }
+  .custom-hover.active svg {
+    fill: #fa0202 !important;
+  }
+  /* Các style mặc định cho chữ và icon */
+  .custom-hover a {
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+  }
+  .nav-link span {
+    color: #5890c8; /* Màu chữ mặc định */
+    font-weight: 600;
+    transition: color 0.3s ease;
+    font-size: 15px;
+  }
+  .custom-hover:active {
+    transform: scale(0.95);
+  }
+  
+  /* --- Các hiệu ứng mới cho Navbar --- */
+  /* Hiệu ứng cho Email & Thông báo */
+  .navbar .nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+  .navbar .nav-link:hover {
+    background-color: rgba(255, 25, 0, 0.1);
+  }
+  .navbar .nav-link:active {
+    background-color: rgba(255, 25, 0, 0.2);
+  }
+  .navbar .nav-link svg {
+    transition: transform 0.3s ease, fill 0.3s ease;
+  }
+  .navbar .nav-link:hover svg {
+    transform: scale(1.1);
+    fill: #ff1900;
+  }
+  .navbar .nav-link:active svg {
+    transform: scale(0.95);
+  }
+  
+  /* Hiệu ứng cho thanh tìm kiếm */
+  .form-control {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .form-control:focus {
+    border-color: #ea857c;
+    box-shadow: 0 0 8px rgba(158, 94, 94, 0.5);
+  }
+  
+  /* Hiệu ứng cho nút Submit */
+  .btn.btn-outline-danger {
+    transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+  }
+  .btn.btn-outline-danger:hover {
+    background-color: hsl(352, 79%, 84%);
+    border-color: #0c0404;
+    color: #fff;
+  }
+  .btn.btn-outline-danger:hover svg {
+    fill: #fff;
+  }
+  .btn.btn-outline-danger:active {
+    transform: scale(0.95);
+  }
