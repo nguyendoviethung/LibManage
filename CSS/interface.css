@@ -1,0 +1,197 @@
+.sidebar {
+    width: 290px;
+    height: 100vh;
+    background-color: #ffffff; /* Màu nền của sidebar */
+    /* margin-top: 10px; Đặt margin-top là 0 */
+    padding-right: 10px;
+  }
+  .content {
+    padding: 20px;
+    height: 100vh;
+    width: calc(100% - 240px);  
+  }
+  /* Các style chung cho sidebar item */
+  .custom-hover {
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    padding: 6px 6px;
+  }
+  /* Hover state: toàn bộ item thay đổi nền, chữ và icon */
+  .custom-hover:hover {
+    background-color: #92d0eb; /* Màu nền khi hover */
+    transform: translateX(5px); /* Dịch nhẹ sang phải */
+  }
+  .custom-hover:hover .nav-link span {
+    color: #ff1900; /* Màu chữ khi hover */
+    transition: color 0.3s ease;
+  }
+  .custom-hover:hover svg {
+    fill: white !important; /* Đổi màu icon khi hover */
+    transition: fill 0.3s ease;
+  }
+  /* Active state: toàn bộ item (nền, chữ và icon) có hiệu ứng */
+  .custom-hover.active {
+    background-color: #ffcccc; /* Ví dụ: nền active là màu hồng nhạt */
+  }
+  .custom-hover.active .nav-link span {
+    color: #f41515 !important;
+  }
+  .custom-hover.active svg {
+    fill: #f41515 !important;
+  }
+  /* Các style mặc định cho chữ và icon */
+  .custom-hover a {
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+  }
+  .nav-link span {
+    color: #5890c8; /* Màu chữ mặc định */
+    font-weight: 600;
+    transition: color 0.3s ease;
+    font-size: 15px;
+  }
+  .custom-hover:active {
+    transform: scale(0.95);
+  }
+  
+  /* --- Các hiệu ứng mới cho Navbar --- */
+  /* Hiệu ứng cho Email & Thông báo */
+  .navbar .nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+  .navbar .nav-link:hover {
+    background-color: rgba(255, 25, 0, 0.1);
+  }
+  .navbar .nav-link:active {
+    background-color: rgba(255, 25, 0, 0.2);
+  }
+  .navbar .nav-link svg {
+    transition: transform 0.3s ease, fill 0.3s ease;
+  }
+  .navbar .nav-link:hover svg {
+    transform: scale(1.1);
+    fill: #ff1900;
+  }
+  .navbar .nav-link:active svg {
+    transform: scale(0.95);
+  }
+  
+  /* Hiệu ứng cho thanh tìm kiếm */
+  .form-control {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .form-control:focus {
+    border-color: #ea857c;
+    box-shadow: 0 0 8px rgba(158, 94, 94, 0.5);
+  }
+  
+  /* Hiệu ứng cho nút Submit */
+  .btn.btn-outline-danger {
+    transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+  }
+  .btn.btn-outline-danger:hover {
+    background-color: hsl(352, 79%, 84%);
+    border-color: #0c0404;
+    color: #fff;
+  }
+  .btn.btn-outline-danger:hover svg {
+    fill: #fff;
+  }
+  .btn.btn-outline-danger:active {
+    transform: scale(0.95);
+  }
+
+
+  /* thêm mới  */
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.feature-card {
+    background: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card:hover {
+    background: #f0f0f0;
+}
+
+.feature-card i {
+    font-size: 30px;
+    color: #333;
+}
+
+.feature-card p {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.feature-card {
+  background: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-card i {
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: inherit; /* Lấy màu từ class */
+}
+
+.feature-card.add { color: #2ECC71; } /* Xanh lá */ 
+.feature-card.search { color: #F39C12; } /* Cam */
+.feature-card.edit { color: #5DADE2; } /* Xanh dương nhạt */
+.feature-card.delete { color: #E74C3C; } /* Đỏ */
+.feature-card.stats { color: #9B59B6; } /* Tím */
+
+.feature-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(46, 44, 44, 0.15);
+}
+ .text-decoration{
+    text-decoration: none;
+    color: rgb(73, 143, 208);
+ }
+ /* CSS hiện form chỉnh sửa lên */
+
+
+/* Vẽ biểu đồ */
+.charts-container {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Căn giữa các biểu đồ */
+  gap: 30px; /* Khoảng cách giữa các biểu đồ */
+}
+
+.chart {
+  width: 45%; /* Điều chỉnh sao cho 2 cái + gap không vượt quá 100% */
+  height: 300px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+}
+
