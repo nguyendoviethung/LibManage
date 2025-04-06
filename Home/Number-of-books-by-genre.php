@@ -1,6 +1,6 @@
 <?php
 // Kết nối đến cơ sở dữ liệu
-include '../Authentication/connect.php';
+include '../Auth/connect.php';
 
 //Truy vấn lấy số lượng sách theo thể loại
 $query = "SELECT genre, COUNT(*) AS total_books FROM books GROUP BY genre";

@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../CSS/interface.css">
-   <link rel="stylesheet" href="book-management-style.css">
 </head>
 <body class="bg-body-secondary">
   <div> 
@@ -71,7 +70,7 @@
       <!-- Book Management -->
       <li class="nav-item mb-1">
         <div class="custom-hover">
-          <a class="nav-link d-flex align-items-center" href="#">
+          <a class="nav-link d-flex align-items-center" href="../Book-Management/book-management.php">
             <svg xmlns="http://www.w3.org/2000/svg" width = 21px height = 21px viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
               <path fill="#4e5f7e" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
             </svg>
@@ -83,7 +82,7 @@
       <!-- Reader Management -->
       <li class="nav-item mb-1">
         <div class="custom-hover">
-          <a class="nav-link d-flex align-items-center" href="../Reader_Management/reader-management.php">
+          <a class="nav-link d-flex align-items-center" href="#">
             <svg xmlns="http://www.w3.org/2000/svg" width = 21px height = 21px  viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M160 96a96 96 0 1 1 192 0A96 96 0 1 1 160 96zm80 152l0 264-48.4-24.2c-20.9-10.4-43.5-17-66.8-19.3l-96-9.6C12.5 457.2 0 443.5 0 427L0 224c0-17.7 14.3-32 32-32l30.3 0c63.6 0 125.6 19.6 177.7 56zm32 264l0-264c52.1-36.4 114.1-56 177.7-56l30.3 0c17.7 0 32 14.3 32 32l0 203c0 16.4-12.5 30.2-28.8 31.8l-96 9.6c-23.2 2.3-45.9 8.9-66.8 19.3L272 512z"/></svg>
               <path fill="#5d697e" d="M160 96a96 96 0 1 1 192 0A96 96 0 1 1 160 96zm80 152l0 264-48.4-24.2c-20.9-10.4-43.5-17-66.8-19.3l-96-9.6C12.5 457.2 0 443.5 0 427L0 224c0-17.7 14.3-32 32-32l30.3 0c63.6 0 125.6 19.6 177.7 56zm32 264l0-264c52.1-36.4 114.1-56 177.7-56l30.3 0c17.7 0 32 14.3 32 32l0 203c0 16.4-12.5 30.2-28.8 31.8l-96 9.6c-23.2 2.3-45.9 8.9-66.8 19.3L272 512z"/>
             </svg>
@@ -120,206 +119,205 @@
   
   <!-- Main Content -->
   <div class="content">
-       <h2 class="text-center fw-bold mb-4" style="color: rgb(73, 143, 208)" >Book Management</h2>
-      <!-- Thêm sách mới -->
+       <h2 class="text-center fw-bold mb-4" style="color: rgb(73, 143, 208)" >Reader Management</h2>
+      <!-- Thêm độc giả -->
       <div class="grid-container">
           <div class="feature-card" onclick="loadFeature('addBook')">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#addBookModal" class="text-decoration">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#addReaderModal" class="text-decoration">
               <svg xmlns="http://www.w3.org/2000/svg" width = 30 px height = 30px viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#47e68c" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
-              <div class="mt-2 fw-bold">Add new book</div>
+              <div class="mt-2 fw-bold">Thêm sinh viên</div>
             </a>
       </div>
          
-      <!-- Tìm kiếm sách -->
-      <div class="feature-card" onclick="loadFeature('searchBook')">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#searchBookModal" class="text-decoration">
+      <!-- Tìm kiếm độc giả -->
+      <div class="feature-card" onclick="loadFeature('searchReader')">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#searchReaderModal" class="text-decoration">
           <svg xmlns="http://www.w3.org/2000/svg"  width = 30 px height = 30px  viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#f5d047" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-            <div class="mt-2 fw-bold">Search for books</div>
+            <div class="mt-2 fw-bold">Tìm kiếm sinh viên </div>
         </a>
     </div>
 
-          <!-- Cập nhật sách -->
+          <!-- Cập nhật thông tin độc giả -->
           <div class="feature-card" onclick="loadFeature('editBook')">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#editBookModal" class="text-decoration">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#updateReaderModal" class="text-decoration">
               <svg xmlns="http://www.w3.org/2000/svg" width = 30 px height = 30 px viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#49a4e9" d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/></svg>
-                <div class="mt-2 fw-bold"> Book Update</div>
+                <div class="mt-2 fw-bold">Chỉnh sửa thông tin sinh viên</div>
           </a>
           </div>
 
-          <!-- Xóa sách -->
+          <!-- Xóa độc giả -->
           <div class="feature-card" onclick="loadFeature('deleteBook')">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#bookNameDeleteModal" class="text-decoration">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#deleteReaderModal" class="text-decoration">
             <svg xmlns="http://www.w3.org/2000/svg" width = 36 px height = 37 px viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#ec5555" d="M290.7 57.4L57.4 290.7c-25 25-25 65.5 0 90.5l80 80c12 12 28.3 18.7 45.3 18.7L288 480l9.4 0L512 480c17.7 0 32-14.3 32-32s-14.3-32-32-32l-124.1 0L518.6 285.3c25-25 25-65.5 0-90.5L381.3 57.4c-25-25-65.5-25-90.5 0zM297.4 416l-9.4 0-105.4 0-80-80L227.3 211.3 364.7 348.7 297.4 416z"/></svg>
-                  <div class="mt-2 fw-bold">Delete Book</div>
+                  <div class="mt-2 fw-bold">Xóa sinh viên</div>
             </a>
             </div>
   </div>
   </div>
   
- <!-- Modal Thêm sách -->
- <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="addBookModalLabel">Add new book</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Form -->
-              <form id="addBookForm">
-                  <div class="mb-3">
-                      <label for="bookTitle" class="form-label">Book Title</label>
-                      <input type="text" class="form-control" id="additionalBookTitle" placeholder="Enter the book name">
-                  </div>
-                  <div class="mb-3">
-                      <label for="authorName" class="form-label">Author name</label>
-                      <input type="text" class="form-control" id="authorNameAdded" placeholder="Enter author name">
-                  </div>
-                  <div class="mb-3">
-                      <label for="bookLang" class="form-label">Language</label>
-                      <input type="text" class="form-control" id="bookLang" placeholder="Enter book language">
-                  </div>
-                  <div class="mb-3">
-                      <label for="publishYear" class="form-label">Publish Year</label>
-                      <input type="number" class="form-control" id="publishYear" placeholder="Enter publish year">
-                  </div>
-                  <div class="mb-3">
-                      <label for="bookLocation" class="form-label">Location</label>
-                      <input type="text" class="form-control" id="bookLocation" placeholder="Enter location">
-                  </div>
-                  <div class="mb-3">
-                      <label for="genre" class="form-label">Genre</label>
-                      <input type="text" class="form-control" id="genre" placeholder="Enter genre">
-                  </div>
-                  <div class="mb-3">
-                      <label for="quantity" class="form-label">Quantity</label>
-                      <input type="number" class="form-control" id="quantity" placeholder="Enter quantity">
-                  </div>
-                  <button type="submit" class="btn btn-success">Save</button>
-              </form>
-          </div>
-      </div>
-  </div>
-</div>
-
-<!-- Modal tìm kiếm sách -->
-<div class="modal fade" id="searchBookModal" tabindex="-1" aria-labelledby="searchBookModalLabel" aria-hidden="true">
+ <!-- Modal Thêm độc giả -->
+ <div class="modal fade" id="addReaderModal" tabindex="-1" aria-labelledby="addReaderLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="searchBookModalLabel">Tìm kiếm sách</h5>
+              <h5 class="modal-title" id="addReaderLabel">Thêm sinh viên</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <!-- Form Search book -->
-              <form id="searchBookForm"> 
+              <form id="addReaderForm">
                   <div class="mb-3">
-                      <label for="searchBook" class="form-label">Nhập tên sách</label>
-                      <input type="text" class="form-control" id="searchBook" name="bookName" placeholder="Nhập tên sách">
+                      <label for="addReader" class="form-label">Họ và tên</label>
+                      <input type="text" class="form-control" id="addReader"  placeholder="Nhập vào họ tên" required>
                   </div>
-                  <button type="submit" class="btn btn-warning">Tìm kiếm</button>
-              </form>
-          </div>
-          <div class="modal-body">
-              <h6 style="display: none;" id="search_results">Search Results:</h6>
-              <div id="searchResults"></div>
-          </div>
-      </div>
-  </div>
-</div>
-
-<!-- Modal Chỉnh sửa sách -->
-<div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="editBookModalLabel">Update Book</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <form id="editBookForm">
                   <div class="mb-3">
-                      <label for="BookTitle" class="form-label">Book Name</label>
-                      <input type="text" class="form-control" id="updateBookTitle" name ="bookTitle" placeholder="Enter book name">
+                      <label for="addStudentID" class="form-label">Mã số sinh viên</label>
+                      <input type="text" class="form-control" id="addStudentID"  placeholder="Nhập vào mã số sinh viên" required>
                   </div>
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <div class="mb-3">
+                      <label for="addEmail" class="form-label">Email</label>
+                      <input type="text" class="form-control" id="addEmail" placeholder="Nhập vào email" required>
+                  </div>
+                    <div class="mb-3">
+                        <label for="addPhoneNumber" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="addPhoneNumber"  placeholder="Nhập vào số điện thoại" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addFaculty" class="form-label">Tên khoa</label>
+                        <input type="text" class="form-control" id="addFaculty"  placeholder="Nhập vào tên khoa" required>
+                    </div>
+                  <button type="submit" class="btn btn-success">Submit</button>
               </form>
           </div>
   </div>
 </div>
 </div>
-<!-- Modal hiện ra khi tìm kiếm sách để update lại  -->
-<div class="modal fade" id="updateBookAfterSearch" tabindex="-1" aria-labelledby="updateBookAfterSearchLabel" aria-hidden="true">
+
+<!-- Modal Tìm kiếm độc giả -->
+<div class="modal fade" id="searchReaderModal" tabindex="-1" aria-labelledby="searchReaderLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="updateBookAfterSearchLabel">Update Book</h5>
+              <h5 class="modal-title" id="searchReaderLabel">Tìm kiếm sinh viên</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <form id="updateBookAfterSearchForm">
+                <form id="searchReaderForm">
+                    <div class="mb-3">
+                      <label for="searchReader" class="form-label">Mã số sinh viên </label>
+                      <input type="text" class="form-control" id="searchReader"  placeholder="Nhập vào mã số sinh viên" required>
+                    </div>
+                <button type="submit" class="btn btn-warning">Submit</button>
+                </form>
+          </div>
+      </div>
+   </div>
+</div>
+<!-- Modal chỉnh sửa thông tin độc giả -->
+ <!-- Nhập thông tin độc giả cần chỉnh sửa ra -->
+<div class="modal fade" id="updateReaderModal" tabindex="-1" aria-labelledby="updateReaderLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="updateReaderLabel">Chỉnh sửa thông tin</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                <form id="updateReaderForm">
+                    <div class="mb-3">
+                      <label for="updateReader" class="form-label">Mã số sinh viên </label>
+                      <input type="text" class="form-control" id="updateReader"  placeholder="Nhập vào mã số sinh viên" required>
+                    </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+          </div>
+      </div>
+   </div>
+</div>
+<!-- Modal hiện ra để cập nhật thông tin  -->
+
+<div class="modal fade" id="updateReaderAfterModal" tabindex="-1" aria-labelledby="updateReaderAfterLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="updateReaderAfterLabel">Thêm độc giả</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="updateReaderAfterForm">
                   <div class="mb-3">
-                      <!-- Book Title -->
-                      <label for="bookTitle" class="form-label">Book Title:</label>
-                      <input type="text" id="bookTitleUpdate" name="book_title" class="form-control" placeholder="Enter book title"><br>
-
-                      <!-- Author name -->
-                      <label for="bookAuthor" class="form-label">Author name:</label>
-                      <input type="text" id="bookAuthorUpdate" name="author_name" class="form-control" placeholder="Enter author name"><br>
-
-                      <!-- Language -->
-                      <label for="bookLang" class="form-label">Language:</label>
-                      <input type="text" id="bookLangUpdate" name="lang" class="form-control" placeholder="Enter language"><br>
-
-                      <!-- Year of publication -->
-                      <label for="publishYear" class="form-label">Year of publication:</label>
-                      <input type="number" id="publishYearUpdate" name="publish_year" class="form-control" placeholder="Enter publication year"><br>
-
-                      <!-- Location -->
-                      <label for="bookLocation" class="form-label">Location:</label>
-                      <input type="text" id="bookLocationUpdate" name="location" class="form-control" placeholder="Enter location"><br>
-
-                      <!-- Book genre -->
-                      <label for="bookGenre" class="form-label">Book genre:</label>
-                      <input type="text" id="bookGenreUpdate" name="genre" class="form-control" placeholder="Enter genre"><br>
-
-                      <!-- Quantity -->
-                      <label for="bookQuantity" class="form-label">Quantity:</label>
-                      <input type="number" id="bookQuantityUpdate" name="quantity" class="form-control" placeholder="Enter quantity"><br>
-
-                      <!-- Submit -->
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <label for="updateReaderAfterName" class="form-label">Họ và tên</label>
+                      <input type="text" class="form-control" id="updateReaderAfterName"  placeholder="Nhập vào họ tên" required>
                   </div>
+                  <div class="mb-3">
+                      <label for="updateReaderAfterID" class="form-label">Mã số sinh viên</label>
+                      <input type="text" class="form-control" id="updateReaderAfterID"  placeholder="Nhập vào mã số sinh viên" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="updateReaderAfterEmail" class="form-label">Email</label>
+                      <input type="text" class="form-control" id="updateReaderAfterEmail" placeholder="Nhập vào email" required>
+                  </div>
+                    <div class="mb-3">
+                        <label for="updateReaderAfterPhoneNumber" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="updateReaderAfterPhoneNumber"  placeholder="Nhập vào số điện thoại" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateReaderAfterFaculty" class="form-label">Tên khoa</label>
+                        <input type="text" class="form-control" id="updateReaderAfterFaculty"  placeholder="Nhập vào tên khoa" required>
+                    </div>
+                  <button type="submit" class="btn btn-success">Submit</button>
               </form>
           </div>
-      </div>
   </div>
 </div>
-
-<!-- Modal Xóa sách -->
-<div class="modal fade" id="bookNameDeleteModal" tabindex="-1" aria-labelledby="listBookModal" aria-hidden="true">
+</div>
+<!-- Xóa độc giả -->
+<div class="modal fade" id="deleteReaderModal" tabindex="-1" aria-labelledby="deleteReaderLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="searchBookModalLabel">Delete Book</h5>
+              <h5 class="modal-title" id="deleteReaderLabel">Chỉnh sửa thông tin</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <!-- Form Search book -->
-          <form id="bookNameDeleteForm">
-       <div class="mb-3">
-        <label for="listBook" class="form-label">Enter the book name</label>
-        <input type="text" class="form-control" id="bookNameDelete" name="bookDelete" placeholder="Book Name">
+                <form id="deleteReaderForm">
+                    <div class="mb-3">
+                      <label for="updateReader" class="form-label">Mã số sinh viên </label>
+                      <input type="text" class="form-control" id="deleteReader" placeholder="Nhập vào mã số sinh viên" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Submit</button>
+                </form>
+          </div>
       </div>
-      <button type="submit" class="btn btn-danger">Search</button>
-          </form>
-      </div>
-      </div>
-  </div>
+   </div>
 </div>
+<!-- Modal hiện ra để tạo tài khoản cho độc giả  -->
+<div class="modal fade" id="addAccountReaderModal" tabindex="-1" aria-labelledby="addAccountReaderLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="addAccountReaderLabel">Thêm tài khoản sinh viên</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                <form id="addAccountReaderForm">
+                    <div class="mb-3">
+                      <input type="text" class="form-control" id="addAccountReaderUserName" placeholder="Nhập vào tên đăng nhập" required>
+                    </div>
+                    <div class="mb-3">
+                      <input type="text" class="form-control" id="addAccountReaderPassword1" placeholder="Nhập vào mật khẩu" required>
+                    </div>
+                    <div class="mb-3">
+                      <input type="text" class="form-control" id="addAccountReaderPassword2" placeholder="Xác nhận lại mật khẩu" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+          </div>
+      </div>
+   </div>
+</div>
+
 <!-- File script -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="crud-book-management.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
