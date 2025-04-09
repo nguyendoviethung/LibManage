@@ -1,9 +1,9 @@
-document.getElementById("addBookForm").addEventListener("submit", function(e) {
-    e.preventDefault(); // Ngăn chặn reload trang
-    console.log("Submit button clicked");  // Để kiểm tra nếu sự kiện submit được kích hoạt
+// document.getElementById("addBookForm").addEventListener("submit", function(e) {
+//     e.preventDefault(); // Ngăn chặn reload trang
+//     console.log("Submit button clicked");  // Để kiểm tra nếu sự kiện submit được kích hoạt
     
-    // Tiến hành gửi yêu cầu AJAX
-});
+//     // Tiến hành gửi yêu cầu AJAX
+// });
 
 // 1. Script xử lý thêm sách mới
 document.getElementById("addBookForm").addEventListener("submit", function (e) {
