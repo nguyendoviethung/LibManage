@@ -120,8 +120,7 @@
   <!-- Main Content -->
   <div class="content">
        <h2 class="text-center fw-bold mb-4" style="color: rgb(73, 143, 208)" >Reader Management</h2>
-
-<div class="container mt-5">
+  <div class="container mt-5">
   <!-- Hàng 1: 4 nút -->
   <div class="row justify-content-center mb-3">
     <!-- Thêm sinh viên -->
@@ -158,7 +157,8 @@
       </div>
     </div>
   </div>
-
+  
+  
   <!-- Hàng 2: 2 nút giữa -->
   <div class="row justify-content-center">
     <!-- Chỉnh sửa tài khoản -->
@@ -180,8 +180,8 @@
     </div>
   </div>
 </div>
-</div>
-  
+  </div>
+   </div>
  <!-- Modal Thêm độc giả -->
  <div class="modal fade" id="addReaderModal" tabindex="-1" aria-labelledby="addReaderLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -328,13 +328,13 @@
           <div class="modal-body">
                 <form id="addAccountReaderForm">
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="addAccountReaderUserName" placeholder="Nhập vào tên đăng nhập" required>
+                      <input type="text" class="form-control" id="addAccountUserName" placeholder="Nhập vào tên đăng nhập" required>
                     </div>
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="addAccountReaderPassword1" placeholder="Nhập vào mật khẩu" required>
+                      <input type="text" class="form-control" id="addAccountPassword1" placeholder="Nhập vào mật khẩu" required>
                     </div>
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="addAccountReaderPassword2" placeholder="Xác nhận lại mật khẩu" required>
+                      <input type="text" class="form-control" id="addAccountPassword2" placeholder="Xác nhận lại mật khẩu" required>
                     </div>
                     <button type="submit" class="btn btn-success">Submit</button>
                 </form>
@@ -353,7 +353,7 @@
           <div class="modal-body">
                 <form id="searchForReaderAccountForm">
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="searchForReaderAccountForm" placeholder="Nhập vào mã số sinh viên" required>
+                      <input type="text" class="form-control" id="searchForReaderAccountID placeholder="Nhập vào mã số sinh viên" required>
                     </div>
                     <button type="submit" class="btn btn-success">Submit</button>
                 </form>
@@ -381,6 +381,7 @@
    </div>
 </div> -->
 <!-- File script -->
+<script src="crud-reader-management.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>

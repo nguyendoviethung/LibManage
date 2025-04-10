@@ -1,53 +1,6 @@
 <?php
-// Hàm kiểm tra định dạng mã số sinh viên
-function isValidStudentID($studentID) {
-    if (!preg_match('/^\d{8}$/', $studentID)) return false;
-
-    $year = substr($studentID, 0, 4);
-    $sequence = substr($studentID, 4, 4);
-
-    // Kiểm tra năm hợp lệ (ví dụ từ 2010 đến năm hiện tại + 1)
-    $currentYear = date("Y") + 1;
-    if ((int)$year < 2010 || (int)$year > $currentYear) return false;
-
-    // Số thứ tự phải >= 0001 và <= 9999
-    if ((int)$sequence < 1 || (int)$sequence > 9999) return false;
-
-    return true;
-}
-// Ham kiểm tra định dạng email
-function isValidSchoolEmail($email) {
-    return filter_var($email, FILTER_VALIDATE_EMAIL) && str_ends_with($email, '@stu.gcut.edu.vn');
-}
-
-// Hàm kiểm tra định dạng số điện thoại
-
-function isValidPhoneNumber($phone) {
-    // Loại bỏ khoảng trắng, dấu - hoặc dấu .
-    $phone = preg_replace('/[\s\-.]/', '', $phone);
-
-    // Kiểm tra bắt đầu bằng 0 hoặc +84, theo sau là 9–10 chữ số
-    return preg_match('/^(0|\+84)[0-9]{9}$/', $phone);
-}
-
-// Hàm kiểm tra định dạng tên khoa 
-
-function isValidFaculty($facultyName) {
-    $validFaculties = [
-        'Khoa Khoa Học Máy Tính',
-        'Khoa Tự Động Hóa & Điện Tử',
-        'Khoa Công Nghệ Thông Tin Toàn Cầu',
-        'Khoa Kỹ Thuật Phần Mềm',
-        'Khoa Quản Trị Công Nghệ',
-        'Khoa Thiết Kế & Truyền Thông Số',
-        'Khoa Khoa Học Dữ Liệu & AI',
-        'Khoa Ngoại Ngữ & Giao Tiếp',
-        'Khoa Công Nghệ Sinh Học & Kỹ Thuật Y Sinh'
-    ];
-
-    // Chỉ kiểm tra xem chuỗi nhập vào có nằm trong danh sách không (phân biệt hoa thường)
-    return in_array($facultyName, $validFaculties);
-}
+header('Content-Type: application/json; charset=utf-8');
+include './validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty
 include '../Auth/connect.php'; // Kết nối đến cơ sở dữ liệu
 if (!$conn) {
     echo json_encode(["error" => "Không thể kết nối cơ sở dữ liệu."]);
@@ -61,6 +14,69 @@ $studentID = $data['studentID'] ?? ''; //Gán biến $studentID bằng $data['st
 $email = $data['email'] ?? ''; //Gán biến $email bằng $data['email'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
 $phoneNumber= $data['phoneNumber'] ?? ''; //Gán biến $phone bằng $data['phone'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
 $faculty = $data['faculty'] ?? ''; //Gán biến $faculty bằng $data['faculty'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
+if(isValidStudentID($studentID)==false){
+    echo json_encode(['success' => false, 'message' => 'Mã số sinh viên không hợp lệ.']);
+    exit;
+}
+else if (isValidSchoolEmail($email,$name,$studentID)==false){
+    echo json_encode(['success' => false, 'message' => 'Email không hợp lệ.']);
+    exit;
+}
+else if(isValidPhoneNumber($phoneNumber)==false){
+    echo json_encode(['success' => false, 'message' => 'Số điện thoại không hợp lệ.']);
+    exit;   
+}
+else if(isValidFaculty($faculty)==false){
+    echo json_encode(['success' => false, 'message' => 'Tên khoa không hợp lệ.']);
+    exit;
+}
+else {
+    //1.Kiểm tra xem mã số sinh viên đã tồn tại trong cơ sở dữ liệu chưa
+    $checkQuery = "SELECT 1 FROM reader WHERE student_id = $1";
+    $checkResult = pg_query_params($conn, $checkQuery, [$studentID]);
+    
+    // Đếm số dòng kết quả trong một truy vấn SELECT(ở đây là kiểm tra xem sinh viên đã tồn tại hay chưa)
+    // Nếu có dòng nào trả về thì đã tồn tại
+    if (pg_num_rows($checkResult) > 0) {
+        echo json_encode(['success' => false, 'message' => 'Mã số sinh viên này đã tồn tại']);
+        exit();
+    }   
+    // 2.Kiểm tra email đã tồn tại chưa (trước khi INSERT)
+$checkEmailQuery = "SELECT 1 FROM reader WHERE email = $1";
+$checkEmailResult = pg_query_params($conn, $checkEmailQuery, [$email]);
 
+if (pg_num_rows($checkEmailResult) > 0) {
+    echo json_encode(['success' => false, 'message' => '❗ Email này đã được sử dụng.']);
+    exit;
+}
+//3. Kiểm tra số điện thoại đã tồn tại chưa (trước khi INSERT)
+$checkPhoneQuery = "SELECT 1 FROM reader WHERE phone_number = $1";
+$checkPhoneResult = pg_query_params($conn, $checkPhoneQuery, [$phoneNumber]);
 
+if( pg_num_rows($checkPhoneResult) > 0) {
+    echo json_encode(['success' => false, 'message' => '❗ Số điện thoại này đã được sử dụng.']);
+    exit;
+}
+    // Nếu qua các kiểm tra truy vấn trên thì thêm sinh viên mới vào cơ sở dữ liệu
+    $query = "INSERT INTO reader (student_id, full_name, email, phone_number, faculty) 
+              VALUES ($1, $2, $3, $4, $5)";
+
+$result = pg_query_params($conn, $query,[
+$data['studentID'], // student_id
+$data['name'],     // full_name
+$data['email'],            // email
+$data['phoneNumber'],         // phone_number
+$data['faculty'],        // faculty
+]);
+
+    // Kiểm tra kết quả
+    if ($result) {
+        echo json_encode(['success' => true, 'message' => 'Thêm thành công']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Có lỗi: ' . pg_last_error()]);
+    }
+    
+    // Đóng kết nối
+    pg_close($conn);
+}
 ?>

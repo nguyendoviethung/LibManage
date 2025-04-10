@@ -1,10 +1,4 @@
-// document.getElementById("addBookForm").addEventListener("submit", function(e) {
-//     e.preventDefault(); // Ngăn chặn reload trang
-//     console.log("Submit button clicked");  // Để kiểm tra nếu sự kiện submit được kích hoạt
-    
-//     // Tiến hành gửi yêu cầu AJAX
-// });
-
+// File này chứa các script xử lý CRUD cho sách trong hệ thống quản lý thư viện
 // 1. Script xử lý thêm sách mới
 document.getElementById("addBookForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
@@ -190,15 +184,8 @@ document.getElementById("updateBookAfterSearchForm").addEventListener("submit", 
         alert("Không thể cập nhật sách. Vui lòng thử lại.");
     });
 });
-
-document.querySelector('.btn-danger').addEventListener('click', function() {
-    console.log('Modal Delete Book triggered');
-    var myModal = new bootstrap.Modal(document.getElementById('deleteBook'));
-    myModal.show();
-});
-
 // 5. Script xử lý xóa sách
-document.addEventListener('DOMContentLoaded', function () {
+
     // Khi DOM đã được tải xong, thêm sự kiện vào form
     document.getElementById("bookNameDeleteForm").addEventListener("submit", function (e) {
         e.preventDefault(); // Ngăn chặn reload trang khi submit
@@ -231,5 +218,5 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Không thể xóa sách. Vui lòng thử lại.");
         });
     });
-});
+
 
