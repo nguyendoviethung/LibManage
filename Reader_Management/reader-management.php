@@ -143,7 +143,7 @@
 
     <!-- Chỉnh sửa thông tin sinh viên -->
     <div class="col-md-3 mb-3">
-      <div class="feature-card text-center" onclick="loadFeature('editBook')" data-bs-toggle="modal" data-bs-target="#updateReaderModal">
+      <div class="feature-card text-center" onclick="loadFeature('updateReader')" data-bs-toggle="modal" data-bs-target="#updateStudentModal">
       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#81c2f3" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l293.1 0c-3.1-8.8-3.7-18.4-1.4-27.8l15-60.1c2.8-11.3 8.6-21.5 16.8-29.7l40.3-40.3c-32.1-31-75.7-50.1-123.9-50.1l-91.4 0zm435.5-68.3c-15.6-15.6-40.9-15.6-56.6 0l-29.4 29.4 71 71 29.4-29.4c15.6-15.6 15.6-40.9 0-56.6l-14.4-14.4zM375.9 417c-4.1 4.1-7 9.2-8.4 14.9l-15 60.1c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l60.1-15c5.6-1.4 10.8-4.3 14.9-8.4L576.1 358.7l-71-71L375.9 417z"/></svg>
         <div class="mt-2 fw-bold" style="color: rgb(73, 143, 208)">Chỉnh sửa thông tin sinh viên</div>
       </div>
@@ -231,17 +231,23 @@
                 <form id="searchReaderForm">
                     <div class="mb-3">
                       <label for="searchReader" class="form-label">Mã số sinh viên </label>
-                      <input type="text" class="form-control" id="searchReader"  placeholder="Nhập vào mã số sinh viên" required>
+                      <input type="text" class="form-control" id="searchStudentID"  placeholder="Nhập vào mã số sinh viên" required>
                     </div>
                 <button type="submit" class="btn btn-warning">Submit</button>
                 </form>
+          </div>
+          <div>
+            <p id="resultText" class="ms-4 fw-bold" style="display: none;">Kết quả tìm kiếm</p>
+            <p id="readerSearchResults" class="ms-4 fw-bold text-primary" style="display: none;">
+            <!-- Kết quả tìm kiếm sẽ được hiển thị ở đây -->
+            </p>
           </div>
       </div>
    </div>
 </div>
 <!-- Modal chỉnh sửa thông tin độc giả -->
  <!-- Nhập thông tin độc giả cần chỉnh sửa ra -->
-<div class="modal fade" id="updateReaderModal" tabindex="-1" aria-labelledby="updateReaderLabel" aria-hidden="true">
+<div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="updateReaderLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
@@ -249,10 +255,10 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-                <form id="updateReaderForm">
+                <form id="updateStudentForm">
                     <div class="mb-3">
                       <label for="updateReader" class="form-label">Mã số sinh viên </label>
-                      <input type="text" class="form-control" id="updateReader"  placeholder="Nhập vào mã số sinh viên" required>
+                      <input type="text" class="form-control" id="updateStudentID"  placeholder="Nhập vào mã số sinh viên" required>
                     </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -290,6 +296,10 @@
                     <div class="mb-3">
                         <label for="updateReaderAfterFaculty" class="form-label">Tên khoa</label>
                         <input type="text" class="form-control" id="updateReaderAfterFaculty"  placeholder="Nhập vào tên khoa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateReaderAfterStatus" class="form-label">Trạng thái</label>
+                        <input type="text" class="form-control" id="updateReaderAfterStatus"  placeholder="Nhập vào trạng thái" required>
                     </div>
                   <button type="submit" class="btn btn-success">Submit</button>
               </form>
