@@ -31,6 +31,7 @@ else if(isValidFaculty($faculty)==false){
     exit;
 }
 else {
+
     //1.Kiểm tra xem mã số sinh viên đã tồn tại trong cơ sở dữ liệu chưa
     $checkQuery = "SELECT 1 FROM reader WHERE student_id = $1";
     $checkResult = pg_query_params($conn, $checkQuery, [$studentID]);
@@ -41,15 +42,8 @@ else {
         echo json_encode(['success' => false, 'message' => 'Mã số sinh viên này đã tồn tại']);
         exit();
     }   
-    // 2.Kiểm tra email đã tồn tại chưa (trước khi INSERT)
-$checkEmailQuery = "SELECT 1 FROM reader WHERE email = $1";
-$checkEmailResult = pg_query_params($conn, $checkEmailQuery, [$email]);
-
-if (pg_num_rows($checkEmailResult) > 0) {
-    echo json_encode(['success' => false, 'message' => '❗ Email này đã được sử dụng.']);
-    exit;
-}
-//3. Kiểm tra số điện thoại đã tồn tại chưa (trước khi INSERT)
+    
+// 2. Kiểm tra số điện thoại đã tồn tại chưa (trước khi INSERT)
 $checkPhoneQuery = "SELECT 1 FROM reader WHERE phone_number = $1";
 $checkPhoneResult = pg_query_params($conn, $checkPhoneQuery, [$phoneNumber]);
 

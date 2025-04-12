@@ -1,5 +1,6 @@
 // 1.Thêm người đọc mới
-let lastStudentID = null; // Biến toàn cục để lưu StudentID cuối cùng đã được thêm vào
+
+    let lastStudentID = null; // Biến toàn cục để lưu StudentID cuối cùng đã được thêm vào
 document.getElementById("addReaderForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
@@ -52,6 +53,7 @@ document.getElementById("addReaderForm").addEventListener("submit", function (e)
 });
 
 // 2.Thêm tài khoản người đọc mới sau khi thêm người đọc thành công
+
 document.getElementById("addAccountReaderForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
@@ -99,6 +101,7 @@ document.getElementById("addAccountReaderForm").addEventListener("submit", funct
     });}) 
 
 // 3.Tìm kiếm sinh viên 
+
 document.getElementById("searchReaderForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
@@ -168,6 +171,10 @@ document.getElementById("searchReaderForm").addEventListener("submit", function 
 
 // 4.Cập nhật , chỉnh sửa thông tin người đọc
 // Hiện modal cập nhật thông tin người đọc
+ // Biến toàn cục để lưu MSSV ban đầu trước khi cập nhật
+
+ let originalStudentID = ""; 
+
 document.getElementById("updateStudentForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
@@ -195,6 +202,7 @@ document.getElementById("updateStudentForm").addEventListener("submit", function
             document.getElementById("updateReaderAfterPhoneNumber").value = data.data.phone_number;
             document.getElementById("updateReaderAfterFaculty").value = data.data.faculty;
             document.getElementById("updateReaderAfterStatus").value = data.data.status;
+            originalStudentID = data.data.student_id; // Biến toàn cục để lưu StudentID cuối cùng đã được thêm vào
         } else {
             // Thông báo lỗi
             alert(data.message);
@@ -205,6 +213,7 @@ document.getElementById("updateStudentForm").addEventListener("submit", function
          alert("Có lỗi xảy ra, vui lòng thử lại!");
     }); 
 })
+
 // Cập nhật thông tin người đọc sau khi modal hiện ra
 document.getElementById("updateReaderAfterForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
@@ -215,6 +224,7 @@ document.getElementById("updateReaderAfterForm").addEventListener("submit", func
     let updatePhoneNumber = document.getElementById("updateReaderAfterPhoneNumber").value.trim();
     let updateFaculty = document.getElementById("updateReaderAfterFaculty").value.trim();
     let updateStatus = document.getElementById("updateReaderAfterStatus").value.trim();
+    let keepAccountStatus = document.getElementById("keepAccountStatus").value;
     // Gửi request AJAX với JSON tới file PHP xử lý
     fetch("update-reader.php", {
         method: "POST",
@@ -227,7 +237,9 @@ document.getElementById("updateReaderAfterForm").addEventListener("submit", func
             email: updateEmail,
             phoneNumber: updatePhoneNumber,
             faculty: updateFaculty,
-            status: updateStatus
+            status: updateStatus,
+            originalStudentID : originalStudentID, // Biến toàn cục để lưu StudentID cuối cùng đã được thêm vào
+            keepAccountStatus : keepAccountStatus
         })
     })
     .then(response => response.json()) 
@@ -250,3 +262,5 @@ document.getElementById("updateReaderAfterForm").addEventListener("submit", func
          alert("Có lỗi xảy ra, vui lòng thử lại!");
     }); 
 })
+
+// 5.Khôi phục người đọc 

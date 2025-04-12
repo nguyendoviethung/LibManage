@@ -1,62 +1,114 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 include '../Auth/connect.php'; // Kết nối đến cơ sở dữ liệu
-
+include './validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty
 if (!$conn) {
     echo json_encode(["success" => false, "message" => "Không thể kết nối cơ sở dữ liệu."]);
     exit;
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
+// Lấy dữ liệu từ client
+$newStudentID = $data['studentID'] ?? '';
+$newName = $data['name'] ?? '';
+$newEmail = $data['email'] ?? '';
+$newPhone = $data['phoneNumber'] ?? '';
+$newFaculty = $data['faculty'] ?? '';
+$newStatus = $data['status'] ?? '';
+$valueCheckBox = $data['keepAccountStatus'] ?? ''; 
+$originalStudentID = $data['originalStudentID'] ?? ''; 
+// I.Kiểm tra sự tồn tại của MSSV, Email, SĐT trong cơ sở dữ liệu
 
-$studentID = $data['studentID'] ?? '';
-$name = $data['name'] ?? '';
-$email = $data['email'] ?? '';
-$phone = $data['phoneNumber'] ?? '';
-$faculty = $data['faculty'] ?? '';
-$status = $data['status'] ?? '';
-
-// 1. Kiểm tra email đã tồn tại ở sinh viên khác chưa
-$queryEmail = "SELECT 1 FROM reader WHERE email = $1 AND student_id != $2";
-$resEmail = pg_query_params($conn, $queryEmail, [$email, $studentID]);
-if (pg_num_rows($resEmail) > 0) {
-    echo json_encode(['success' => false, 'message' => '❗Email đã tồn tại.']);
+// 1.  Truy vấn này sẽ kiểm tra xem mã số sinh viên mới đã tồn tại trong cơ sở dữ liệu chưa và thuộc về sinh viên đang học(active)
+$queryMSV = "SELECT 1 FROM reader WHERE student_id = $1 AND student_id != $2";
+$resMSV = pg_query_params($conn, $queryMSV, [$newStudentID, $originalStudentID]);
+if (pg_num_rows($resMSV) > 0) {
+    echo json_encode(['success' => false, 'message' => '❗Mã số sinh viên này đã thuộc về sinh viên khác.']);
     pg_close($conn);
     exit;
 }
 
-// 2. Kiểm tra SĐT đã tồn tại ở sinh viên khác chưa
+// 2. Kiểm tra SĐT đã tồn tại ở sinh viên khác chưa và thuộc về sinh viên đang học(active)
 $queryPhone = "SELECT 1 FROM reader WHERE phone_number = $1 AND student_id != $2";
-$resPhone = pg_query_params($conn, $queryPhone, [$phone, $studentID]);
+$resPhone = pg_query_params($conn, $queryPhone, [$newPhone, $originalStudentID]);
 if (pg_num_rows($resPhone) > 0) {
     echo json_encode(['success' => false, 'message' => '❗Số điện thoại đã tồn tại.']);
     pg_close($conn);
     exit;
 }
 
-// 3. Kiểm tra nếu đổi mã số sinh viên mà bị trùng người khác
-$queryMSV = "SELECT 1 FROM reader WHERE student_id = $1 AND full_name != $2";
-$resMSV = pg_query_params($conn, $queryMSV, [$studentID, $name]);
-if (pg_num_rows($resMSV) > 0) {
-    echo json_encode(['success' => false, 'message' => '❗Mã số sinh viên này đã thuộc về sinh viên khác.']);
+// II.Kiểm tra định dạng của các trường dữ liệu
+
+// 1. Kiểm tra định dạng mã số sinh viên
+if (!isValidStudentID($newStudentID)) {
+    echo json_encode(['success' => false, 'message' => '❗Mã số sinh viên không hợp lệ.']);
     pg_close($conn);
     exit;
 }
-// Kiểm tra định dạng của các trường dữ liệu
-//  4. Nếu mọi thứ OK → Cập nhật
-$query = "UPDATE reader 
+
+// 2.Kiểm tra định dạng email
+if (!isValidSchoolEmail($newEmail, $newName, $newStudentID)) {
+    echo json_encode(['success' => false, 'message' => '❗Email không hợp lệ.']);
+    pg_close($conn);
+    exit;
+}
+
+// 3.Kiểm tra định dạng số điện thoại
+if (!isValidPhoneNumber($newPhone)) {
+    echo json_encode(['success' => false, 'message' => '❗Số điện thoại không hợp lệ.']);
+    pg_close($conn);
+    exit;
+}
+
+// 4.Kiểm tra định dạng khoa
+if (!isValidFaculty($newFaculty)) {
+    echo json_encode(['success' => false, 'message' => '❗Khoa không hợp lệ.']);
+    pg_close($conn);
+    exit;
+}
+
+// 5.Kiểm tra định dạng trạng thái
+if (!isValidStatus($newStatus)) {
+    echo json_encode(['success' => false, 'message' => '❗Trạng thái không hợp lệ.']);
+    pg_close($conn);
+    exit;   
+}
+
+//  III. Nếu mọi thứ OK → Cập nhật
+
+// 1.Cập nhật thông tin sinh viên trong cơ sở dữ liệu
+
+    $query = "UPDATE reader 
           SET full_name = $1, student_id = $2, email = $3, phone_number = $4, faculty = $5, status = $6 
-          WHERE student_id = $2";
+          WHERE student_id = $7";
+    $updateResult = pg_query_params($conn, $query, [
+    $newName, $newStudentID, $newEmail, $newPhone, $newFaculty, $newStatus, $originalStudentID]);
 
-$updateResult = pg_query_params($conn, $query, [
-    $name, $studentID, $email, $phone, $faculty, $status
-]);
+//  2.Cập nhật đồng thời status của tài khoản người dùng
 
-if ($updateResult) {
+    $updateStatusResult = true; // mặc định là true nếu không xử lý gì
+    if ($valueCheckBox == true) {
+    if($newStatus == 'Inactive') {
+        $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
+        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Disabled', $originalStudentID]);
+    } else if ($newStatus == 'Banned'){
+        $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
+        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Banned', $originalStudentID]);
+    } if($newStatus == 'Active') {
+        $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
+        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Active', $originalStudentID]);
+    }
+        }
+
+// IV. Kiểm tra kết quả cập nhật
+
+    if ($updateResult == true && $updateStatusResult == true) {
+    // Nếu cập nhật thành công, trả về thông báo thành công
     echo json_encode(['success' => true, 'message' => '✅ Cập nhật thông tin sinh viên thành công.']);
-} else {
+}    else {
     echo json_encode(['success' => false, 'message' => '❌ Cập nhật thất bại: ' . pg_last_error()]);
 }
 
-pg_close($conn);
+// Đóng kết nối cơ sở dữ liệu
+    pg_close($conn);
 ?>

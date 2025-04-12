@@ -23,7 +23,7 @@ CREATE TABLE "reader" (
   "student_id" varchar(50) UNIQUE,
   "full_name" varchar(255),
   "email" varchar(255) UNIQUE,
-  "phone_number" varchar(15),
+  "phone_number" varchar(15) UNIQUE,
   "faculty" varchar(100),
   "status" varchar(50) DEFAULT 'Active'
 );
@@ -64,3 +64,14 @@ ALTER TABLE "readeractivitylog" ADD FOREIGN KEY ("account_id") REFERENCES "reade
 ALTER TABLE "reviews" ADD FOREIGN KEY ("book_id") REFERENCES "books" ("book_id");
 
 ALTER TABLE "reviews" ADD FOREIGN KEY ("reader_id") REFERENCES "reader" ("reader_id"); 
+
+-- Thay đổi mã sinh viên trong bảng reader thì bảng readeraccounts cũng phải thay đổi theo (vì có khóa ngoại student_id)
+  -- ALTER TABLE readeraccounts
+  --   DROP CONSTRAINT IF EXISTS fk_student_id;
+
+  -- ALTER TABLE readeraccounts
+  --   ADD CONSTRAINT fk_student_id FOREIGN KEY (student_id)
+  --   REFERENCES reader(student_id)
+  --   ON UPDATE CASCADE
+  --   ON DELETE RESTRICT;
+

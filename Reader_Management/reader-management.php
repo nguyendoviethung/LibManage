@@ -121,67 +121,44 @@
   <div class="content">
        <h2 class="text-center fw-bold mb-4" style="color: rgb(73, 143, 208)" >Reader Management</h2>
   <div class="container mt-5">
-  <!-- Hàng 1: 4 nút -->
   <div class="row justify-content-center mb-3">
     <!-- Thêm sinh viên -->
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3 ">
       <div class="feature-card text-center" onclick="loadFeature('addBook')" data-bs-toggle="modal" data-bs-target="#addReaderModal">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 448 512">
-          <path fill="#47e68c" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
-        </svg>
-        <div class="mt-2 fw-bold" style="color: rgb(73, 143, 208)">Thêm sinh viên</div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="rgb(84, 238, 102)" d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM504 312l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+        <div class="mt-2 fw-bold" style="color: rgb(84, 238, 102)">Thêm sinh viên</div>
       </div>
     </div>
 
     <!-- Tìm kiếm sinh viên -->
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3">
       <div class="feature-card text-center" onclick="loadFeature('searchReader')" data-bs-toggle="modal" data-bs-target="#searchReaderModal">
       <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#ffde66" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-        <div class="mt-2 fw-bold" style="color: rgb(73, 143, 208)">Tìm kiếm sinh viên</div>
+        <div class="mt-2 fw-bold" style="color: rgb(251, 204, 35)">Tìm kiếm sinh viên</div>
       </div>
     </div>
 
     <!-- Chỉnh sửa thông tin sinh viên -->
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3 ">
       <div class="feature-card text-center" onclick="loadFeature('updateReader')" data-bs-toggle="modal" data-bs-target="#updateStudentModal">
       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#81c2f3" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l293.1 0c-3.1-8.8-3.7-18.4-1.4-27.8l15-60.1c2.8-11.3 8.6-21.5 16.8-29.7l40.3-40.3c-32.1-31-75.7-50.1-123.9-50.1l-91.4 0zm435.5-68.3c-15.6-15.6-40.9-15.6-56.6 0l-29.4 29.4 71 71 29.4-29.4c15.6-15.6 15.6-40.9 0-56.6l-14.4-14.4zM375.9 417c-4.1 4.1-7 9.2-8.4 14.9l-15 60.1c-1.4 5.5 .2 11.2 4.2 15.2s9.7 5.6 15.2 4.2l60.1-15c5.6-1.4 10.8-4.3 14.9-8.4L576.1 358.7l-71-71L375.9 417z"/></svg>
-        <div class="mt-2 fw-bold" style="color: rgb(73, 143, 208)">Chỉnh sửa thông tin sinh viên</div>
+        <div class="mt-2 fw-bold" style="color: #81c2f3">Chỉnh sửa thông tin sinh viên</div>
       </div>
     </div>
 
-    <!-- Xóa sinh viên -->
-    <div class="col-md-3 mb-3">
-      <div class="feature-card text-center" onclick="loadFeature('deleteBook')" data-bs-toggle="modal" data-bs-target="#deleteReaderModal">
-      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#f02d2d" d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM472 200l144 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-144 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></svg>
-        <div class="mt-2 fw-bold" style="color: rgb(73, 143, 208)">Xóa sinh viên</div>
-      </div>
-    </div>
-  </div>
-  
-  
-  <!-- Hàng 2: 2 nút giữa -->
-  <div class="row justify-content-center">
-    <!-- Chỉnh sửa tài khoản -->
-    <div class="col-md-3 mb-3">
+   <!-- Chỉnh sửa tài khoản -->
+   <div class="col-md-3 ">
       <div class="feature-card text-center" onclick="loadFeature('searchForReaderAccountModal')" data-bs-toggle="modal" data-bs-target="#searchForReaderAccountModal">
         <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 512 512">
           <path fill="#65dde6" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zM291.7 90.3L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2c-2.5 8.5.8 17.6 7 23.8s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
         </svg>
-        <div class="mt-2 fw-bold" style="color: rgb(73, 143, 208)">Chỉnh sửa tài khoản</div>
+        <div class="mt-2 fw-bold" style="color: #65dde6">Chỉnh sửa tài khoản</div>
       </div>
     </div>
-
-    <!-- Xóa tài khoản -->
-    <div class="col-md-3 mb-3">
-      <div class="feature-card text-center" onclick="loadFeature('deleteUserAccountModal')" data-bs-toggle="modal" data-bs-target="#deleteUserAccountModal">
-      <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#f07714" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-        <div class="mt-2 fw-bold" style="color: rgb(73, 143, 208)">Xóa tài khoản</div>
-      </div>
-    </div>
-  </div>
-</div>
-  </div>
    </div>
+      </div>
+        </div>
+          </div>
  <!-- Modal Thêm độc giả -->
  <div class="modal fade" id="addReaderModal" tabindex="-1" aria-labelledby="addReaderLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -209,9 +186,20 @@
                         <input type="text" class="form-control" id="addPhoneNumber"  placeholder="Nhập vào số điện thoại" required>
                     </div>
                     <div class="mb-3">
-                        <label for="addFaculty" class="form-label">Tên khoa</label>
-                        <input type="text" class="form-control" id="addFaculty"  placeholder="Nhập vào tên khoa" required>
-                    </div>
+                         <label for="addFaculty" class="form-label">Chọn khoa:</label>
+                         <select class="form-control" id="addFaculty" name="faculty" required>
+                           <option value="" selected>-- Chọn khoa --</option>
+                           <option value="Khoa Học Máy Tính">Khoa Học Máy Tính</option>
+                           <option value="Tự Động Hóa & Điện Tử">Tự Động Hóa & Điện Tử</option>
+                           <option value="Công Nghệ Thông Tin Toàn Cầu">Công Nghệ Thông Tin Toàn Cầu</option>
+                           <option value="Kỹ Thuật Phần Mềm">Kỹ Thuật Phần Mềm</option>
+                           <option value="Quản Trị Công Nghệ">Quản Trị Công Nghệ</option>
+                           <option value="Thiết Kế & Truyền Thông Số">Thiết Kế & Truyền Thông Số</option>
+                           <option value="Khoa Học Dữ Liệu & AI">Khoa Học Dữ Liệu & AI</option>
+                           <option value="Ngoại Ngữ & Giao Tiếp">Ngoại Ngữ & Giao Tiếp</option>
+                           <option value="Công Nghệ Sinh Học & Kỹ Thuật Y Sinh">Công Nghệ Sinh Học & Kỹ Thuật Y Sinh</option>
+                         </select>
+                       </div>
                   <button type="submit" class="btn btn-success">Submit</button>
               </form>
           </div>
@@ -245,6 +233,7 @@
       </div>
    </div>
 </div>
+
 <!-- Modal chỉnh sửa thông tin độc giả -->
  <!-- Nhập thông tin độc giả cần chỉnh sửa ra -->
 <div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="updateReaderLabel" aria-hidden="true">
@@ -272,7 +261,7 @@
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="updateReaderAfterLabel">Thêm độc giả</h5>
+              <h5 class="modal-title" id="updateReaderAfterLabel">Chỉnh sửa thông tin</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -294,39 +283,41 @@
                         <input type="text" class="form-control" id="updateReaderAfterPhoneNumber"  placeholder="Nhập vào số điện thoại" required>
                     </div>
                     <div class="mb-3">
-                        <label for="updateReaderAfterFaculty" class="form-label">Tên khoa</label>
-                        <input type="text" class="form-control" id="updateReaderAfterFaculty"  placeholder="Nhập vào tên khoa" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="updateReaderAfterStatus" class="form-label">Trạng thái</label>
-                        <input type="text" class="form-control" id="updateReaderAfterStatus"  placeholder="Nhập vào trạng thái" required>
-                    </div>
-                  <button type="submit" class="btn btn-success">Submit</button>
+                         <label for="addFaculty" class="form-label">Chọn khoa:</label>
+                         <select class="form-control" id="updateReaderAfterFaculty" name="faculty" required>
+                           <option value="" selected>-- Chọn khoa --</option>
+                           <option value="Khoa Học Máy Tính">Khoa Học Máy Tính</option>
+                           <option value="Tự Động Hóa & Điện Tử">Tự Động Hóa & Điện Tử</option>
+                           <option value="Công Nghệ Thông Tin Toàn Cầu">Công Nghệ Thông Tin Toàn Cầu</option>
+                           <option value="Kỹ Thuật Phần Mềm">Kỹ Thuật Phần Mềm</option>
+                           <option value="Quản Trị Công Nghệ">Quản Trị Công Nghệ</option>
+                           <option value="Thiết Kế & Truyền Thông Số">Thiết Kế & Truyền Thông Số</option>
+                           <option value="Khoa Học Dữ Liệu & AI">Khoa Học Dữ Liệu & AI</option>
+                           <option value="Ngoại Ngữ & Giao Tiếp">Ngoại Ngữ & Giao Tiếp</option>
+                           <option value="Công Nghệ Sinh Học & Kỹ Thuật Y Sinh">Công Nghệ Sinh Học & Kỹ Thuật Y Sinh</option>
+                         </select>
+                       </div>
+                      <div class="mb-3">
+                          <label for="updateReaderAfterStatus" class="form-label">Trạng thái</label>
+                          <select class="form-control" id="updateReaderAfterStatus" required>
+                              <option value="Active">Active</option>
+                              <option value="Inactive">Inactive</option>
+                              <option value="Banned">Banned</option>
+                          </select>
+                           </div>
+                          <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="keepAccountStatus">
+                        <label class="form-check-label" for="keepAccountStatus">
+                            Đồng bộ trạng thái tài khoản
+                        </label>
+                          </div>
+                  <div class="mt-3"><button type="submit" class="btn btn-primary">Submit</button></div>
               </form>
           </div>
   </div>
 </div>
 </div>
-<!-- Xóa độc giả -->
-<div class="modal fade" id="deleteReaderModal" tabindex="-1" aria-labelledby="deleteReaderLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="deleteReaderLabel">Chỉnh sửa thông tin</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-                <form id="deleteReaderForm">
-                    <div class="mb-3">
-                      <label for="updateReader" class="form-label">Mã số sinh viên </label>
-                      <input type="text" class="form-control" id="deleteReader" placeholder="Nhập vào mã số sinh viên" required>
-                    </div>
-                    <button type="submit" class="btn btn-danger">Submit</button>
-                </form>
-          </div>
-      </div>
-   </div>
-</div>
+
 <!-- Modal hiện ra để tạo tài khoản cho độc giả  -->
 <div class="modal fade" id="addAccountReaderModal" tabindex="-1" aria-labelledby="addAccountReaderLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -352,44 +343,28 @@
       </div>
    </div>
 </div>
+
 <!-- Modal chỉnh sửa thông tin tài khoản sinh viên( tìm kiếm bằng cách nhập vào MSSV) -->
 <div class="modal fade" id="searchForReaderAccountModal" tabindex="-1" aria-labelledby="searchForReaderAccountLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title">Chỉnh sửa tài khoản</h5>
+              <h5 class="modal-title">Chỉnh sửa tài khoản sinh viên</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
                 <form id="searchForReaderAccountForm">
+                <label for="updateReaderAfterStatus" class="form-label">Mã số sinh viên</label>
                     <div class="mb-3">
-                      <input type="text" class="form-control" id="searchForReaderAccountID placeholder="Nhập vào mã số sinh viên" required>
+                      <input type="text" class="form-control" id="searchForReaderAccountID" placeholder="Nhập vào mã số sinh viên" required>
                     </div>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" class="btn" style="background-color: #65dde6;">Submit</button>
                 </form>
           </div>
       </div>
    </div>
 </div>
-<!-- Modal xóa tài khoản người dùng -->
-<!-- <div class="modal fade" id="searchForReaderAccountModal" tabindex="-1" aria-labelledby="searchForReaderAccountLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Chỉnh sửa tài khoản</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-                <form id="searchForReaderAccountForm">
-                    <div class="mb-3">
-                      <input type="text" class="form-control" id="searchForReaderAccountForm" placeholder="Nhập vào mã số sinh viên" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </form>
-          </div>
-      </div>
-   </div>
-</div> -->
+
 <!-- File script -->
 <script src="crud-reader-management.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

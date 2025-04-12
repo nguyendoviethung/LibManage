@@ -15,6 +15,7 @@ function isValidStudentID($studentID) {
 
     return true;
 }
+
 // 2.Phần kiểm tra định dạng email
 // Hàm phụ để loại bỏ dấu tiếng Việt:
     function normalizeVietnameseString($str) {
@@ -23,7 +24,7 @@ function isValidStudentID($studentID) {
         // Loại bỏ dấu tiếng Việt
         // str_replace(array|string $search, array|string $replace, string $subject): string 
         // --> Chuỗi mới được trả về sau khi thay thế tất cả các giá trị tìm thấy trong chuỗi subject bằng các giá trị tương ứng trong mảng replace.
-        // Nếu không tìm thấy giá trị nào trong mảng search thì trả về chuỗi subject ban đầu.
+        // Nếu không tìm thấy giá trị nào trong mảng search thì trả về chuỗi ban đầu.
         $str = str_replace(
             ['à','á','ạ','ả','ã','â','ầ','ấ','ậ','ẩ','ẫ','ă','ằ','ắ','ặ','ẳ','ẵ',
             'è','é','ẹ','ẻ','ẽ','ê','ề','ế','ệ','ể','ễ',
@@ -56,7 +57,7 @@ function isValidStudentID($studentID) {
         return filter_var($email, FILTER_VALIDATE_EMAIL) && $email === $expectedEmail;
     }
 
-//3. Hàm kiểm tra định dạng số điện thoại
+// 3. Hàm kiểm tra định dạng số điện thoại
 
 function isValidPhoneNumber($phone) {
     // Loại bỏ khoảng trắng, dấu - hoặc dấu .
@@ -91,7 +92,7 @@ function isValidPassword($password) {
     if (strlen($password) < 8) {
         return false;
     }
-    //  preg_match() dùng để kiểm tra một chuỗi có khớp với biểu thức chính quy (regex) hay không.
+    // preg_match() dùng để kiểm tra một chuỗi có khớp với biểu thức chính quy (regex) hay không.
     // Nếu không khớp thì trả về false, nếu khớp thì trả về true.
     // Kiểm tra khoảng trắng
     if (preg_match('/\s/', $password)) {
@@ -126,6 +127,8 @@ function isValidPassword($password) {
     // Nếu qua tất cả kiểm tra → hợp lệ
     return true;
 }   
+
+// 6.Hàm kiểm tra định dạng tên đăng nhập
 function isValidUserName($username) {
     // Kiểm tra độ dài tối thiểu 8 ký tự
     if (strlen($username) < 8) {
@@ -138,6 +141,13 @@ function isValidUserName($username) {
     // Dấu "+" là có Ít nhất 1 ký tự khớp(nhưng trên kiểm tra đã có rồi)
     // Nếu qua tất cả kiểm tra → hợp lệ
     return true;
+}
+
+// 7.Hàm kiểm tra định dạng trạng thái
+function isValidStatus($status) {
+    // Chỉ cho phép các giá trị "active", "inactive" và "banned"
+    $validStatuses = ['Active', 'Inactive', 'Banned'];
+    return in_array($status, $validStatuses);
 }
 ?>
 
