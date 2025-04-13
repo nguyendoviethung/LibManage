@@ -344,7 +344,8 @@
    </div>
 </div>
 
-<!-- Modal chỉnh sửa thông tin tài khoản sinh viên( tìm kiếm bằng cách nhập vào MSSV) -->
+<!-- Chỉnh sửa thông tin tài khoản sinh viên -->
+ <!--Tìm kiếm tài khoản sinh viên -->
 <div class="modal fade" id="searchForReaderAccountModal" tabindex="-1" aria-labelledby="searchForReaderAccountLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
@@ -354,7 +355,7 @@
           </div>
           <div class="modal-body">
                 <form id="searchForReaderAccountForm">
-                <label for="updateReaderAfterStatus" class="form-label">Mã số sinh viên</label>
+                <label for="searchForReaderAccount" class="form-label">Mã số sinh viên</label>
                     <div class="mb-3">
                       <input type="text" class="form-control" id="searchForReaderAccountID" placeholder="Nhập vào mã số sinh viên" required>
                     </div>
@@ -365,9 +366,42 @@
    </div>
 </div>
 
+<!-- Modal hiện ra để thay đổi thông tin -->
+<div class="modal fade" id="changeAccountModal" tabindex="-1" aria-labelledby="searchForReaderAccountLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Chỉnh sửa tài khoản sinh viên</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                <form id="changeAccountForm">
+                <label for="changeAccount" class="form-label">Nhập vào mật khẩu mới</label>
+                    <div class="mb-3">
+                      <input type="text" class="form-control" id="changeAccountPasswordNew1" placeholder="Nhập vào mã số sinh viên" >
+                    </div>
+                   <label for="changeAccount" class="form-label">Xác nhận lại mật khẩu</label>
+                    <div class="mb-3">
+                      <input type="text" class="form-control" id="changeAccountPasswordNew2" placeholder="Nhập vào mã số sinh viên" >
+                    </div>
+                    <div class="mb-3">
+                          <label for="changeAccount" class="form-label">Trạng thái</label>
+                          <select class="form-control" id="changeAccountStatus" required>
+                              <option value="Active">Active</option>
+                              <option value="Inactive">Disabled</option>
+                              <option value="Banned">Banned</option>
+                          </select>
+                           </div>
+                    <button type="submit" class="btn" style="background-color: #65dde6;">Submit</button>
+                </form>
+          </div>
+      </div>
+   </div>
+</div>
 <!-- File script -->
-<script src="crud-reader-management.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="crud-reader-management.js"></script>
   </body>
 </html>

@@ -174,7 +174,6 @@ document.getElementById("searchReaderForm").addEventListener("submit", function 
  // Biến toàn cục để lưu MSSV ban đầu trước khi cập nhật
 
  let originalStudentID = ""; 
-
 document.getElementById("updateStudentForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
@@ -263,4 +262,80 @@ document.getElementById("updateReaderAfterForm").addEventListener("submit", func
     }); 
 })
 
-// 5.Khôi phục người đọc 
+// 5.Chỉnh sửa tài khoản người đọc
+//Tìm kiếm và hiện mật khẩu cũ và status cũ 
+
+let searchByStudentID = ""; // Biến toàn cục để lưu StudentID tìm kiếm   
+document.getElementById("searchForReaderAccountForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // Ngăn chặn reload trang khi submit
+    // Lấy dữ liệu từ form
+    let searchStudentID = document.getElementById("searchForReaderAccountID").value.trim(); 
+    searchByStudentID = searchStudentID; // Cập nhật biến searchByStudentID với StudentID mới nhất
+    // Gửi request AJAX với JSON tới file PHP xử lý
+    fetch("search-reader.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ 
+            searchStudentID : searchStudentID
+        })
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.success){
+            console.log(data);
+            document.getElementById("searchForReaderAccountForm").reset();
+            $('#changeAccountModal').modal('show'); //Hiện modal sau khi tìm kiếm thành công
+            document.getElementById("changeAccountStatus").value = data.data.status; //Lấy trạng thái cũ
+        } else {
+            console.log(data);
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Có lỗi khi gửi yêu cầu:", error);
+         alert("Có lỗi xảy ra, vui lòng kiểm tra lại.");
+
+})})
+
+// Cập nhật tài khoản người đọc sau khi modal hiện ra
+document.getElementById("changeAccountForm").addEventListener("submit", function (e) { 
+    e.preventDefault(); // Ngăn chặn reload trang khi submit
+    // Lấy dữ liệu từ form
+    let changeAccountPasswordNew1 = document.getElementById("changeAccountPasswordNew1").value.trim();
+    let changeAccountPasswordNew2 = document.getElementById("changeAccountPasswordNew2").value.trim();
+    let changeAccountStatus = document.getElementById("changeAccountStatus").value;
+    if(changeAccountPasswordNew1 !== changeAccountPasswordNew2) {
+        alert("Mật khẩu không khớp. Vui lòng kiểm tra lại!");
+        return;
+    }
+    // Gửi request AJAX với JSON tới file PHP xử lý
+    fetch("change-account.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ 
+            changeAccountPasswordNew1: changeAccountPasswordNew1,
+            changeAccountStatus: changeAccountStatus,
+            searchByStudentID  : searchByStudentID, // Sử dụng biến toàn cục để lấy StudentID cuối cùng đã được thêm vào
+        })
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if (data.success){
+            // Thông báo thành công
+            console.log(data)
+            alert(data.message);
+            // Reset form
+            document.getElementById("changeAccountForm").reset();
+            $('#changeAccountModal').modal('hide'); // Đóng modal sau khi thêm thành công
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Có lỗi khi gửi yêu cầu:", error);
+         alert(data.message); 
+})})
