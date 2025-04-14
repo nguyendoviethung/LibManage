@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-include './validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty
-include '../Auth/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../helpers/validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty,username,password
 if (!$conn) {
     echo json_encode(["error" => "Không thể kết nối cơ sở dữ liệu."]);
     exit;
@@ -14,6 +14,7 @@ $studentID = $data['studentID'] ?? ''; //Gán biến $studentID bằng $data['st
 $email = $data['email'] ?? ''; //Gán biến $email bằng $data['email'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
 $phoneNumber= $data['phoneNumber'] ?? ''; //Gán biến $phone bằng $data['phone'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
 $faculty = $data['faculty'] ?? ''; //Gán biến $faculty bằng $data['faculty'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
+
 if(isValidStudentID($studentID)==false){
     echo json_encode(['success' => false, 'message' => 'Mã số sinh viên không hợp lệ.']);
     exit;

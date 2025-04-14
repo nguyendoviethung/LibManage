@@ -3,21 +3,17 @@
 document.getElementById("addBookForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
+
     let additionalBookTitle = document.getElementById("additionalBookTitle").value.trim(); // Lấy giá trị từ input và xóa khoảng trắng đầu và cuối
     let authorNameAdded = document.getElementById("authorNameAdded").value.trim();
     let bookLang = document.getElementById("bookLang").value.trim();
     let publishYear = document.getElementById("publishYear").value.trim();
     let bookLocation = document.getElementById("bookLocation").value.trim();
     let genre = document.getElementById("genre").value.trim()
-    // let publisherId = document.getElementById("publisherId").value;
     let quantity = document.getElementById("quantity").value.trim();
-    // Kiểm tra thông tin đầu vào
-    if (additionalBookTitle === "" || authorNameAdded === "") {
-        alert("Vui lòng nhập tên sách và tên tác giả!");
-        return;
-    }
+
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("add-book.php", {
+    fetch(".../../api/book-management/add-book.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -54,13 +50,9 @@ document.getElementById("addBookForm").addEventListener("submit", function (e) {
 
 document.getElementById("searchBookForm").addEventListener("submit", function (e){
     e.preventDefault(); // Ngăn chặn reload trang khi submit
-    let bookName = document.getElementById("searchBook").value;
-    if (bookName.trim() === "") {
-        alert("Vui lòng nhập tên sách!");
-        return;
-    }
+    let bookName = document.getElementById("searchBook").value.trim(); // Lấy giá trị từ input và xóa khoảng trắng đầu và cuối
     // Gửi request AJAX với JSON tới file PHP xử lý tìm kiếm
-    fetch("search-book.php", {
+    fetch(".../../api/book-management/search-book.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json" // Đổi thành application/json
@@ -70,30 +62,25 @@ document.getElementById("searchBookForm").addEventListener("submit", function (e
     .then(response => response.json()) // Xử lý dữ liệu trả về từ PHP dưới dạng JSON
     .then(data => {
         // Hiển thị kết quả vào phần tử #searchResults
-        if (data.error) {
-            console.log(data.error);
-            document.getElementById("searchResults").innerHTML = data.error;
-        } else if (data.message) {
-            console.log(data.message);
-            document.getElementById("searchResults").innerHTML = data.message;
-        } else {
+        if (data.success) {
             //Hiện phần tử Search Results
             document.getElementById("search_results").style.display = "block"; 
             console.log(data);
             let resultHTML = "<table><tr><th>Title</th><th>Language</th><th>Year</th><th>Location</th><th>Genre</th><th>Quantity</th><th>Author Name</th></tr>";
-            data.forEach(book => {
                 resultHTML += `<tr>
-                    <td>${book.title}</td>
-                    <td>${book.lang}</td>
-                    <td>${book.publisher_year}</td>
-                    <td>${book.location}</td>
-                    <td>${book.genre}</td>
-                    <td>${book.quantity}</td>
-                    <td>${book.author_name}</td>
+                    <td>${data.books.title}</td>
+                    <td>${data.books.lang}</td>
+                    <td>${data.books.publisher_year}</td>
+                    <td>${data.books.location}</td>
+                    <td>${data.books.genre}</td>
+                    <td>${data.books.quantity}</td>
+                    <td>${data.books.author_name}</td>
                 </tr>`;
-            });
             resultHTML += "</table>";
             document.getElementById("searchResults").innerHTML = resultHTML;
+        }else {
+            // Nếu không tìm thấy sách nào
+           alert(data.message); // Hiển thị thông báo lỗi
         }
     })
     .catch(error => console.error("❌Lỗi:", error));
@@ -104,33 +91,29 @@ document.getElementById("searchBookForm").addEventListener("submit", function (e
 
 // 3. Script xử lý trước khi cập nhật sách
 
-document.getElementById("editBookForm").addEventListener("submit", function(e){
-    e.preventDefault();
-    let bookTitle = document.getElementById("updateBookTitle").value.trim(); // Lấy giá trị từ input và xóa khoảng trắng đầu và cuối
-    if (bookTitle === "" ) {
-        alert("Vui lòng nhập tên sách!");
-        return;
-    }
-    fetch("update-book.php", {
+document.getElementById("searchBookTitleForUpdatesForm").addEventListener("submit", function(e){
+    e.preventDefault(); // Ngăn chặn reload trang khi submit
+    let bookName = document.getElementById("searchBookTitleForUpdates").value.trim(); // Lấy giá trị từ input và xóa khoảng trắng đầu và cuối
+    fetch(".../../api/book-management/search-book.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ bookTitle : bookTitle })
-    })
+        body: JSON.stringify({ bookName : bookName })
+    })  
     .then(response => response.json())
     .then(data => {
         if (data.success) {
            // Đưa dữ liệu vào input của modal dùng cập nhật lại sách (Modal thứ 2)  
-            document.getElementById("bookTitleUpdate").value = data.book.title;
-            document.getElementById("bookAuthorUpdate").value = data.book.author_name;
-            document.getElementById("bookLangUpdate").value = data.book.lang;
-            document.getElementById("publishYearUpdate").value = data.book.publisher_year;
-            document.getElementById("bookLocationUpdate").value = data.book.location;
-            document.getElementById("bookGenreUpdate").value = data.book.genre;
-            document.getElementById("bookQuantityUpdate").value = data.book.quantity;
+            document.getElementById("bookTitleUpdate").value = data.books.title;
+            document.getElementById("bookAuthorUpdate").value = data.books.author_name;
+            document.getElementById("bookLangUpdate").value = data.books.lang;
+            document.getElementById("publishYearUpdate").value = data.books.publisher_year;
+            document.getElementById("bookLocationUpdate").value = data.books.location;
+            document.getElementById("bookGenreUpdate").value = data.books.genre;
+            document.getElementById("bookQuantityUpdate").value = data.books.quantity;
             $('#updateBookAfterSearch').modal('show'); // Modal cập nhật sách hiện lên
-          
+            
         } else {
          alert( data.message);
         }
@@ -141,19 +124,15 @@ document.getElementById("editBookForm").addEventListener("submit", function(e){
 // 4. Script xử lý cập nhật sách sau khi tìm kiếm
 document.getElementById("updateBookAfterSearchForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
-    let titleAfterUpdate = document.getElementById("bookTitleUpdate").value; // Lấy giá trị từ input và xóa khoảng trắng đầu và cuối
-    let authorNameAfterUpdate = document.getElementById("bookAuthorUpdate").value;
-    let bookLangAfterUpdate = document.getElementById("bookLangUpdate").value;
-    let publisherYearAfterUpdate = document.getElementById("publishYearUpdate").value;
-    let bookLocationAfterUpdate = document.getElementById("bookLocationUpdate").value;
-    let genreAfterUpdate = document.getElementById("bookGenreUpdate").value;
-    let quantityAfterUpdate = document.getElementById("bookQuantityUpdate").value;
-    if(titleAfterUpdate === "" || authorNameAfterUpdate === "") {
-        alert("Vui lòng nhập tên sách và tên tác giả!");
-        return;
-    }
+    let titleAfterUpdate = document.getElementById("bookTitleUpdate").value.trim(); // Lấy giá trị từ input và xóa khoảng trắng đầu và cuối
+    let authorNameAfterUpdate = document.getElementById("bookAuthorUpdate").value.trim();
+    let bookLangAfterUpdate = document.getElementById("bookLangUpdate").value.trim();
+    let publisherYearAfterUpdate = document.getElementById("publishYearUpdate").value.trim();
+    let bookLocationAfterUpdate = document.getElementById("bookLocationUpdate").value.trim();
+    let genreAfterUpdate = document.getElementById("bookGenreUpdate").value.trim();
+    let quantityAfterUpdate = document.getElementById("bookQuantityUpdate").value.trim();
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("after-update.php", {
+    fetch(".../../api/book-management/update-book.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -175,6 +154,7 @@ document.getElementById("updateBookAfterSearchForm").addEventListener("submit", 
             alert("Sách đã được cập nhật thành công!");
             // Reset form
             document.getElementById("updateBookAfterSearchForm").reset();
+            $('#updateBookAfterSearch').modal('hide');
         } else {
             alert("Có lỗi xảy ra: " + data.message);
         }
@@ -190,13 +170,9 @@ document.getElementById("updateBookAfterSearchForm").addEventListener("submit", 
     document.getElementById("bookNameDeleteForm").addEventListener("submit", function (e) {
         e.preventDefault(); // Ngăn chặn reload trang khi submit
         let bookName = document.getElementById("bookNameDelete").value.trim();
-        // Kiểm tra nếu tên sách trống
-        if (bookName === "") {
-            alert("Vui lòng nhập tên sách!");
-            return;
-        }
+       
         // Gửi yêu cầu AJAX với JSON tới file PHP xử lý xóa sách
-        fetch("delete-book.php", {
+        fetch(".../../api/book-management/delete-book.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

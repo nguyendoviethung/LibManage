@@ -1,8 +1,8 @@
 <?php
 // Kết nối đến database PostgreSQL
-$host = "localhost";
-$port = "5432";
-$dbname = "Library_Management"; 
+$host = "localhost"; // Địa chỉ máy chủ PostgreSQL
+$port = "5432";  // Cổng mặc định của PostgreSQL
+$dbname = "LibManage"; // Tên cơ sở dữ liệu
 $user = "postgres";
 $password ="2107";
 

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-include '../Auth/connect.php'; // Kết nối DB
-include './validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty, username, password
+include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../helpers/validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty,username,password
 if (!$conn) {
     echo json_encode(["error" => "Không thể kết nối cơ sở dữ liệu."]);
     exit;
@@ -38,6 +38,7 @@ $newPasswordHashed = password_hash($newPassword, PASSWORD_DEFAULT);
 $updateQuery = "UPDATE readeraccounts SET password = $1, status = $2 WHERE student_id = $3";
 $updateResult = pg_query_params($conn, $updateQuery, [$newPasswordHashed, $newStatus, $studentID]);
 
+// Kiểm tra xem có lỗi trong quá trình cập nhật không
 if ($updateResult) {
     echo json_encode(['success' => true, 'message' => 'Cập nhật mật khẩu và trạng thái thành công!']);
 } else {

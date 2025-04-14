@@ -1,5 +1,5 @@
 // BIểu đồ cho số lượng sách từng thể loại 
-fetch('Number-of-books-by-genre.php')
+fetch('.../../api/chart/number-of-books-by-genre.php') // Gửi yêu cầu đến API để lấy dữ liệu
   .then(response => response.json())
   .then(data => {
     const genres = data.map(item => item.genre);   // Lấy tên thể loại từ dữ liệu

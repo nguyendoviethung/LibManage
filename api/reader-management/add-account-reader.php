@@ -3,8 +3,8 @@
 header('Content-Type: application/json; charset=utf-8');
 
 // Kết nối CSDL
-include '../Auth/connect.php';
-include './validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty,username,password
+include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../helpers/validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty,username,password
 if (!$conn) {
     echo json_encode(["success" => false, "message" => "Không thể kết nối cơ sở dữ liệu."]);
     exit;

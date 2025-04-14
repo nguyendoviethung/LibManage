@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-include '../Auth/connect.php'; // Kết nối đến cơ sở dữ liệu
-include './validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty
+include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../helpers/validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty,username,password
 if (!$conn) {
     echo json_encode(["success" => false, "message" => "Không thể kết nối cơ sở dữ liệu."]);
     exit;

@@ -16,7 +16,7 @@ document.getElementById("addReaderForm").addEventListener("submit", function (e)
         return;
     }
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("add-reader.php", {
+    fetch(".../../api/reader-management/add-reader.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -70,7 +70,7 @@ document.getElementById("addAccountReaderForm").addEventListener("submit", funct
         return;
     }
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("add-account-reader.php", {
+    fetch(".../../api/reader-management/add-account-reader.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -112,7 +112,7 @@ document.getElementById("searchReaderForm").addEventListener("submit", function 
         return;
     }
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("search-reader.php", {
+    fetch(".../../api/reader-management/search-reader.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -170,16 +170,15 @@ document.getElementById("searchReaderForm").addEventListener("submit", function 
 })
 
 // 4.Cập nhật , chỉnh sửa thông tin người đọc
-// Hiện modal cập nhật thông tin người đọc
- // Biến toàn cục để lưu MSSV ban đầu trước khi cập nhật
+// 4.1.Hiện modal cập nhật thông tin người đọc
 
- let originalStudentID = ""; 
+let originalStudentID = "";  // Biến toàn cục để lưu MSSV ban đầu trước khi cập nhật
 document.getElementById("updateStudentForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
     let searchStudentID = document.getElementById("updateStudentID").value.trim(); // Lấy giá trị từ input và xóa khoảng trắng đầu và cuối
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("search-reader.php", {
+    fetch(".../../api/reader-management/search-reader.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -213,7 +212,7 @@ document.getElementById("updateStudentForm").addEventListener("submit", function
     }); 
 })
 
-// Cập nhật thông tin người đọc sau khi modal hiện ra
+// 4.2.Cập nhật thông tin người đọc sau khi modal hiện ra
 document.getElementById("updateReaderAfterForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
@@ -225,7 +224,7 @@ document.getElementById("updateReaderAfterForm").addEventListener("submit", func
     let updateStatus = document.getElementById("updateReaderAfterStatus").value.trim();
     let keepAccountStatus = document.getElementById("keepAccountStatus").value;
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("update-reader.php", {
+    fetch(".../../api/reader-management/update-reader.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -263,16 +262,16 @@ document.getElementById("updateReaderAfterForm").addEventListener("submit", func
 })
 
 // 5.Chỉnh sửa tài khoản người đọc
-//Tìm kiếm và hiện mật khẩu cũ và status cũ 
+// 5.1.Tìm kiếm và hiện status cũ , form để chỉnh sửa password 
 
-let searchByStudentID = ""; // Biến toàn cục để lưu StudentID tìm kiếm   
+let searchByStudentID = ""; // Biến toàn cục để lưu StudentID tìm kiếm cho mục đích cập nhật tài khoản
 document.getElementById("searchForReaderAccountForm").addEventListener("submit", function (e) {
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
     let searchStudentID = document.getElementById("searchForReaderAccountID").value.trim(); 
     searchByStudentID = searchStudentID; // Cập nhật biến searchByStudentID với StudentID mới nhất
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("search-reader.php", {
+    fetch(".../../api/reader-management/search-reader.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -299,7 +298,7 @@ document.getElementById("searchForReaderAccountForm").addEventListener("submit",
 
 })})
 
-// Cập nhật tài khoản người đọc sau khi modal hiện ra
+// 5.2.Cập nhật tài khoản sinh viên sau khi modal hiện ra
 document.getElementById("changeAccountForm").addEventListener("submit", function (e) { 
     e.preventDefault(); // Ngăn chặn reload trang khi submit
     // Lấy dữ liệu từ form
@@ -311,7 +310,7 @@ document.getElementById("changeAccountForm").addEventListener("submit", function
         return;
     }
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch("change-account.php", {
+    fetch(".../../api/reader-management/update-account.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -319,7 +318,7 @@ document.getElementById("changeAccountForm").addEventListener("submit", function
         body: JSON.stringify({ 
             changeAccountPasswordNew1: changeAccountPasswordNew1,
             changeAccountStatus: changeAccountStatus,
-            searchByStudentID  : searchByStudentID, // Sử dụng biến toàn cục để lấy StudentID cuối cùng đã được thêm vào
+            searchByStudentID  : searchByStudentID, 
         })
     })
     .then(response => response.json()) 

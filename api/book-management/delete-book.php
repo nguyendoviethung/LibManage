@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
-include '../Auth/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
 // Lấy dữ liệu JSON từ body của request
 $data = json_decode(file_get_contents("php://input"), true);

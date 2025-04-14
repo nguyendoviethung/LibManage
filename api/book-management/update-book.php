@@ -1,13 +1,10 @@
 <?php
 header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
-include '../Auth/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
 // Lấy dữ liệu JSON từ body của request
 $data = json_decode(file_get_contents("php://input"), true);
 // Kiểm tra kết nối đến cơ sở dữ liệu
-if (!$conn) {
-    die("Kết nối thất bại: " . pg_last_error());
-}
 // Lấy các giá trị từ dữ liệu JSON
 $title = $data['titleAfterUpdate'] ?? '';
 $author_name = $data['authorNameAfterUpdate'] ?? '';

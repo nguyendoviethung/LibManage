@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
-include '../Auth/connect.php'; // Kết nối đến cơ sở dữ liệu
+include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
 // Kiểm tra kết nối trước khi dùng
 if (!$conn) {
@@ -36,10 +36,19 @@ while ($row = pg_fetch_assoc($result)) {
 }
 
 // Nếu không có kết quả
+// Nếu có kết quả trong mảng $books
 if (count($books) > 0) {
-    echo json_encode($books);
+    // Giả sử chỉ lấy phần tử đầu tiên (nếu bạn chỉ cần lấy 1 cuốn sách)
+    echo json_encode([
+        "success" => true,
+        "books"   => $books[0]
+    ]);
 } else {
-    echo json_encode(["message" => "Không tìm thấy sách nào!"]);
+    // Không tìm thấy sách nào
+    echo json_encode([
+        "success" => false,
+        "message" => "Không tìm thấy sách nào!"
+    ]);
 }
 
 pg_close($conn);
