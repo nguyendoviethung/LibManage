@@ -8,8 +8,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="./assets/css/interface.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body class="bg-body-secondary">
   <!--Navbar -->
@@ -43,7 +45,7 @@
               <input class="form-control" type="search" placeholder="Search" />
             </form>
             <!-- Nút Submit -->
-            <button class="btn btn-outline-danger   d-flex align-items-center justify-content-center" type="submit">
+            <button class="btn btn-outline-danger  d-flex align-items-center justify-content-center" type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" width = 20 px height = 20 px  viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
             </button>
           </div>
@@ -97,10 +99,8 @@
       <li class="nav-item mb-1">
         <div class="custom-hover">
           <a class="nav-link d-flex align-items-center" href="#">
-            <svg xmlns="http://www.w3.org/2000/svg"width = 24px height = 24px viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
-              <path fill="#6f7e9b" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-            </svg>
-            <span class="ms-2">Settings</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width = 21px height = 21px viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5l0-377.4c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8L0 454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5l0-370.3c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 35.6c-3.3 2.6-5 6.8-5 11L304 456c0 11.4 11.7 19.3 22.4 15.5z"/></svg>
+            <span class="ms-2">Borrow And Return Books</span>
           </a>
         </div>
       </li>
@@ -108,13 +108,109 @@
   </div>
   
   <!-- Main Content -->
-    <div class="overflow-scroll content">
-  
+  <div class="overflow-scroll content">
+  <div class="container mt-5">
+  <div class="row justify-content-center mb-3">
+    <!-- Quét mã QRcode mượn sách  -->
+    <div class="col-md-3 ">
+      <div class="feature-card text-center" onclick="loadFeature('borrowBooks')" data-bs-toggle="modal" data-bs-target="#borrowBooksModal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="rgb(84, 238, 102)" d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM504 312l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+        <div class="mt-2 fw-bold" style="color:#498FD0">Mượn sách</div>
+      </div>
     </div>
-        </div>
+
+    <!-- Quét mã QRcode trả sách -->
+    <div class="col-md-3">
+      <div class="feature-card text-center" onclick="loadFeature('searchReader')" data-bs-toggle="modal" data-bs-target="#searchReaderModal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#ffde66" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        <div class="mt-2 fw-bold" style="color:#498FD0">Trả sách</div>
+      </div>
+    </div>
+
+   
+<!-- Modal mượn sách  -->
+<div class="modal fade" id="borrowBooksModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title" id="qrModalLabel">Quét mã QR</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+          <form id="qrForm">
+          <div class="d-flex justify-content-center">
+            <div id="reader" style="width: 69%; height: 301px;"></div>
+          </div>  
+              <div style="margin-top: 150px">
+                <!-- Mã sinh viên  -->
+              <label for="inputReaderID" class="mt-4"> Mã sinh viên:</label>
+              <input type="text" id="inputStudentID" class="form-control" readonly>
+
+                <!-- Mã sách -->
+              <label for="inputBookID" class="mt-4"> Mã sách:</label>
+              <input type="text" id="inputBookID" class="form-control" readonly>
+
+                <!-- Submit -->
+              <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-  
-<script src="./assets/js/dashboard-charts.js"></script>
+<!-- Script của Qr -->
+
+<script>
+  let scanner; // Khai báo biến scanner để sử dụng trong các hàm khác
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("borrowBooksModal");
+// Khi modal được hiển thị, khởi tạo Html5QrcodeScanner
+      modal.addEventListener("shown.bs.modal", () => {
+      scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 200 });
+
+      scanner.render(qrText => {
+        // Khi quét mã QR thành công, hiển thị nội dung mã QR trong console
+        console.log("QR Found:", qrText);
+        let qrStuentID =qrText[0]; // Lấy mã sinh viên từ mã QR
+
+      });
+    });
+// Khi modal bị ẩn, dừng quét và xóa nội dung camera( người dùng nhấn nút đóng modal)
+    modal.addEventListener("hidden.bs.modal", () => {
+      if (scanner) {
+        scanner.clear();
+        document.getElementById("reader").innerHTML = ""; // Xóa camera khi đóng modal
+      }
+    });
+  });
+</script>
+
+<!-- Xử lý active cho sidebar -->
+<script>
+  document.querySelectorAll('.custom-hover').forEach(item => {
+    item.addEventListener('click', function () {
+      document.querySelectorAll('.custom-hover').forEach(el => el.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+
+
+  <!-- Script xử lý active state cho sidebar -->
+  <script>
+    document.querySelectorAll('.custom-hover').forEach(item => {
+      item.addEventListener('click', function() {
+        // Xóa active ở tất cả các sidebar item
+        document.querySelectorAll('.custom-hover').forEach(el => {
+          el.classList.remove('active');
+        });
+        // Thêm active vào item được nhấp
+        this.classList.add('active');
+      });
+    });
+  </script>
+
 </body>
 </html>

@@ -7,8 +7,8 @@ function isValidStudentID($studentID) {
     $sequence = substr($studentID, 4, 4);
 
     // Kiểm tra năm hợp lệ (ví dụ từ 2010 đến năm hiện tại + 1)
-    $currentYear = date("Y") + 1;
-    if ((int)$year < 2010 || (int)$year > $currentYear) return false;
+    $currentYear = date("Y") + 1; // Lấy năm hiện tại
+    if ((int)$year < 2019 || (int)$year > $currentYear) return false;
 
     // Số thứ tự phải >= 0001 và <= 9999
     if ((int)$sequence < 1 || (int)$sequence > 9999) return false;
@@ -141,13 +141,6 @@ function isValidUserName($username) {
     // Dấu "+" là có Ít nhất 1 ký tự khớp(nhưng trên kiểm tra đã có rồi)
     // Nếu qua tất cả kiểm tra → hợp lệ
     return true;
-}
-
-// 7.Hàm kiểm tra định dạng trạng thái
-function isValidStatus($status) {
-    // Chỉ cho phép các giá trị "active", "inactive" và "banned"
-    $validStatuses = ['Active', 'Inactive', 'Banned'];
-    return in_array($status, $validStatuses);
 }
 ?>
 

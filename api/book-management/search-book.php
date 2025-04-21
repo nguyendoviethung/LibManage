@@ -22,7 +22,7 @@ if (!$result) {
     exit;
 }
 
-$books = [];
+$books = []; // Mảng để lưu trữ kết quả
 while ($row = pg_fetch_assoc($result)) {
     $books[] = [
         'title' => $row['title'],
@@ -50,6 +50,6 @@ if (count($books) > 0) {
         "message" => "Không tìm thấy sách nào!"
     ]);
 }
-
+// Đóng kết nối
 pg_close($conn);
 ?>

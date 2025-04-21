@@ -1,0 +1,13 @@
+.chart1 {
+    width: 95%;       /* Chiếm 80% chiều ngang của thẻ cha */
+    height: auto;     /* Giữ tỷ lệ gốc (hoặc bạn có thể đặt cụ thể) */
+    display: block;   /* Đảm bảo không bị inline làm sai layout */
+    margin: 0 auto;   /* Căn giữa (nếu muốn) */
+  }
+  
+  .chart2 {
+    display: block;
+    margin: 0 auto;
+    width: 80%; /* hoặc 400px tùy theo mục tiêu */
+  }
+  

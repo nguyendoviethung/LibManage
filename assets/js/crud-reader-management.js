@@ -222,7 +222,7 @@ document.getElementById("updateReaderAfterForm").addEventListener("submit", func
     let updatePhoneNumber = document.getElementById("updateReaderAfterPhoneNumber").value.trim();
     let updateFaculty = document.getElementById("updateReaderAfterFaculty").value.trim();
     let updateStatus = document.getElementById("updateReaderAfterStatus").value.trim();
-    let keepAccountStatus = document.getElementById("keepAccountStatus").value;
+    let keepAccountStatus = document.getElementById("keepAccountStatus").checked; // Lấy giá trị của checkbox "Giữ nguyên trạng thái tài khoản" (1 hoặc 0)
     // Gửi request AJAX với JSON tới file PHP xử lý
     fetch(".../../api/reader-management/update-reader.php", {
         method: "POST",
@@ -271,7 +271,7 @@ document.getElementById("searchForReaderAccountForm").addEventListener("submit",
     let searchStudentID = document.getElementById("searchForReaderAccountID").value.trim(); 
     searchByStudentID = searchStudentID; // Cập nhật biến searchByStudentID với StudentID mới nhất
     // Gửi request AJAX với JSON tới file PHP xử lý
-    fetch(".../../api/reader-management/search-reader.php", {
+    fetch(".../../api/reader-management/search-account.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

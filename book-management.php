@@ -95,11 +95,9 @@
       <!-- Settings -->
       <li class="nav-item mb-1">
         <div class="custom-hover">
-          <a class="nav-link d-flex align-items-center" href="./settings.php">
-            <svg xmlns="http://www.w3.org/2000/svg"width = 24px height = 24px viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
-              <path fill="#6f7e9b" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-            </svg>
-            <span class="ms-2">Settings</span>
+          <a class="nav-link d-flex align-items-center" href="./borrow-and-return-books.php">
+          <svg xmlns="http://www.w3.org/2000/svg" width = 21px height = 21px viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5l0-377.4c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8L0 454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5l0-370.3c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 35.6c-3.3 2.6-5 6.8-5 11L304 456c0 11.4 11.7 19.3 22.4 15.5z"/></svg>
+            <span class="ms-2">Borrow And Return Books</span>
           </a>
         </div>
       </li>
@@ -108,41 +106,48 @@
   
   <!-- Main Content -->
   <div class="content">
-       <h2 class="text-center fw-bold mb-4" style="color: rgb(73, 143, 208)" >Book Management</h2>
+  <h2 class="text-center fw-bold mb-4" style="color: rgb(73, 143, 208)">Book Management</h2>
+  <div class="container mt-5">
+    <div class="row justify-content-center mb-3">
+
       <!-- Thêm sách mới -->
-      <div class="grid-container">
-          <div class="feature-card" onclick="loadFeature('addBook')">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#addBookModal" class="text-decoration">
-              <svg xmlns="http://www.w3.org/2000/svg" width = 30 px height = 30px viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#47e68c" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
-              <div class="mt-2 fw-bold">Add new book</div>
-            </a>
+      <div class="col-md-3">
+        <div class="feature-card text-decoration" onclick="loadFeature('addBook')" data-bs-toggle="modal" data-bs-target="#addBookModal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="31px" height="31px" viewBox="0 0 448 512">
+            <path fill="#47e68c" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+          </svg>
+          <div class="mt-2 fw-bold">Thêm sách</div>
+        </div>
       </div>
-         
+
       <!-- Tìm kiếm sách -->
-      <div class="feature-card" onclick="loadFeature('searchBook')">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#searchBookModal" class="text-decoration">
-          <svg xmlns="http://www.w3.org/2000/svg"  width = 30 px height = 30px  viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#f5d047" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
-            <div class="mt-2 fw-bold">Search for books</div>
-        </a>
+      <div class="col-md-3">
+        <div class="feature-card text-decoration" onclick="loadFeature('searchBook')" data-bs-toggle="modal" data-bs-target="#searchBookModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#ffde66" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+          <div class="mt-2 fw-bold">Tìm kiếm sách</div>
+        </div>
+      </div>
+
+      <!-- Cập nhật sách -->
+      <div class="col-md-3">
+        <div class="feature-card text-decoration" onclick="loadFeature('editBook')" data-bs-toggle="modal" data-bs-target="#editBookModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="31px" height="31px" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#6ebcf7" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
+          <div class="mt-2 fw-bold">Cập nhật sách</div>
+        </div>
+      </div>
+
+      <!-- Xóa sách -->
+      <div class="col-md-3">
+        <div class="feature-card text-decoration" onclick="loadFeature('deleteBook')" data-bs-toggle="modal" data-bs-target="#bookNameDeleteModal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="31px" height="31px" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#f95353" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+          <div class="mt-2 fw-bold">Xóa sách</div>
+        </div>
+      </div>
+
     </div>
-
-          <!-- Cập nhật sách -->
-          <div class="feature-card" onclick="loadFeature('editBook')">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#editBookModal" class="text-decoration">
-              <svg xmlns="http://www.w3.org/2000/svg" width = 30 px height = 30 px viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#49a4e9" d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"/></svg>
-                <div class="mt-2 fw-bold"> Book Update</div>
-          </a>
-          </div>
-
-          <!-- Xóa sách -->
-          <div class="feature-card" onclick="loadFeature('deleteBook')">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#bookNameDeleteModal" class="text-decoration">
-            <svg xmlns="http://www.w3.org/2000/svg" width = 36 px height = 37 px viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#ec5555" d="M290.7 57.4L57.4 290.7c-25 25-25 65.5 0 90.5l80 80c12 12 28.3 18.7 45.3 18.7L288 480l9.4 0L512 480c17.7 0 32-14.3 32-32s-14.3-32-32-32l-124.1 0L518.6 285.3c25-25 25-65.5 0-90.5L381.3 57.4c-25-25-65.5-25-90.5 0zM297.4 416l-9.4 0-105.4 0-80-80L227.3 211.3 364.7 348.7 297.4 416z"/></svg>
-                  <div class="mt-2 fw-bold">Delete Book</div>
-            </a>
-            </div>
   </div>
-  </div>
+</div>
+
   
  <!-- Modal Thêm sách -->
  <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
@@ -193,28 +198,33 @@
 <!-- Modal tìm kiếm sách -->
 <div class="modal fade" id="searchBookModal" tabindex="-1" aria-labelledby="searchBookModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="searchBookModalLabel">Tìm kiếm sách</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <!-- Form Search book -->
-              <form id="searchBookForm"> 
-                  <div class="mb-3">
-                      <label for="searchBook" class="form-label">Nhập tên sách</label>
-                      <input type="text" class="form-control" id="searchBook" name="bookName" placeholder="Nhập tên sách" required>
-                  </div>
-                  <button type="submit" class="btn btn-warning">Tìm kiếm</button>
-              </form>
-          </div>
-          <div class="modal-body">
-              <h6 style="display: none;" id="search_results">Search Results:</h6>
-              <div id="searchResults"></div>
-          </div>
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="searchBookModalLabel">Tìm kiếm sách</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
+      <div class="modal-body">
+        <!-- Form Search book -->
+        <form id="searchBookForm"> 
+          <div class="mb-3">
+            <label for="searchBook" class="form-label">Nhập tên sách</label>
+            <input type="text" class="form-control" id="searchBook" name="bookName" placeholder="Nhập tên sách" required>
+          </div>
+          <button type="submit" class="btn btn-warning">Tìm kiếm</button>
+        </form>
+
+        <!-- Kết quả tìm kiếm -->
+        <div>
+          <h6  id="search_results">Search Results:</h6>
+          <div id="searchResults"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
 
 <!-- Modal Chỉnh sửa sách -->
  <!-- Tìm kiếm để chỉnh sửa sách  -->
@@ -307,6 +317,7 @@
   </div>
 </div>
 <!-- File script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="./assets/js/crud-book-management.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

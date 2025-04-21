@@ -24,8 +24,8 @@ $checkUserResult = pg_query_params($conn, $checkUserQuery, [$username]);
 
 if (pg_num_rows($checkUserResult) > 0) {
     echo json_encode(['success' => false, 'message' => 'Username đã tồn tại.']);
-    pg_close($conn);
-    exit;
+        pg_close($conn);
+        exit;
 }
 //  // Kiểm tra định dạng username (tối thiểu 8 ký tự)
 if (!isValidUserName($username)) {

@@ -172,19 +172,19 @@
 
 
 /* Vẽ biểu đồ */
-.charts-container {
+/* .charts-container {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Căn giữa các biểu đồ */
-  gap: 30px; /* Khoảng cách giữa các biểu đồ */
-}
+  justify-content: center; /* Căn giữa các biểu đồ 
+  gap: 30px;  Khoảng cách giữa các biểu đồ 
+/*  }
 
 .chart {
-  width: 45%; /* Điều chỉnh sao cho 2 cái + gap không vượt quá 100% */
+  width: 45%; /* Điều chỉnh sao cho 2 cái + gap không vượt quá 100% 
   height: 300px;
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
-}
+*/
 

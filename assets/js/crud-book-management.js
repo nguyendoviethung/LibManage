@@ -63,30 +63,47 @@ document.getElementById("searchBookForm").addEventListener("submit", function (e
     .then(data => {
         // Hiển thị kết quả vào phần tử #searchResults
         if (data.success) {
-            //Hiện phần tử Search Results
-            document.getElementById("search_results").style.display = "block"; 
-            console.log(data);
-            let resultHTML = "<table><tr><th>Title</th><th>Language</th><th>Year</th><th>Location</th><th>Genre</th><th>Quantity</th><th>Author Name</th></tr>";
-                resultHTML += `<tr>
-                    <td>${data.books.title}</td>
-                    <td>${data.books.lang}</td>
-                    <td>${data.books.publisher_year}</td>
-                    <td>${data.books.location}</td>
-                    <td>${data.books.genre}</td>
-                    <td>${data.books.quantity}</td>
-                    <td>${data.books.author_name}</td>
-                </tr>`;
-            resultHTML += "</table>";
-            document.getElementById("searchResults").innerHTML = resultHTML;
-        }else {
-            // Nếu không tìm thấy sách nào
-           alert(data.message); // Hiển thị thông báo lỗi
+            console.log(data); // Kiểm tra dữ liệu trả về từ server
+            let bookresults = data.books; // Giả sử bạn đang trả về "data" chứa thông tin sách
+            const html = `
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Tên sách</th>
+                                <th scope="col">Ngôn ngữ</th>
+                                <th scope="col">Năm xuất bản</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Thể loại</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Tên tác giả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${bookresults.title}</td>
+                                <td>${bookresults.lang}</td>
+                                <td>${bookresults.publisher_year}</td>
+                                <td>${bookresults.location}</td>
+                                <td>${bookresults.genre}</td>
+                                <td>${bookresults.quantity}</td>
+                                <td>${bookresults.author_name}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        
+            document.getElementById("searchResults").innerHTML = html; // đúng biến!
+            document.getElementById("search_results").style.display = "block"; // hiện dòng "Search Results"
+        } else {
+            alert(data.message); 
         }
+        
     })
     .catch(error => console.error("❌Lỗi:", error));
     // Hiển thị thông báo lỗi nếu có phía server(Lỗi truy vấn SQL, lỗi kết nối DB,...)
-    document.getElementById("search_results").style.display = "block";
-    document.getElementById("searchResults").innerHTML = "Lỗi phía server";
+
 });
 
 // 3. Script xử lý trước khi cập nhật sách

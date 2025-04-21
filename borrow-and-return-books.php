@@ -61,7 +61,7 @@
       <!-- Home -->
       <li class="nav-item mb-2 mt-2">
         <div class="custom-hover">
-          <a class="nav-link d-flex align-items-center" href="#"> 
+          <a class="nav-link d-flex align-items-center" href="./index.php"> 
             <svg xmlns="http://www.w3.org/2000/svg" width = 23px height = 23px viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
               <path fill="#597b91" d="M575.8 255.5c0 18-15 32.1-32 32.1l-32 0 .7 160.2c0 2.7-.2 5.4-.5 8.1l0 16.2c0 22.1-17.9 40-40 40l-16 0c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1L416 512l-24 0c-22.1 0-40-17.9-40-40l0-24 0-64c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32 14.3-32 32l0 64 0 24c0 22.1-17.9 40-40 40l-24 0-31.9 0c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2l-16 0c-22.1 0-40-17.9-40-40l0-112c0-.9 0-1.9 .1-2.8l0-69.7-32 0c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/>
             </svg>
@@ -97,8 +97,8 @@
       <!-- Settings -->
       <li class="nav-item mb-1">
         <div class="custom-hover">
-          <a class="nav-link d-flex align-items-center" href="./borrow-and-return-books.php">
-          <svg xmlns="http://www.w3.org/2000/svg" width = 21px height = 21px viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5l0-377.4c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8L0 454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5l0-370.3c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 35.6c-3.3 2.6-5 6.8-5 11L304 456c0 11.4 11.7 19.3 22.4 15.5z"/></svg>
+          <a class="nav-link d-flex align-items-center" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width = 21px height = 21px viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#5a7fbf" d="M249.6 471.5c10.8 3.8 22.4-4.1 22.4-15.5l0-377.4c0-4.2-1.6-8.4-5-11C247.4 52 202.4 32 144 32C93.5 32 46.3 45.3 18.1 56.1C6.8 60.5 0 71.7 0 83.8L0 454.1c0 11.9 12.8 20.2 24.1 16.5C55.6 460.1 105.5 448 144 448c33.9 0 79 14 105.6 23.5zm76.8 0C353 462 398.1 448 432 448c38.5 0 88.4 12.1 119.9 22.6c11.3 3.8 24.1-4.6 24.1-16.5l0-370.3c0-12.1-6.8-23.3-18.1-27.6C529.7 45.3 482.5 32 432 32c-58.4 0-103.4 20-123 35.6c-3.3 2.6-5 6.8-5 11L304 456c0 11.4 11.7 19.3 22.4 15.5z"/></svg>
             <span class="ms-2">Borrow And Return Books</span>
           </a>
         </div>
@@ -108,9 +108,78 @@
   
   <!-- Main Content -->
   <div class="overflow-scroll content">
-      <canvas id="chart1" class="chart1"></canvas>
-      <canvas id="chart2" class="chart2"></canvas>
+  <div class="container mt-5">
+  <div class="row justify-content-center mb-3">
+    <!-- Quét mã QRcode mượn sách  -->
+    <div class="col-md-3 ">
+      <div class="feature-card text-center" onclick="loadFeature('borrowBooks')" data-bs-toggle="modal" data-bs-target="#borrowBooksModal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="rgb(84, 238, 102)" d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM504 312l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+        <div class="mt-2 fw-bold" style="color:#498FD0">Mượn sách</div>
+      </div>
+    </div>
+
+    <!-- Quét mã QRcode trả sách -->
+    <div class="col-md-3">
+      <div class="feature-card text-center" onclick="loadFeature('searchReader')" data-bs-toggle="modal" data-bs-target="#searchReaderModal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="31" height="31" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#ffde66" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+        <div class="mt-2 fw-bold" style="color:#498FD0">Trả sách</div>
+      </div>
+    </div>
+
+   
+<!-- Modal mượn sách  -->
+
+<div class="modal fade" id="borrowBooksModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content p-3 shadow rounded-3">
+      <div class="modal-header border-bottom">
+        <h5 class="modal-title" id="qrModalLabel"> Quét mã QR</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="qrForm">
+          <!-- Camera -->
+          <div class="d-flex justify-content-center mb-3">
+            <div id="reader" style="width: 100%; max-width: 480px; height: 350px;"></div>
+          </div>
+
+          <!-- Hoặc chọn ảnh để quét -->
+          <!-- <div class="text-center mb-4" style="margin-top: 50px;">
+            <label for="qrImageInput" class="form-label">Chọn ảnh QR</label>
+            <input type="file" id="qrImageInput" accept="image/*" class="form-control" style="max-width: 400px; margin: 0 auto;">
+          </div> -->
+
+          <!-- Kết quả -->
+          <div class="mb-3">
+            <label for="inputStudentID" class="form-label">Mã sinh viên:</label>
+            <input type="text" id="inputStudentID" class="form-control" readonly>
+          </div>
+
+          <div class="mb-3">
+            <label for="inputBookID" class="form-label">Mã sách:</label>
+            <input type="text" id="inputBookID" class="form-control" readonly>
+          </div>
+
+          <!-- Gửi -->
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Xác nhận mượn</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- Xử lý active cho sidebar -->
+<script>
+  document.querySelectorAll('.custom-hover').forEach(item => {
+    item.addEventListener('click', function () {
+      document.querySelectorAll('.custom-hover').forEach(el => el.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
 
   <!-- Script xử lý active state cho sidebar -->
   <script>
@@ -125,6 +194,7 @@
       });
     });
   </script>
-<script src="./assets/js/dashboard-charts.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script src="./assets/js/borrow-and-return-books.js"></script>
 </body>
 </html>

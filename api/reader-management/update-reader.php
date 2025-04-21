@@ -9,14 +9,14 @@ if (!$conn) {
 
 $data = json_decode(file_get_contents('php://input'), true);
 // Lấy dữ liệu từ client
-$newStudentID = $data['studentID'] ?? '';
-$newName = $data['name'] ?? '';
-$newEmail = $data['email'] ?? '';
-$newPhone = $data['phoneNumber'] ?? '';
-$newFaculty = $data['faculty'] ?? '';
-$newStatus = $data['status'] ?? '';
-$valueCheckBox = $data['keepAccountStatus'] ?? ''; 
-$originalStudentID = $data['originalStudentID'] ?? ''; 
+$newStudentID = $data['studentID'];
+$newName = $data['name'] ;
+$newEmail = $data['email'];
+$newPhone = $data['phoneNumber'];
+$newFaculty = $data['faculty'];
+$newStatus = $data['status'];
+$valueCheckBox = $data['keepAccountStatus']; 
+$originalStudentID = $data['originalStudentID']; 
 // I.Kiểm tra sự tồn tại của MSSV, Email, SĐT trong cơ sở dữ liệu
 
 // 1.  Truy vấn này sẽ kiểm tra xem mã số sinh viên mới đã tồn tại trong cơ sở dữ liệu chưa và thuộc về sinh viên đang học(active)
@@ -67,13 +67,6 @@ if (!isValidFaculty($newFaculty)) {
     exit;
 }
 
-// 5.Kiểm tra định dạng trạng thái
-if (!isValidStatus($newStatus)) {
-    echo json_encode(['success' => false, 'message' => '❗Trạng thái không hợp lệ.']);
-    pg_close($conn);
-    exit;   
-}
-
 //  III. Nếu mọi thứ OK → Cập nhật
 
 // 1.Cập nhật thông tin sinh viên trong cơ sở dữ liệu
@@ -94,11 +87,11 @@ if (!isValidStatus($newStatus)) {
     } else if ($newStatus == 'Banned'){
         $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
         $updateStatusResult = pg_query_params($conn, $queryStatus, ['Banned', $originalStudentID]);
-    } if($newStatus == 'Active') {
+    }else if ($newStatus == 'Active') {
         $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
         $updateStatusResult = pg_query_params($conn, $queryStatus, ['Active', $originalStudentID]);
     }
-        }
+ }
 
 // IV. Kiểm tra kết quả cập nhật
 
