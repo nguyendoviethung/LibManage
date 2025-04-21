@@ -102,14 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 2. Gửi dữ liệu quét được lên server để xử lý
 
-document.getElementById("qrForm").addEventListener("submit", function () {
+document.getElementById("qrForm").addEventListener("submit", function (e) {
   e.preventDefault(); // Ngăn chặn reload trang khi submit
 
   // Lấy giá trị từ các input
   let readerID = document.getElementById("inputStudentID").value;
   let bookID = document.getElementById("inputBookID").value;
 
-  fetch(".../../api/book-lending-and-returning-management/borrow-book.php", {
+  fetch(".../../api/book-lending-and-returning-management/book-lending-process.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ 
@@ -120,10 +120,19 @@ document.getElementById("qrForm").addEventListener("submit", function () {
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        alert("Mượn sách thành công!");
-        document.getElementById("borrowBooksModal").modal("hide"); // Đóng modal sau khi mượn sách thành công
+        alert(data.message); // Thông báo thành công
+        // Reset lại các input sau khi gửi yêu cầu
+        document.getElementById("inputStudentID").value = "";
+        document.getElementById("inputBookID").value = "";
+        currentStep = "student";
+
       } else {
         alert(data.message);
       }
+    })
+    .catch(error => {
+      console.error("Có lỗi khi gửi yêu cầu:", error);
+      alert("Không thể thực hiện yêu cầu. Vui lòng thử lại.");
     });
+  // Reset lại các input sau khi gửi yêu cầu
   })
