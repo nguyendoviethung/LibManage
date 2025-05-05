@@ -45,7 +45,7 @@ if ($resultBorrowRecords == true && $resultBooks == true ) {
 } else {
     echo json_encode([
         'success' => false,
-        'message' => 'Có lỗi khi mượn sách (có thể sách đã hết số lượng hoặc lỗi hệ thống).'
+        'message' => 'Có lỗi khi mượn sách.'
     ]);
 }
 // Đóng kết nối CSDL

@@ -142,13 +142,7 @@
           <!-- Camera -->
           <div class="d-flex justify-content-center mb-3">
             <div id="reader" style="width: 100%; max-width: 480px; height: 360px;"></div>
-          </div>
-
-          <!-- Hoặc chọn ảnh để quét -->
-          <!-- <div class="text-center mb-4" style="margin-top: 50px;">
-            <label for="qrImageInput" class="form-label">Chọn ảnh QR</label>
-            <input type="file" id="qrImageInput" accept="image/*" class="form-control" style="max-width: 400px; margin: 0 auto;">
-          </div> -->
+          </div>    
 
           <!-- Kết quả -->
           <div class="mb-3">
@@ -157,9 +151,10 @@
           </div>
 
           <div class="mb-3">
-            <label for="inputBookID" class="form-label">Mã sách:</label>
+            <label for="inputStudentID" class="form-label">Mã sinh viên:</label>
             <input type="text" id="inputBookID" class="form-control" readonly>
           </div>
+
 
           <!-- Gửi -->
           <div class="text-center">
@@ -194,7 +189,6 @@
       });
     });
   </script>
-<script src="https://unpkg.com/html5-qrcode"></script>
-<script src="./assets/js/borrow-and-return-books.js"></script>
+<script src="./assets/js/test.js"></script>
 </body>
 </html>
