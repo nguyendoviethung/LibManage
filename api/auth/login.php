@@ -1,42 +1,55 @@
 <?php
-session_start();// Bắt đầu session
-header('Content-Type: application/json');
+session_start();
 
-// Nhận dữ liệu từ frontend
+// CORS headers để frontend React có thể gửi cookie sang
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: http://localhost:3000'); // chính xác domain
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Methods: POST');
+
+// Lấy dữ liệu từ React gửi lên
 $data = json_decode(file_get_contents("php://input"), true);
+if (!isset($data['loginUsername']) || !isset($data['loginPassword'])) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Thiếu thông tin đăng nhập!"
+    ]);
+    exit;
+}
+
 $loginUsername = $data['loginUsername'];
 $loginPassword = $data['loginPassword'];
 
 // Kết nối DB
 include '../../config/connect.php';
-// Truy vấn kiểm tra tài khoản theo username
+
 $query = "SELECT * FROM readeraccounts WHERE username = $1";
 $result = pg_query_params($conn, $query, [$loginUsername]);
+
 if ($row = pg_fetch_assoc($result)) {
-    $hashedPassword = $row['password']; // Mật khẩu trong DB (đã hash)
-    
-    // So sánh mật khẩu người dùng nhập với mật khẩu đã mã hóa
-    if (password_verify($loginPassword , $hashedPassword)) {
-        // Đăng nhập thành công → lưu session
+    if (password_verify($loginPassword, $row['password'])) {
+        // Lưu thông tin người dùng vào session
         $_SESSION['username'] = $row['username'];
         $_SESSION['role'] = $row['role'];
         $_SESSION['student_id'] = $row['student_id'];
 
-        // Trả về redirect URL tùy theo role
+        // Cập nhật lần đăng nhập
+        $updateQuery = "UPDATE readeraccounts SET last_login = NOW() WHERE username = $1";
+        pg_query_params($conn, $updateQuery, [$loginUsername]);
+
         echo json_encode([
             "success" => true,
-            "redirect_url" => ".../../index.php"
-              // "redirect_url" => $row['role'] === 'admin' 
-            //     ? "../../admin/dashboard.php" 
-            //     : "../../student/dashboard.php"
+            "message" => "Đăng nhập thành công!",
+            "role" => $row['role'] // ✅ Gửi vai trò về cho frontend để điều hướng
+            // "student_id" => $row['student_id']
         ]);
-        $query = "UPDATE readeraccounts SET last_login = NOW() WHERE username = $1";
-        pg_query_params($conn, $query, [$loginUsername]);
         pg_close($conn);
         exit;
     }
-}   
-// Nếu không đúng hoặc không tồn tại
+}
+
+// Đăng nhập sai
 echo json_encode([
     "success" => false,
     "message" => "Tài khoản hoặc mật khẩu không đúng!"
