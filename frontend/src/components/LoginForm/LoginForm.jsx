@@ -1,13 +1,17 @@
 import React from 'react';
-import InputField from './InputField';
+import Button from '../Button/Button';
+import InputField from '../InputField/InputField';  
+import "./LoginForm.scss"
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function LoginForm({ username, setUsername, password, setPassword, onSubmit }) {
   return (
+ <div>
     <form className="login-form" onSubmit={onSubmit}>
       <h3 className="text-center mb-4">Login</h3>
 
       <InputField
-        type="text"
+        type="text" 
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Enter your username"
@@ -22,12 +26,13 @@ function LoginForm({ username, setUsername, password, setPassword, onSubmit }) {
         iconClass="bi-lock"
       />
 
-      <button type="submit" className="login-btn">Đăng nhập</button>
+      <Button text = "Đăng Nhập" />
 
       <div className="text-center mt-3">
         <a href="#" className="forgot-password">Forgot password?</a>
       </div>
     </form>
+  </div>
   );
 }
 

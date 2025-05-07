@@ -1,0 +1,58 @@
+.login-form {
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    padding: 50px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 600px; // 👈 tăng lên
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px; // 👈 cách đều các input
+    h3 {
+      color: #2c3e50;
+      font-weight: 600;
+      margin-bottom: 32px;
+      font-size: 24px;
+      text-align: center;
+    }
+  
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      margin-top: 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+      }
+  
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  
+    .forgot-password {
+      font-size: 14px;
+      color: #3498db;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 16px;
+      text-align: center;
+      transition: color 0.3s ease;
+  
+      &:hover {
+        color: #2980b9;
+        text-decoration: underline;
+      }
+    }
+  }
+  

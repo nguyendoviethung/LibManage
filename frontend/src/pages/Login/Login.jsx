@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // ✅ sử dụng để chuyển hướng nội bộ
 import axios from 'axios';
-import LoginForm from '../../components/LoginForm';
-import TextHeader from '../../components/TextHeader';
+import LoginForm from '../../components/LoginForm/LoginForm';
+import TextHeader from '../../components/TextHeader/TextHeader';
+import "./LoginBackground.scss"
+// Nếu background riêng → import file riêng
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -20,15 +22,23 @@ function Login() {
           loginPassword: password
         },
         {
-          withCredentials: true // ✅ cho phép cookie đi kèm
+          withCredentials: true // Cho phép cookie đi kèm
         }
       );
 
       const data = response.data;
 
       if (data.success) {
-        navigate('/dashboard')
-      } else {
+        const role = data.role;
+        const userID = data.userID;
+      
+        if (role === 'admin') {
+          navigate(`/dashboard/admin`);
+        } else {
+          navigate(`/dashboard/user/${userID}`);
+        }
+      }
+       else {
         alert(data.message || 'Đăng nhập thất bại.');
       }
     } catch (error) {
@@ -38,8 +48,9 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
+  <div className = "login-background">
       <TextHeader text="Welcome to Global Connectivity University of Technology" />
+      <div className="login-container">
       <LoginForm
         username={username}
         setUsername={setUsername}
@@ -47,7 +58,8 @@ function Login() {
         setPassword={setPassword}
         onSubmit={handleLogin}
       />
-    </div>
+       </div>
+  </div>
   );
 }
 

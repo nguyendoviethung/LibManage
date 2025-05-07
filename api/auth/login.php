@@ -41,8 +41,8 @@ if ($row = pg_fetch_assoc($result)) {
         echo json_encode([
             "success" => true,
             "message" => "Đăng nhập thành công!",
-            "role" => $row['role'] // ✅ Gửi vai trò về cho frontend để điều hướng
-            // "student_id" => $row['student_id']
+            "role" => $row['role'],
+            "userID" => $row['student_id'],
         ]);
         pg_close($conn);
         exit;
