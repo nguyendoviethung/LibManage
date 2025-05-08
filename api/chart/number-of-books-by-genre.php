@@ -1,5 +1,9 @@
 <?php
-// Kết nối đến cơ sở dữ liệu
+header("Access-Control-Allow-Origin: http://localhost:3000"); // Cho phép truy cập từ localhost:3000
+header("Content-Type: application/json; charset=UTF-8");
+
+// phần code PHP còn lại...
+
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
 //Truy vấn lấy số lượng sách theo thể loại

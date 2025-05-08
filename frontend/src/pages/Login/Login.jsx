@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ sử dụng để chuyển hướng nội bộ
+import { useNavigate } from 'react-router-dom'; // sử dụng để chuyển hướng nội bộ
 import axios from 'axios';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import TextHeader from '../../components/TextHeader/TextHeader';
 import "./LoginBackground.scss"
-// Nếu background riêng → import file riêng
+
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // sử dụng để chuyển hướng nếu đăng nhập thành công
 
+  //Hàm xử lí khi người dùng nhấn nút Đăng Nhập 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
 
     try {
       const response = await axios.post(
@@ -47,20 +48,20 @@ function Login() {
     }
   };
 
-  return (
-  <div className = "login-background">
-      <TextHeader text="Welcome to Global Connectivity University of Technology" />
-      <div className="login-container">
-      <LoginForm
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-        onSubmit={handleLogin}
-      />
-       </div>
-  </div>
-  );
+    return (
+    <div className = "login-background">
+        <TextHeader text="Welcome to Global Connectivity University of Technology" />
+        <div className="login-container">
+        <LoginForm
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+          onSubmit={handleLogin}
+        />
+        </div>
+    </div>
+    );
 }
 
 export default Login;

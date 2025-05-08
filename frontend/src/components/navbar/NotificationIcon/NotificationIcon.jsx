@@ -1,7 +1,7 @@
 import React from 'react';
 import './NotificationIcon.scss'; // Import style riêng
 
-function NotificationIcon({ count = 0 }) {
+function NotificationIcon({ count}) {
   return (
     <div className="notification-icon">
       <i className="bi bi-bell"></i> {/* Bootstrap Icons */}

@@ -4,8 +4,8 @@
     cursor: pointer;
   
     img {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #ddd;
@@ -18,16 +18,17 @@
   
     .dropdown-menu {
       position: absolute;
-      top: 110%; // dưới avatar 1 chút
-      right: 0;
-      background: white;
+      top: 105%; // dưới avatar 1 chút
+      right: -15px;
+      background: rgb(117, 117, 117);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       border-radius: 8px;
       padding: 8px 0;
-      min-width: 120px;
+      min-width: 90px;
       z-index: 10;
   
       button {
+        margin : 5px 0;
         width: 100%;
         background: none;
         border: none;
@@ -37,9 +38,10 @@
         font-size: 14px;
         color: #333;
         transition: background 0.2s ease;
-  
+       
+      
         &:hover {
-          background: #f0f0f0;
+          background: #5acded;
         }
       }
     }
