@@ -1,4 +1,7 @@
 <?php
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
@@ -14,23 +17,13 @@ if (isset($data['bookName']) && !empty($data['bookName'])) {
         die("Kết nối thất bại: " . pg_last_error());
     }
 
-    // Truy vấn để kiểm tra nếu sách tồn tại
-    $check_query = "SELECT * FROM books WHERE title = $1";
-    $check_result = pg_query_params($conn, $check_query, [$bookName]);
-
-    // Nếu sách không tồn tại
-    if (pg_num_rows($check_result) == 0) {
-        echo json_encode(['success' => false, 'message' => 'Sách không tồn tại']);
-        exit();
-    }
-
     // Truy vấn để xóa sách khỏi cơ sở dữ liệu
     $delete_query = "DELETE FROM books WHERE title = $1";
     $delete_result = pg_query_params($conn, $delete_query, [$bookName]);
 
     // Kiểm tra kết quả xóa
     if ($delete_result) {
-        echo json_encode(['success' => true, 'message' => 'Sách đã được xóa']);
+        echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa sách: ' . pg_last_error()]);
     }

@@ -1,55 +1,86 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import BookFormModal from './BookFormModal';
-import { Button, Container } from 'react-bootstrap';
-import axios from 'axios';
-import AlertBox from '../alert-box/AlertBox'; // Import AlertBox
+import { Container } from 'react-bootstrap';
+import AlertBox from '../alert-box/AlertBox'; 
 import ActionButton from '../action-button/ActionButton'; 
-function BookManagementPage() {
-  const [showModal, setShowModal] = useState(false);
-  const [notification, setNotification] = useState(null); // lưu thông báo
+import './ActionButtonGroup.scss';
 
-  const handleSave = (data) => {
-    console.log('Data saved:', data);
-   // Gọi API để lưu dữ liệu vào cơ sở dữ liệu
-   axios.post('http://localhost/LibManage/api/book-management/add-book.php', data)
-      .then(response => {
-        if(response.data.success) {
-          console.log('Book added successfully:', response);
-          setNotification({ message: 'Thêm sách thành công!', type: 'success' });
-        }else {
-        console.error('Error adding book:', response.data);
-        setNotification({ message: 'Lỗi khi thêm sách!', type: 'error' });
-        }
-      })
-      .catch(error => {
-        console.error('Error adding book:', error);
-      });
-   
-  };
+function BookManagementPage() {
+  
+  const [showModal, setShowModal] = useState(false); // trạng thái hiển thị modal
+  const [alertBox, setAlertBox] = useState(null); // lưu thông báo khi submit form(kể cả tìm kiếm lẫn CRUD thực tế)
+  const [crudAction, setCrudAction] = useState(''); // lưu hành động CRUD (Create, Read, Update, Delete);
 
   return (
-    <div>
-      {notification && (
+    <>
+      {alertBox && ( // Nếu alertBox không null thì hiển thị
         <AlertBox
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
+          message={alertBox.message}
+          type={alertBox.type}
+          onClose={() =>  setAlertBox(null)}
         />
       )}
+      
     <Container className="mt-4">
-       <ActionButton
-      onClick={() => setShowModal(true)}
+
+  <div className="action-button-group">
+
+    {/* Thêm sách */}
+    <ActionButton
+      onClick={() => {
+        setShowModal(true);
+        setCrudAction('add');
+      }}
       label="Thêm sách"
       icon={<i className="fa fa-plus"></i>}
-      className="add" // đổi màu xanh lá
+      className="add"
     />
-      <BookFormModal
-        show={showModal}
-        onSubmit={handleSave}
-        hide ={() => setShowModal(false)} // Nếu nhấn nút "X" thì sẽ gọi hàm này
-      />
-    </Container>
-    </div>
+
+    {/* Tìm kiếm sách */}
+    <ActionButton
+      onClick={() => {
+        setCrudAction('search');
+        setShowModal(true);
+      }}
+      label="Tìm sách"
+      icon={<i className="fa fa-search"></i>}
+      className="search"
+    />
+
+    {/* Sửa sách */}
+    <ActionButton
+      onClick={() => {
+        setCrudAction('update');
+        setShowModal(true);
+      }}
+      label="Sửa sách"
+      icon={<i className="fa fa-edit"></i>}
+      className="edit"
+    />
+
+    {/* Xoá sách */}
+    <ActionButton
+      onClick={() => {
+        setCrudAction('delete');
+        setShowModal(true);
+      }}
+      label="Xoá sách"
+      icon={<i className="fa fa-trash"></i>}
+      className="delete"
+    />
+
+   </div>
+
+  {/* Modal */}
+    <BookFormModal
+      show={showModal}
+      hide={() => setShowModal(false)}
+      crudAction={crudAction}
+      setAlertBox={setAlertBox} 
+    />
+
+    </Container>  
+    </>
   );
 }
 

@@ -1,6 +1,9 @@
 <?php
-header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
-include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+   header("Access-Control-Allow-Origin: http://localhost:3000");
+   header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+   header("Access-Control-Allow-Headers: Content-Type");
+   header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
+   include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
 // Kiểm tra kết nối trước khi dùng
 if (!$conn) {
@@ -26,12 +29,12 @@ $books = []; // Mảng để lưu trữ kết quả
 while ($row = pg_fetch_assoc($result)) {
     $books[] = [
         'title' => $row['title'],
-        'lang' => $row['lang'],
-        'publisher_year' => $row['publisher_year'],
+        'language' => $row['lang'],
+        'year' => $row['publisher_year'],
         'location' => $row['location'],
         'genre' => $row['genre'],
         'quantity' => $row['quantity'],
-        'author_name' => $row['author_name']
+        'author' => $row['author_name']
     ];
 }
 
@@ -41,7 +44,7 @@ if (count($books) > 0) {
     // Giả sử chỉ lấy phần tử đầu tiên (nếu bạn chỉ cần lấy 1 cuốn sách)
     echo json_encode([
         "success" => true,
-        "books"   => $books[0]
+        "data"   => $books[0]
     ]);
 } else {
     // Không tìm thấy sách nào
