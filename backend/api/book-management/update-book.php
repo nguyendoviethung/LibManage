@@ -1,55 +1,50 @@
 <?php
-   header("Access-Control-Allow-Origin: http://localhost:3000");
-   header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-   header("Access-Control-Allow-Headers: Content-Type");
-   header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
-   include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json');
 
-// Lấy dữ liệu JSON từ body của request
+include '../../config/connect.php';
+
+// Lấy dữ liệu từ request
 $data = json_decode(file_get_contents("php://input"), true);
-// Kiểm tra kết nối đến cơ sở dữ liệu
-// Lấy các giá trị từ dữ liệu JSON
-$title = $data['title'] ?? '';
+
+$title = $data['title'] ?? ''; // tên sách mới
 $author = $data['author'] ?? '';
 $language = $data['language'] ?? '';
-$year = $data['year'] ?? '';
+$year = (is_numeric($data['year']) && $data['year'] !== '') ? (int)$data['year'] : null;
+$quantity = (is_numeric($data['quantity']) && $data['quantity'] !== '') ? (int)$data['quantity'] : null;
 $location = $data['location'] ?? '';
 $genre = $data['genre'] ?? '';
-$quantity = $data['quantity'] ?? '';
+$oldTitle = $data['oldTitle'] ?? ''; // tên sách cũ
 
-// Kiểm tra nếu các thông tin cần thiết đã được cung cấp
-    if (empty($title) || empty($author)) {
-    echo json_encode(['success' => false, 'message' => 'Tên sách và tên tác giả không được để trống.']);
-    exit();
-     }
+// Cập nhật dữ liệu
+$query = "UPDATE books SET 
+    title = $1,
+    author_name = $2,
+    lang = $3,
+    publisher_year = $4,
+    location = $5,
+    genre = $6,
+    quantity = $7
+WHERE title = $8";
 
-// Cập nhật thông tin sách trong cơ sở dữ liệu
-        $query = "UPDATE books SET 
-            author_name = $1,
-            lang = $2,
-            publisher_year = $3,
-            location = $4,
-            genre = $5,
-            quantity = $6
-          WHERE title = $7";
-
-    $result = pg_query_params($conn, $query, [
+$result = pg_query_params($conn, $query, [
+    $title,
     $author,
     $language,
     $year,
     $location,
     $genre,
     $quantity,
-    $title
+    $oldTitle
 ]);
 
-// Kiểm tra kết quả của câu lệnh UPDATE
 if ($result) {
     echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Lỗi khi cập nhật sách: ' . pg_last_error($conn)]);
 }
 
-// Đóng kết nối
 pg_close($conn);
 ?>

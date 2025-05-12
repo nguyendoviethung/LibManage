@@ -31,7 +31,7 @@
         }   
         // Truy vấn để thêm sách vào cơ sở dữ liệu
         $query = "INSERT INTO books (title, author_name, lang, publisher_year, location, genre, quantity) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7)";
+                  VALUES ($1, $2, $3, $4, $5, $6, $7)";
 
     $result = pg_query_params($conn, $query, [
     $title,$author,$language,$year,$location,$genre,$quantity
