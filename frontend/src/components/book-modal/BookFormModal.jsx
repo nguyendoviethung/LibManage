@@ -73,7 +73,7 @@ function BookFormModal({ show, hide, crudAction,setAlertBox }) {
   else if (crudAction === 'update') result = await updateBook(formData); // Nếu là cập nhật thì khi nhấn submit  thì gọi api để cập nhật sách vào database
   else if (crudAction === 'delete') result = await deleteBook({ bookName: formData.title }); //Nếu là xóa sách thì khi nhấn submit gọi api để xóa sách khỏi database
   else if(crudAction === 'search') { // Nếu là tìm kiếm sách thì khi nhấn submit lần nữa reset form để tiếp tục tìm sách khác theo mong muốn
-    setStateCRUDModal(false);
+    setStateCRUDModal(false); // Đưa modal về chỉ để hiển thị mỗi trường nhập tên sách
     setFormData({
         title: '',
         author: '',
@@ -239,7 +239,7 @@ function BookFormModal({ show, hide, crudAction,setAlertBox }) {
             }
             type="submit"
           > 
-          {/*Tiêu đề dựa trên hành động CRUD */}
+          { /*Tiêu đề dựa trên hành động CRUD của lần 1 submit và lần 2 submit */}
             {crudAction === 'add' && 'Thêm sách'}
             {crudAction === 'search' && (stateCRUDModal ? 'Tìm kiếm sách khác' : 'Tìm kiếm sách')}
             {crudAction === 'update' && (stateCRUDModal ? 'Cập nhật sách' : 'Tìm kiếm sách')}

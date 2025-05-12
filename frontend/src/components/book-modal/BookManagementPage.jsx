@@ -71,7 +71,7 @@ function BookManagementPage() {
 
    </div>
 
-  {/* Modal */}
+  {/* Modal hiển thị trường dữ liệu về sách */}
     <BookFormModal
       show={showModal}
       hide={() => setShowModal(false)}

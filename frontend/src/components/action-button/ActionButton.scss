@@ -1,6 +1,6 @@
 .action-button {
   background: white;
-  padding: 20px;
+  padding: 30px;
   text-align: center;
   border-radius: 10px;
   cursor: pointer;
@@ -12,7 +12,7 @@
   justify-content: center;
   text-decoration: none; // giống .text-decoration
   color: inherit;
-
+  max-width: 150px;
   i {
     font-size: 30px;
     margin-bottom: 10px;
