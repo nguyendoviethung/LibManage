@@ -13,16 +13,17 @@ function QRScannerModal({ onScanSuccess, onClose }) {
   const [lastScannedCode, setLastScannedCode] = useState('');
 
   useEffect(() => {
-    const html5QrCode = new Html5Qrcode("qrcode");
+    const html5QrCode = new Html5Qrcode("qrcode"); // Tạo một instance(đối tượng cụ thể) của Html5Qrcode
 
     html5QrCode.start(
       { facingMode: "environment" },
-      { fps: 10, qrbox: 320 },
+      { fps: 10, qrbox: 320 }, // fps: 10 khung hình/giây, qrbox: kích thước vùng quét
       (decodedText) => {
         const code = decodedText.trim();
 
         // Nếu là lần quét đầu tiên → gán mã sinh viên
         if (!formData.studentId) {
+          // KIỂM TRA XEM SINH VIÊN MƯỢN SÁCH CÓ HỢP LỆ KHÔNG
           setFormData((prev) => ({
             ...prev,
             studentId: code
@@ -31,8 +32,8 @@ function QRScannerModal({ onScanSuccess, onClose }) {
         }
         // Nếu là mã sách mới → thêm vào bookCodes
         else if (
-          code !== lastScannedCode &&
-          !formData.bookCodes.includes(code) &&
+          code !== lastScannedCode && // khác code đã quét trước đó
+          !formData.bookCodes.includes(code) && // chưa có trong danh sách
           code !== formData.studentId // tránh trùng với mã sinh viên
         ) {
           setFormData((prev) => ({
@@ -50,7 +51,7 @@ function QRScannerModal({ onScanSuccess, onClose }) {
     return () => {
       html5QrCode.stop().catch(() => {});
     };
-  }, [formData.studentId, formData.bookCodes, lastScannedCode]);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,21 +74,21 @@ function QRScannerModal({ onScanSuccess, onClose }) {
         <span>Quét mã QR</span>
         <button onClick={onClose} className="close-btn">✕</button>
       </div>
-
       <div id="qrcode" style={{ width: '100%' }}></div>
-
+             {/*Quét được student ID thì hiện  */}
       <form className="qr-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Mã số sinh viên</label>
+       {formData.studentId && (
+          <div className="form-group">
+            <label>Mã số sinh viên</label>
           <InputField
-            type="text"
-            value={formData.studentId}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, studentId: e.target.value }))
-            }
+             type="text"
+             value={formData.studentId}
+             disabled={true}
           />
-        </div>
+          </div>
+          )}  
 
+    {/* Quét được sách thì lặp qua mảng rồi hiện  */}
         {formData.bookCodes.map((code, index) => (
           <div className="form-group" key={index}>
             <label>Mã sách #{index + 1}</label>
@@ -99,7 +100,9 @@ function QRScannerModal({ onScanSuccess, onClose }) {
           </div>
         ))}
 
-        <Button text="Gửi" />
+        {/* Nếu có mã sách thì hiện nút gửi */}
+      {formData.bookCodes.length > 0 && <Button text="Gửi" />}
+
       </form>
     </div>
   );
