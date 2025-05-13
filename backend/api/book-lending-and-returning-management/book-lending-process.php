@@ -1,6 +1,9 @@
 <?php
-header('Content-Type: application/json');
-include '../../config/connect.php'; // Kết nối CSDL
+  header("Access-Control-Allow-Origin: http://localhost:3000");
+  header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+  header("Access-Control-Allow-Headers: Content-Type");
+  header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
+  include '../../config/connect.php'; // Kết nối CSDL
 
 // Lấy dữ liệu JSON từ request
 $data = json_decode(file_get_contents("php://input"), true);

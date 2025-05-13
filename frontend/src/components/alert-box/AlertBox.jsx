@@ -7,7 +7,7 @@ function AlertBox({ message, type, onClose }) {
     useEffect(() => {
       const timer = setTimeout(() => {
         onClose(); // Set lại state cho cha để ẩn AlertBox (gọi sau 2 giây)
-      }, 2000);
+      }, 3000);
       return () => clearTimeout(timer); // Nếu dùng return clearTimeout(timer) thì sẽ chạy luôn hàm này khi setTimeout mà không cần phải đợi 2 giây
     }, [onClose]);
 

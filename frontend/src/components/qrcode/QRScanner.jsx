@@ -1,15 +1,23 @@
 import { useState } from 'react';
 import QRScannerModal from './QRScannerModal';
 import ActionButton from '../action-button/ActionButton';
-
+import { bookLendingProcess } from '../../api/LendingService';
 function QRScanner() {
-  // State để điều khiển hiển thị QRScanner ra màn hình 
-  const [showScanner, setShowScanner] = useState(false);
-
-  const handleScan = (data) => {
-    console.log("QR content:", data);
-    // TODO: xử lý data sau khi quét
-  };
+ const [showScanner, setShowScanner] = useState(false); // State để điều khiển hiển thị QRScanner ra màn hình 
+ const [NotificationBookCode, setNotificationBookCode] = useState(null); // Thông báo khi quét mã Q của sách
+ //Gọi APi để mượn sách
+  const handleScan = async (data) => {
+  try {
+    const response = await bookLendingProcess(data);
+    console.log("Mượn sách thành công:", response);
+   if(response.success) {
+      setNotificationBookCode(true); // Hiện thông báo thành công
+    }
+  } catch (error) {
+    console.error("Lỗi mượn sách:", error);
+    setNotificationBookCode(false); //Hiện thông báo lỗi
+  }
+};
 
   return (
     //Nút quét mã QR
@@ -24,6 +32,8 @@ function QRScanner() {
         <QRScannerModal
           onScanSuccess={handleScan}
           onClose={() => setShowScanner(false)}
+          NotificationBookCode={NotificationBookCode}
+          setNotificationBookCode={setNotificationBookCode}
         />
       )}
     </div>

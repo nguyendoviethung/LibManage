@@ -1,10 +1,13 @@
 <?php 
-  header('Content-Type: application/json'); // Đặt tiêu đề phản hồi là JSON
+  header("Access-Control-Allow-Origin: http://localhost:3000");
+  header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+  header("Access-Control-Allow-Headers: Content-Type");
+  header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
   include '../../config/connect.php'; // Kết nối cơ sở dữ liệu
 
 // Lấy dữ liệu JSON từ request body
  $data = json_decode(file_get_contents("php://input"), true);
- $studentId = $data['studentID'] ?? null; // Lấy mã sinh viên từ dữ liệu JSON, nếu không có thì gán là null
+ $studentId = $data['studentId'] ?? null; // Lấy mã sinh viên từ dữ liệu JSON, nếu không có thì gán là null
 
  if (!$studentId) {
     echo json_encode(['success' => false, 'message' => 'Thiếu mã sinh viên']);
