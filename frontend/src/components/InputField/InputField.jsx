@@ -6,10 +6,10 @@ function InputField({ type, value, onChange, placeholder, iconClass, disabled = 
       <input
         type={type}
         value={value}
-        onChange={onChange}
+        onChange={onChange} 
         placeholder={placeholder}
         disabled={disabled} // ✅ Thêm dòng này
-        required
+        required 
       />
       <i className={`bi ${iconClass} icon-right`}></i>
     </div>

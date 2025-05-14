@@ -1,19 +1,21 @@
 .login-form {
+    margin: 80px auto 0 auto; //  top 100px, auto trái/phải, 0 dưới
     background: #ffffff;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     padding: 50px;
     border-radius: 20px;
     width: 100%;
-    max-width: 600px; // 👈 tăng lên
-    margin: 0 auto;
+    min-width: 450px;
+    max-width: 600px; //  tăng lên
     display: flex;
     flex-direction: column;
-    gap: 16px; // 👈 cách đều các input
+    gap: 16px; //  cách đều các input
+
     h3 {
       color: #2c3e50;
       font-weight: 600;
       margin-bottom: 32px;
-      font-size: 24px;
+      font-size: 28px;
       text-align: center;
     }
   
@@ -29,7 +31,7 @@
       color: white;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
+      min-width: 400px;
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);

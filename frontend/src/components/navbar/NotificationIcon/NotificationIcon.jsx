@@ -1,4 +1,3 @@
-import React from 'react';
 import './NotificationIcon.scss'; // Import style riêng
 
 function NotificationIcon({ count}) {

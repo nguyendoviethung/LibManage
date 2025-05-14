@@ -1,7 +1,6 @@
-import React from 'react';
 import Logo from './logo/Logo';
-import NotificationIcon from './NotificationIcon/NotificationIcon';
-import UserAvatar from './UserAvatar/UserAvatar';
+import NotificationIcon from './notificationicon/NotificationIcon';
+import UserAvatar from './useravatar/UserAvatar';
 import './Navbar.scss';
 
 const Navbar = () => {

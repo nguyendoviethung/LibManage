@@ -37,12 +37,13 @@ if ($row = pg_fetch_assoc($result)) {
         // Cập nhật lần đăng nhập
         $updateQuery = "UPDATE readeraccounts SET last_login = NOW() WHERE username = $1";
         pg_query_params($conn, $updateQuery, [$loginUsername]);
-
+    
         echo json_encode([
             "success" => true,
             "message" => "Đăng nhập thành công!",
             "role" => $row['role'],
             "userID" => $row['student_id'],
+            "status" => $row['status']
         ]);
         pg_close($conn);
         exit;
@@ -50,9 +51,9 @@ if ($row = pg_fetch_assoc($result)) {
 }
 
 // Đăng nhập sai
-echo json_encode([
+   echo json_encode([
     "success" => false,
     "message" => "Tài khoản hoặc mật khẩu không đúng!"
-]);
-pg_close($conn);
+    ]);
+   pg_close($conn);
 ?>

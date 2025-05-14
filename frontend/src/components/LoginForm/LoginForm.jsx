@@ -1,6 +1,5 @@
-import React from 'react';
-import Button from '../Button/Button';
-import InputField from '../InputField/InputField';  
+import Button from '../button/Button';
+import InputField from '../inputfield/InputField';  
 import "./LoginForm.scss"
 import 'bootstrap-icons/font/bootstrap-icons.css';
 

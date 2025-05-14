@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // sử dụng để chuyển hướng nội bộ
 import axios from 'axios';
-import LoginForm from '../../components/LoginForm/LoginForm';
-import TextHeader from '../../components/TextHeader/TextHeader';
+import LoginForm from '../../components/loginform/LoginForm';
+import TextHeader from '../../components/textheader/TextHeader';
+import AlertBox from '../../components/alert-box/AlertBox';
 import "./LoginBackground.scss"
-
-
+ 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loginStatus,setLoginStatus] = useState(false)
   const navigate = useNavigate(); // sử dụng để chuyển hướng nếu đăng nhập thành công
 
   //Hàm xử lí khi người dùng nhấn nút Đăng Nhập 
@@ -17,7 +18,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        'http://localhost/LibManage/api/auth/login.php',
+        'http://localhost/LibManage/backend/api/auth/login.php',
         {
           loginUsername: username,
           loginPassword: password
@@ -30,27 +31,35 @@ function Login() {
       const data = response.data;
 
       if (data.success) {
-        const role = data.role;
-        const userID = data.userID;
-      
+        const role = data.role // Phân quyền 
+        const userID = data.userID // Mã số sinh viên 
+        setLoginStatus(true)
         if (role === 'admin') {
-          navigate(`/dashboard/admin`);
+          navigate(`/admin-dashboard`);
         } else {
-          navigate(`/dashboard/user/${userID}`);
+          navigate(`/dashboard/user/${userID}`)
         }
       }
        else {
-        alert(data.message || 'Đăng nhập thất bại.');
+        setLoginStatus(true);
       }
     } catch (error) {
       console.error('Login error:', error);
-      alert('Đã có lỗi xảy ra khi kết nối đến máy chủ.');
+      alert('Đã có lỗi xảy ra khi kết nối đến máy chủ.')
     }
   };
 
     return (
+  <>
+      {loginStatus && (
+        <AlertBox
+          message= "Tài khoản hoặc mật khẩu không chính xác"
+          type= "error"
+          onClose={() => setLoginStatus(false)}
+        /> 
+      )}
     <div className = "login-background">
-        <TextHeader text="Welcome to Global Connectivity University of Technology" />
+        <TextHeader text="Chào mừng đến với Thư viện Đại học Công nghệ Kết nối Toàn Cầu" />
         <div className="login-container">
         <LoginForm
           username={username}
@@ -61,6 +70,7 @@ function Login() {
         />
         </div>
     </div>
+  </>
     );
 }
 

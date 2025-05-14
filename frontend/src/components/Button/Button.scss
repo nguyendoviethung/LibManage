@@ -10,8 +10,8 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-   display: block;
-   margin: 15px auto 0 auto; // top auto bottom auto ⇒ căn giữa ngang
+    display: block;
+    margin: 15px auto 0 auto; // top auto bottom auto ⇒ căn giữa ngang
     &:hover {
       background-color: #0056b3;
       transform: translateY(-2px);
