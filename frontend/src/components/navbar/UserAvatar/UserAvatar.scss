@@ -2,7 +2,7 @@
     position: relative;
     display: inline-block;
     cursor: pointer;
-  
+    
     img {
       width: 40px;
       height: 40px;
@@ -25,7 +25,7 @@
       border-radius: 8px;
       padding: 8px 0;
       min-width: 90px;
-      z-index: 10;
+      z-index: 999;
   
       button {
         margin : 5px 0;

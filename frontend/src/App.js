@@ -17,9 +17,10 @@ function App() {
     {/* Layout cho admin */}
     {/* Khi đăng nhập thành công, ta dùng navigate('/admin-dashboard') để chuyển đến route /admin-dashboard.
     Route này được định nghĩa với element={<AdminLayout />}, nên React sẽ hiển thị component AdminLayout.
-    Bên trong AdminLayout có Sidebar và một thẻ <Outlet />. Đây là nơi React sẽ "nhét" nội dung của các route con vào.
+    Bên trong AdminLayout có Sidebar và một thẻ <Outlet /> - đây là nơi React sẽ "nhét" nội dung của các route con vào.
     Vì ta chỉ truy cập /admin-dashboard mà không kèm theo đường dẫn con nào (như /book-management), nên React Router sẽ tự động render route có index, tức là AdminDashBoard.
-    Kết quả là: khi vừa đăng nhập, ta thấy giao diện quản trị (AdminLayout) với sidebar ở bên trái và nội dung trang AdminDashBoard ở bên phải. */}
+    Kết quả là: khi vừa đăng nhập, ta thấy giao diện quản trị (AdminLayout) với sidebar ở bên trái và nội dung trang AdminDashBoard ở bên phải. 
+    và khi chuyển tran thì Phần Outlet sẽ thay đổi còn phần được khai báo trước đó trong AdminLayout được giữ nguyên*/}
    
       <Route path="/admin-dashboard" element={<AdminLayout />}>  
         <Route index element={<AdminDashBoard />} />
@@ -33,6 +34,7 @@ function App() {
       <Route path="profile" element={<UserProfile />} />
       <Route path="borrowed-books" element={<BorrowedBooks />} />
     </Route> */}
+    
   </Routes>
 </BrowserRouter>
   );

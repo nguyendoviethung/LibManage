@@ -1,12 +1,12 @@
 .login-form {
-    margin: 80px auto 0 auto; //  top 100px, auto trái/phải, 0 dưới
+    margin: 40px auto 0 auto; //  top 100px, auto trái/phải, 0 dưới
     background: #ffffff;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     padding: 50px;
     border-radius: 20px;
     width: 100%;
-    min-width: 450px;
-    max-width: 600px; //  tăng lên
+    min-width: 300px;
+    max-width: 500px; //  tăng lên
     display: flex;
     flex-direction: column;
     gap: 16px; //  cách đều các input
