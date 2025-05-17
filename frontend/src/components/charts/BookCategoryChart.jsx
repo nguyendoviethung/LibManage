@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import axios from 'axios';  // 👉 THÊM axios
 import {
   Chart as ChartJS,
   BarElement,
@@ -10,7 +9,7 @@ import {
   Legend,
   Title
 } from 'chart.js';
-
+import {bookCategoryChart}from '../../api/DrawCharts'
 // Đăng ký các thành phần cần dùng của chart.js
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
@@ -21,12 +20,10 @@ function BookCategoryChart() {
     const fetchData = async () => {
       try {
       // Gọi API để lấy dữ liệu
-        const response = await axios.get('http://localhost/LibManage/api/chart/number-of-books-by-genre.php');
+        const data = await bookCategoryChart();
         //Lấy dữ liệu từ API và gán vào biến dataFromAPI
-        const dataFromAPI = response.data; 
-
-        const labels = dataFromAPI.map(item => item.genre); //Lấy tên thể loại từ dữ liệu API
-        const counts = dataFromAPI.map(item => item.total_books); //Lấy số lượng sách từ dữ liệu API
+        const labels = data.map(item => item.genre); //Lấy tên thể loại từ dữ liệu API
+        const counts = data.map(item => item.total_books); //Lấy số lượng sách từ dữ liệu API
 
         setChartData({
           labels,
