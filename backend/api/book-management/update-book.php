@@ -18,7 +18,21 @@ $location = $data['location'] ?? '';
 $genre = $data['genre'] ?? '';
 $oldTitle = $data['oldTitle'] ?? ''; // tên sách cũ
 
-// Cập nhật dữ liệu
+//Kiểm tra tên sách mới đã tồn tại trong hệ thống chưa
+$checkTitle = "SELECT title from books where title = $1";
+$resultCheckTitle = pg_query_params($conn,$checkTitle,[$title]);
+
+if (!$resultCheckTitle) {
+    die("Lỗi truy vấn kiểm tra tiêu đề sách: " . pg_last_error($conn));
+}
+
+if (pg_num_rows($resultCheckTitle) > 0) {
+    //Có ít nhất 1 sách trùng tiêu đề
+    echo json_encode(["success" => false, "message" => "Tiêu đề sách đã tồn tại"]);
+    exit; // Thoát chương trình
+} else {
+    // Không có sách nào trùng
+   // Cập nhật dữ liệu
 $query = "UPDATE books SET 
     title = $1,
     author_name = $2,
@@ -44,6 +58,8 @@ if ($result) {
     echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Lỗi khi cập nhật sách: ' . pg_last_error($conn)]);
+}
+
 }
 
 pg_close($conn);

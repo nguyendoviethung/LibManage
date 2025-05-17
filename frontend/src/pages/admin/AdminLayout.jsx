@@ -29,9 +29,10 @@ const AdminLayout = () => {
       <Navbar />
       <div style={{ display: "flex" }}>
         <SidebarAdmin />
-        <main style={{ flex: 1 }}>
+        <main style={{ flex: 1, overflowY: "auto", position: "relative" }}>
           <Outlet />
         </main>
+
       </div>
     </div>
   );

@@ -7,7 +7,8 @@ import {
   PointElement,
   Tooltip,
   Legend,
-  Title
+  Title,
+  Filler // ✅ thêm cái này
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { monthlyBookLoan } from "../../api/DrawCharts";

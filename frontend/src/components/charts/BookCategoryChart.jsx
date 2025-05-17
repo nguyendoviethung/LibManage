@@ -7,7 +7,8 @@ import {
   LinearScale,
   Tooltip,
   Legend,
-  Title
+  Title,
+  Filler // ✅ thêm cái này
 } from 'chart.js';
 import {bookCategoryChart}from '../../api/DrawCharts'
 // Đăng ký các thành phần cần dùng của chart.js

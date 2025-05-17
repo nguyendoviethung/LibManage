@@ -1,49 +1,48 @@
 .user-avatar {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #ddd;
-      transition: border-color 0.3s ease;
-  
-      &:hover {
-        border-color: #2980b9;
-      }
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #9cccf5;
+    transition: border-color 0.3s ease;
+    margin-right: 40px;
+    &:hover {
+      border-color: #2980b9;
     }
-  
-    .dropdown-menu {
-      position: absolute;
-      top: 105%; // dưới avatar 1 chút
-      right: -15px;
-      background: rgb(117, 117, 117);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      padding: 8px 0;
-      min-width: 90px;
-      z-index: 999;
-  
-      button {
-        margin : 5px 0;
-        width: 100%;
-        background: none;
-        border: none;
-        padding: 8px 16px;
-        text-align: left;
-        cursor: pointer;
-        font-size: 14px;
-        color: #333;
-        transition: background 0.2s ease;
-       
-      
-        &:hover {
-          background: #5acded;
-        }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 140%; // dưới avatar 1 chút
+    right: 15px;
+    background: rgb(245, 239, 239) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 90px;
+    z-index: 999;
+    display: block;
+
+    button {
+      margin: 5px 0;
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 8px 16px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+      color: #333;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #bdd8df;
       }
     }
   }
-  
+}

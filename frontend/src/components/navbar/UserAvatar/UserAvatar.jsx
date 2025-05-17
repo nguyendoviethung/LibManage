@@ -10,10 +10,10 @@
 
     const toggleMenu = () => {
       setOpen(!open);   //Xử lí mở Toggle
-      console.log("Click vào avatar")
+      console.log("Click vào avatar",open)
     };
 
-    const handleLogout = async (navigate) => {
+    const handleLogout = async () => {
     try {
       const response = await axios.post('http://localhost/LibManage/backend/api/auth/logout.php', {}, {
         withCredentials: true 
@@ -34,13 +34,13 @@
     return (
       <div className="user-avatar">
         <img
-          src={logoImg} // 👉 Thay đường dẫn ảnh avatar nếu khác
+          src={logoImg} // Thay đường dẫn ảnh avatar nếu khác
           alt="User Avatar"
           onClick={toggleMenu}
         />
         {open && (
           <div className="dropdown-menu">
-           <button onClick={() => handleLogout(navigate)}>Logout</button>
+           <button onClick={() => handleLogout()}>Logout</button>
           </div>
         )}
       </div >
