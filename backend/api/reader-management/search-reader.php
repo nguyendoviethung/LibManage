@@ -1,5 +1,9 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
+
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 if (!$conn) {
     echo json_encode(["error" => "Không thể kết nối cơ sở dữ liệu."]);
@@ -7,16 +11,54 @@ if (!$conn) {
 }
 // Đọc dữ liệu JSON từ client
 $data = json_decode(file_get_contents('php://input'), true);
-$studentID = $data['searchStudentID'] ?? ''; //Gán biến $studentID bằng $data['studentID'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
-$query = "SELECT * FROM reader WHERE student_id = $1 "; // Truy vấn SQL để tìm kiếm sinh viên theo mã số sinh viên
-$checkQuery = pg_query_params($conn,$query,[$studentID]); // Thực hiện truy vấn với tham số $studentID
-if (pg_num_rows($checkQuery) > 0) { // Nếu có kết quả trả về
-    $row = pg_fetch_assoc($checkQuery); // Lấy kết quả đầu tiên
-    echo json_encode(['success' => true, 'data' => $row]); // Trả về dữ liệu sinh viên dưới dạng JSON
-} else {
-    echo json_encode(['success' => false, 'message' => 'Không tìm thấy sinh viên với mã số này.']); // Nếu không tìm thấy sinh viên
+$searchTerm = $data['searchTerm'] ?? ''; 
+$option = $data['option'] ?? '';
+
+if (preg_match('/^\d+$/', $searchTerm)) { // Tìm kiếm theo mã số sinh viên 
+   $query = "SELECT * FROM reader WHERE student_id = $1";
+   $result = pg_query_params($conn, $query, [$searchTerm]);
+} else if($searchTerm === ''){ // Nếu thanh tìm kiếm không có dữ liệu thì tìm kiếm theo bộ lọc
+   if($option ==='Tất cả'){
+    $query = "SELECT * FROM reader ORDER BY reader_id ASC ";
+    $result = pg_query($conn, $query);
+   }else{
+    $query = "SELECT * FROM reader where faculty = $1";
+    $result = pg_query_params($conn, $query,[$option]);
+   }
+}else {
+   $query = "SELECT * FROM reader WHERE full_name = $1";
+   $result = pg_query_params($conn, $query, [$searchTerm]);
 }
+ 
+if (!$result) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Lỗi truy vấn dữ liệu"
+    ]);
+    exit;
+}
+//Mảng gồm các object
+$readers = [];
+
+while ($row = pg_fetch_assoc($result)) {
+    $readers[] = $row;
+}
+
+if (empty($readers)) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Không tìm thấy sinh viên nào."
+    ]);
+    exit;
+}
+
+// Trả về dữ liệu dưới dạng JSON
+echo json_encode([
+    "success" => true,
+    "data" => $readers
+]);
     exit;
 // Đóng kết nối
 pg_close($conn); // Đóng kết nối cơ sở dữ liệu
 ?>
+

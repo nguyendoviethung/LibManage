@@ -1,6 +1,11 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
+
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+
 if (!$conn) {
     echo json_encode(["error" => "Không thể kết nối cơ sở dữ liệu."]);
     exit;

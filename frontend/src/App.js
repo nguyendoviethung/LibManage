@@ -6,7 +6,7 @@ import BookLendingAndReturningManagement from './pages/admin/BookLendingAndRetur
 import BookManagement from './pages/admin/BookManagement.jsx';
 import UserManagement from './pages/admin/UserManagement.jsx';
 import AdminLayout from './pages/admin/AdminLayout.jsx';
-import UserManagementPage from './components/user-modal/UserManagementPage.jsx'
+import ReaderManagementPage from './components/user-modal/ReaderManagementPage.jsx'
 function App() {
   return (
 //     <BrowserRouter>
@@ -37,7 +37,7 @@ function App() {
     
 //   </Routes>
 // </BrowserRouter>
- <UserManagementPage />
+ <ReaderManagementPage />
   );
 }
 
