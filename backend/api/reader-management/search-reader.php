@@ -15,19 +15,24 @@ $searchTerm = $data['searchTerm'] ?? '';
 $option = $data['option'] ?? '';
 
 if (preg_match('/^\d+$/', $searchTerm)) { // Tìm kiếm theo mã số sinh viên 
-   $query = "SELECT * FROM reader WHERE student_id = $1";
-   $result = pg_query_params($conn, $query, [$searchTerm]);
+   $query = "SELECT * FROM reader WHERE student_id = $1 AND status = $2";
+   $result = pg_query_params($conn, $query, [$searchTerm,"Active"]);
 } else if($searchTerm === ''){ // Nếu thanh tìm kiếm không có dữ liệu thì tìm kiếm theo bộ lọc
    if($option ==='Tất cả'){
-    $query = "SELECT * FROM reader ORDER BY reader_id ASC ";
-    $result = pg_query($conn, $query);
+    $query = "SELECT * FROM reader WHERE status = $1 ORDER BY reader_id ASC ";
+    $result = pg_query_params($conn, $query, ["Active"]);
    }else{
-    $query = "SELECT * FROM reader where faculty = $1";
-    $result = pg_query_params($conn, $query,[$option]);
+    $query = "SELECT * FROM reader where faculty = $1 AND status = $2 ORDER BY reader_id ASC";
+    $result = pg_query_params($conn, $query,[$option,"Active"]);
    }
 }else {
-   $query = "SELECT * FROM reader WHERE full_name = $1";
-   $result = pg_query_params($conn, $query, [$searchTerm]);
+    if($option === 'Tất cả'){
+   $query = "SELECT * FROM reader WHERE full_name = $1 AND status = $2 ORDER BY reader_id ASC";
+   $result = pg_query_params($conn, $query, [$searchTerm,"Active"]);
+  } else {
+   $query = "SELECT * FROM reader WHERE full_name = $1 AND faculty = $2 AND status = $3 ORDER BY reader_id ASC";
+   $result = pg_query_params($conn, $query, [$searchTerm,$option,"Active"]);
+  }
 }
  
 if (!$result) {

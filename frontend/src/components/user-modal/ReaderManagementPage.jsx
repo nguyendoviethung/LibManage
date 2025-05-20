@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import {
   listReader,
-  createReader,
-  updateReader,
-  deleteReader,
-  searchReader
+  searchReader,
+  checkAccount
 } from '../../api/ReaderManagementAPI';
-
+import AlertBox from '../alert-box/AlertBox'
 import ReaderModal from './ReaderFormModal';
 import AddAccountModal from './AddAccountModal';
 import NotificationModal from './NotificationModal';
@@ -22,7 +20,8 @@ const UserManagementPage = () => {
   const [selectedReader, setSelectedReader] = useState(null);  // Trạng thái dữ liệu sẽ hiển thị ra trong form khi nhấn vào add hoặc update(với add là null với update là data của sinh viên tương ứng)
   const [option,setOption] = useState('Tất cả'); // Trạng thái của bộ lọc
   const [addAccount, setAddAccount] = useState (false); // Trạng thái hiện của modal thêm tài khoản cho sinh viên 
-
+  const [alertBox,setAlertBox] = useState(false); // Hiển thị thông báo 
+  const [checkAccountReader, setCheckAccountReader] = useState(null); // Tình trạng sinh viên có tài khoản hay chưa 
   // Gọi API lấy danh sách sinh viên khi component được mount(lấy toàn bộ sinh viên ra)
   useEffect(() => {
     const fetchUsers = async () => {
@@ -36,7 +35,7 @@ const UserManagementPage = () => {
     fetchUsers();
   }, []);
 
-   //Xử lí khi bộ lọc thay đổi
+   // Xử lí khi bộ lọc thay đổi
    const handleChangeOption = (e) =>{
     const op = e.target.value
     setOption(op)
@@ -45,39 +44,45 @@ const UserManagementPage = () => {
   // Hàm xử lý khi submit form trong modal
  const handleSubmit = async (formData) => {
   try {
-    if (actionState === 'add') {
-      console.log('Thêm sinh viên mới:', formData);
-      const res = await createReader(formData);
-      console.log('Kết quả thêm:', res);
-
-    } else if (actionState === 'update') {
-      console.log('Cập nhật sinh viên:', formData);
-      const res = await updateReader(formData);
-      console.log('Kết quả cập nhật:', res);
-
-    } else if (actionState === 'delete') {
-      console.log('Xoá sinh viên:', formData);
-      const res = await deleteReader(formData.student_id);
-      console.log('Kết quả xóa:', res);
-    }
+    
     // setReaderModal(false); // Đóng modal sau thao tác
   } catch (error) {
     console.error('Lỗi khi xử lý sinh viên:', error);
   }
 };
 
+// Xử lí khi tìm kiếm
 const handleSearch = async () => {
   try {
     const res = await searchReader({ searchTerm, option });
     if (res.success) {
       setStudents(res.data);
     } else {
-      alert(res.message || "Không tìm thấy sinh viên nào");
+      setAlertBox(true);
     }
   } catch (err) {
     console.error("Lỗi tìm kiếm:", err);
   }
 };
+
+//Xử lí khi đóng modal 
+const handleCloseModal = () => {
+  setReaderModal(false);
+  setSelectedReader(null); // reset dữ liệu cho lần mở tiếp theo
+  setActionState('');       // nếu cần
+  setCheckAccountReader(null);
+};
+
+const handleCheckAccount = async (studentID) => {
+  try {
+    const res = await checkAccount({ studentID });
+    setCheckAccountReader(res.success);
+    console.log(res);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   return (
     <div className="container mt-4">
@@ -116,7 +121,7 @@ const handleSearch = async () => {
           <Button
             variant="success"
             onClick={() => {
-              setActionState('search');   // Hành động tìm kiếm 
+              setActionState('add');   // Hành động tìm kiếm 
               setSelectedReader(null);   // Không có dữ liệu trong form
               setReaderModal(true);     // Đặt trạng thái modal là mở
             }}
@@ -130,7 +135,7 @@ const handleSearch = async () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>STT</th>
             <th>Mã sinh viên</th>
             <th>Họ tên</th>
             <th>Email</th>
@@ -140,9 +145,9 @@ const handleSearch = async () => {
           </tr>
         </thead>
         <tbody>
-          {students.map((student) => (
+          {students.map((student,index) => (
             <tr key={student.reader_id}>
-              <td>{student.reader_id}</td>
+               <td>{index + 1}</td>
               <td>{student.student_id}</td>
               <td>{student.full_name}</td>
               <td>{student.email}</td>
@@ -156,24 +161,12 @@ const handleSearch = async () => {
                   className="me-2"
                   onClick={() => {
                     setActionState('update');    // chế độ cập nhật
-                    setSelectedReader(student);  // truyền dữ liệu người dùng
+                    setSelectedReader(student);  
+                    handleCheckAccount(student.student_id);  // Kiểm tra xem người này có tài khoản hay chưa
                     setReaderModal(true);        // mở modal
                   }}
                 >
                   ✏️
-                </Button>
-
-                {/* Nút xóa */}
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => {
-                    setActionState('delete');     // chế độ xóa
-                    setSelectedReader(student);   // truyền dữ liệu
-                    setReaderModal(true);         // mở modal xác nhận hoặc hiển thị dữ liệu
-                  }}
-                >
-                  🗑️
                 </Button>
               </td>
             </tr>
@@ -184,10 +177,11 @@ const handleSearch = async () => {
       {/* Modal thêm cập nhật xóa */}
       <ReaderModal
         show={readerModal}
-        onHide={() => setReaderModal(false)}
+        onHide={handleCloseModal}
         actionState={actionState}
         handleSubmit={handleSubmit}
         initialData={selectedReader}
+        checkAccountReader = {checkAccountReader}
       />
 
       {/* CÁC MODAL KHÁC */}
@@ -197,6 +191,11 @@ const handleSearch = async () => {
       {accountModal && (
         <AddAccountModal show={accountModal} onHide={() => setAccountModal(false)} />
       )}
+
+      {alertBox && (<AlertBox message = {"Không tìm thấy sinh viên này trong hệ thống"}  
+                              type = {"error"} 
+                              onClose = {()=>{setAlertBox(false)}} />
+                              )}
     </div>
   );
 };

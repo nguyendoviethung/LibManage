@@ -12,15 +12,5 @@ export const listReader = () =>
 export const searchReader = (data) =>
   axios.post(`${BASE_URL}/search-reader.php`, data).then(res => res.data);
 
-//Thêm mới sinh viên 
-export const createReader = (data) =>
-  axios.post(`${BASE_URL}/create.php`, data).then(res => res.data);
-
-//Cập nhật sinh viên 
-export const updateReader = (data) =>
-  axios.put(`${BASE_URL}/update.php`, data).then(res => res.data);
-
-//Xóa sinh viên 
-export const deleteReader = (student_id) =>
-  axios.delete(`${BASE_URL}/delete.php`, { data: { student_id } }).then(res => res.data);
-
+export const checkAccount =(data) =>
+   axios.post(`${BASE_URL}/check-account.php`, data).then(res => res.data);

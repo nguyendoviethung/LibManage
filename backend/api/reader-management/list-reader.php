@@ -7,8 +7,8 @@ header('Content-Type: application/json');
 include '../../config/connect.php';
 
 // Truy vấn dữ liệu từ bảng reader
-$query = "SELECT * FROM reader ORDER BY reader_id ASC";
-$result = pg_query($conn, $query);
+$query = "SELECT * FROM reader WHERE status = $1 ORDER BY reader_id ASC";
+$result = pg_query_params($conn, $query,["Active"]);
 
 if (!$result) {
     echo json_encode([
