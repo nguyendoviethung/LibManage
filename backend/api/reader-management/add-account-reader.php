@@ -1,6 +1,8 @@
 <?php
-// Trả kết quả dạng JSON
-header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json');
 
 // Kết nối CSDL
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
@@ -14,9 +16,9 @@ if (!$conn) {
 $data = json_decode(file_get_contents('php://input'), true);
 
 // Gán biến
-$studentID = $data['lastStudentID'] ?? '';
-$username = $data['addAccountUserName'] ?? '';
-$password = $data['addAccountPassword1'] ?? '';
+$studentID = $data['studentID'] ?? '';
+$username = $data['username'] ?? '';
+$password = $data['password'] ?? '';
 
 // Kiểm tra xem username đã tồn tại chưa
 $checkUserQuery = "SELECT 1 FROM readeraccounts WHERE username = $1";

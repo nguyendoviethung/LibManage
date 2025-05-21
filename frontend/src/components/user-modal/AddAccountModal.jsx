@@ -1,13 +1,14 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
-
-function AddAccountModal({ show, onHide, onCreate }) {
+import AlertBox from '../alert-box/AlertBox';
+function AddAccountModal({ show, onHide,  handleAddAccount }) {
   const [account, setAccount] = useState({
     username: '',
     password: '',
     confirmPassword: ''
   });
-
+  
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAccount((prev) => ({
@@ -16,18 +17,14 @@ function AddAccountModal({ show, onHide, onCreate }) {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (account.password !== account.confirmPassword) {
-      alert('Mật khẩu xác nhận không khớp!');
-      return;
-    }
-
-    // Gửi dữ liệu tạo tài khoản
-    onCreate(account);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const result = await handleAddAccount(account);
+  if (result) {
     setAccount({ username: '', password: '', confirmPassword: '' }); // reset
-    onHide(); // đóng modal
-  };
+    onHide(); // chỉ đóng modal nếu tạo thành công
+  }
+};
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -74,9 +71,6 @@ function AddAccountModal({ show, onHide, onCreate }) {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>
-            Hủy
-          </Button>
           <Button variant="primary" type="submit">
             Tạo tài khoản
           </Button>

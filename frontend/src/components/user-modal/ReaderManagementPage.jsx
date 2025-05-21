@@ -24,7 +24,7 @@ const UserManagementPage = () => {
   const [accountNotice, setAccountNotice] = useState (null); // // Trạng thái hiển thị thông báo muốn thêm tài khoản hay khôn sau khi thêm người đọc 
   const [alertBox,setAlertBox] = useState(null); // Hiển thị thông báo 
   const [checkAccountReader, setCheckAccountReader] = useState(null); // Tình trạng sinh viên có tài khoản hay chưa 
-
+  const [lastStudentID, setLastStudentID] = useState(null); // Lưu mã số sinh viên khi thêm sinh viên 
   // Gọi API lấy danh sách sinh viên khi component được mount(lấy toàn bộ sinh viên ra)
   useEffect(() => {
     const fetchUsers = async () => {
@@ -95,6 +95,7 @@ const handleAddReader = async (formData)=>{
   try{
     const res = await addReader(formData);
     if(res.success){
+      setLastStudentID(formData.student_id); // lưu lại ID để dùng sau
       console.log(res.message)
       setAccountNotice(true);
       setAlertBox({ message: res.message, type: "success" });
@@ -110,17 +111,33 @@ const handleAddReader = async (formData)=>{
 
 // Hàm xử lí khi thêm tài khoản cho sinh viên 
 const handleAddAccount = async(formData) => {
-  try{
-    const res = await addAccount(formData);
-    if(res.success){
-      console.log(res.message)
-    }else{
-      console.log(res.message)
+  try {
+    if(formData.password !== formData.confirmPassword){
+      setAlertBox({ message: "Mật khẩu không khớp!", type: "error" });
+      return false; // ✳️ không thành công
     }
-  }catch (err){
-    console.error("lỗi:",err);
+
+    const data = {
+      studentID: lastStudentID,
+      username: formData.username,
+      password: formData.password
+    };
+
+    const res = await addAccount(data);
+
+    if (res.success) {
+      setAlertBox({ message: res.message, type: "success" });
+      return true; // ✅ thành công
+    } else {
+      setAlertBox({ message: res.message || "Lỗi không xác định", type: "error" });
+      return false;
+    }
+  } catch (err) {
+    console.error("Lỗi:", err);
+    setAlertBox({ message: "Có lỗi xảy ra khi tạo tài khoản", type: "error" });
+    return false;
   }
-}
+};
 
 //Xử lí khi đóng modal 
 const handleCloseModal = () => {
@@ -154,6 +171,7 @@ const resetForm = () => {
   setActionState('');
   setAccountNotice(false);     // ẩn thông báo
 };
+
 
   return (
     <div className="container mt-4">
@@ -262,6 +280,7 @@ const resetForm = () => {
         <AddAccountModal
         show={addAccountModal}
         onHide={() => setAddAccountModal(false)}
+        handleAddAccount = {handleAddAccount}
         />
       )}
 
