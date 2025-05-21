@@ -12,11 +12,19 @@ export const listReader = () =>
 export const searchReader = (data) =>
   axios.post(`${BASE_URL}/search-reader.php`, data).then(res => res.data);
 
+//Kiểm tra sinh viên đã có tài khoản thư viện hay chưa
 export const checkAccount =(data) =>
    axios.post(`${BASE_URL}/check-account.php`, data).then(res => res.data);
 
+//Cập nhật sinh viên
 export const updateReader = (data) =>
    axios.post(`${BASE_URL}/update-reader.php`, data).then(res => res.data);
 
+//Thêm sinh viên
 export const addReader = (data) =>
    axios.post(`${BASE_URL}/add-reader.php`, data).then(res => res.data);
+
+//Thêm tài khoản 
+export const addAccount = (data) =>
+   axios.post(`${BASE_URL}/add-account-reader.php`, data).then(res => res.data);
+

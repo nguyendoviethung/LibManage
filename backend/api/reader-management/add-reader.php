@@ -13,10 +13,10 @@ if (!$conn) {
 
 // Đọc dữ liệu JSON từ client
 $data = json_decode(file_get_contents('php://input'), true);
-$name = $data['name'] ?? ''; //Gán biến $name bằng $data['name'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
-$studentID = $data['studentID'] ?? ''; //Gán biến $studentID bằng $data['studentID'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
+$name = $data['full_name'] ?? ''; //Gán biến $name bằng $data['name'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
+$studentID = $data['student_id'] ?? ''; //Gán biến $studentID bằng $data['studentID'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
 $email = $data['email'] ?? ''; //Gán biến $email bằng $data['email'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
-$phoneNumber= $data['phoneNumber'] ?? ''; //Gán biến $phone bằng $data['phone'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
+$phoneNumber= $data['phone_number'] ?? ''; //Gán biến $phone bằng $data['phone'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
 $faculty = $data['faculty'] ?? ''; //Gán biến $faculty bằng $data['faculty'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
 
 if(isValidStudentID($studentID)==false){
@@ -36,7 +36,7 @@ else if(isValidFaculty($faculty)==false){
     exit;
 }
 else {
-
+     
     //1.Kiểm tra xem mã số sinh viên đã tồn tại trong cơ sở dữ liệu chưa
     $checkQuery = "SELECT 1 FROM reader WHERE student_id = $1";
     $checkResult = pg_query_params($conn, $checkQuery, [$studentID]);
@@ -60,13 +60,14 @@ if( pg_num_rows($checkPhoneResult) > 0) {
     $query = "INSERT INTO reader (student_id, full_name, email, phone_number, faculty) 
               VALUES ($1, $2, $3, $4, $5)";
 
-$result = pg_query_params($conn, $query,[
-$data['studentID'], // student_id
-$data['name'],     // full_name
-$data['email'],            // email
-$data['phoneNumber'],         // phone_number
-$data['faculty'],        // faculty
+$result = pg_query_params($conn, $query, [
+  $studentID,
+  $name,
+  $email,
+  $phoneNumber,
+  $faculty
 ]);
+
 
     // Kiểm tra kết quả
     if ($result) {

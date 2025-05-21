@@ -5,23 +5,23 @@ import {
   checkAccount,
   updateReader,
   addReader,
+  addAccount,
 } from '../../api/ReaderManagementAPI';
 import AlertBox from '../alert-box/AlertBox'
 import ReaderModal from './ReaderFormModal';
 import AddAccountModal from './AddAccountModal';
-import NotificationModal from './NotificationModal';
+import AccountNotice from './AccountNotice';
 import { Form, Button, Table } from 'react-bootstrap';
 
 const UserManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState(''); // Trạng thái cho thanh tìm kiếm 
   const [students, setStudents] = useState([]); // Trạng thái cho dữ liệu sinh viên 
   const [readerModal, setReaderModal] = useState(false); // Trạng thái hiển thị modal cho sinh viên 
-  const [accountModal, setAccountModal] = useState(false);// Trạng thái hiển thị modal cho tài khoản 
-  const [notificationModal, setNotificationModal] = useState(false); // Trạng thái hiển thị thông báo muốn thêm tài khoản hay khôn sau khi thêm người đọc 
+  const [addAccountModal, setAddAccountModal] = useState(false); //Modal hiện ra để thêm tài khoản 
   const [actionState, setActionState] = useState(''); // Trạng thái cho hành động thực hiện (CRUD)
   const [selectedReader, setSelectedReader] = useState(null);  // Trạng thái dữ liệu sẽ hiển thị ra trong form khi nhấn vào add hoặc update(với add là null với update là data của sinh viên tương ứng)
   const [option,setOption] = useState('Tất cả'); // Trạng thái của bộ lọc
-  const [addAccount, setAddAccount] = useState (false); // Trạng thái hiện của modal thêm tài khoản cho sinh viên 
+  const [accountNotice, setAccountNotice] = useState (null); // // Trạng thái hiển thị thông báo muốn thêm tài khoản hay khôn sau khi thêm người đọc 
   const [alertBox,setAlertBox] = useState(null); // Hiển thị thông báo 
   const [checkAccountReader, setCheckAccountReader] = useState(null); // Tình trạng sinh viên có tài khoản hay chưa 
 
@@ -91,9 +91,27 @@ const handleSearch = async () => {
 };
 
 //Hàm xử lí khi thêm sinh viên 
-const handleAdd = async (formData)=>{
+const handleAddReader = async (formData)=>{
   try{
     const res = await addReader(formData);
+    if(res.success){
+      console.log(res.message)
+      setAccountNotice(true);
+      setAlertBox({ message: res.message, type: "success" });
+      setReaderModal(false);
+    }else{
+      console.log(res.message)
+      setAlertBox({message: res.message, type: "error" });
+    }
+  }catch (err){
+    console.error("lỗi:",err);
+  }
+}
+
+// Hàm xử lí khi thêm tài khoản cho sinh viên 
+const handleAddAccount = async(formData) => {
+  try{
+    const res = await addAccount(formData);
     if(res.success){
       console.log(res.message)
     }else{
@@ -103,6 +121,7 @@ const handleAdd = async (formData)=>{
     console.error("lỗi:",err);
   }
 }
+
 //Xử lí khi đóng modal 
 const handleCloseModal = () => {
   setReaderModal(false);
@@ -111,6 +130,7 @@ const handleCloseModal = () => {
   setCheckAccountReader(null);
 };
 
+// Kiểm tra xem sinh viên có tài khoản hay chưa để hiện checkbox thực hiện đồng bộ 
 const handleCheckAccount = async (studentID) => {
   try {
     const res = await checkAccount({ studentID });
@@ -121,9 +141,23 @@ const handleCheckAccount = async (studentID) => {
   }
 };
 
+//Xác nhận tiếp tục tạo tài khoản 
+const onConfirm = () => {
+  setAddAccountModal(true);  // hiện modal thêm tài khoản
+  resetForm();               // đóng form + thông báo
+};
+
+//Nếu không muốn tiếp tục thêm tài khoản 
+const resetForm = () => {
+  setReaderModal(false);       // ẩn modal form sinh viên
+  setSelectedReader(null);     // xóa dữ liệu cũ
+  setActionState('');
+  setAccountNotice(false);     // ẩn thông báo
+};
 
   return (
     <div className="container mt-4">
+
       {/* Thanh tìm kiếm và bộ lọc */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3 gap-2">
         <input
@@ -134,7 +168,7 @@ const handleCheckAccount = async (studentID) => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <Button variant="primary" onClick={() => {
-        setActionState('search') // Hành động tìm kiếm 
+        setActionState('search')  // Hành động tìm kiếm 
         handleSearch({searchTerm : searchTerm,
                       option: option}); // Gọi hàm và truyền giá trị vừa nhập
         }}>Tìm kiếm</Button>
@@ -159,7 +193,7 @@ const handleCheckAccount = async (studentID) => {
           <Button
             variant="success"
             onClick={() => {
-              setActionState('add');   // Hành động tìm kiếm 
+              setActionState('add');      // Hành động thêm sinh viên 
               setSelectedReader(null);   // Không có dữ liệu trong form
               setReaderModal(true);     // Đặt trạng thái modal là mở
             }}
@@ -169,7 +203,7 @@ const handleCheckAccount = async (studentID) => {
         </div>
       </div>
 
-      {/* BẢNG DANH SÁCH SINH VIÊN */}
+      {/* Bảng danh sách sinh viên*/}
       <Table striped bordered hover responsive>
         <thead>
           <tr>
@@ -218,19 +252,30 @@ const handleCheckAccount = async (studentID) => {
         onHide={handleCloseModal}
         actionState={actionState}
         handleUpdate={handleUpdate}
-        handleAdd = {handleAdd}
+        handleAddReader = {handleAddReader}
         initialData={selectedReader}
         checkAccountReader = {checkAccountReader}
       />
 
-      {/* CÁC MODAL KHÁC */}
-      {/* Hiện thông báo có muốn tiếp tục tạo tài khoản cho sinh viên hay không */}
-      {notificationModal && <NotificationModal />}
-       {/*Hiện modal để thêm tài khoản cho sinh viên  */}
-      {accountModal && (
-        <AddAccountModal show={accountModal} onHide={() => setAccountModal(false)} />
+      {/* Modal thêm tài khoản cho sinh viên */}
+      {addAccountModal && (
+        <AddAccountModal
+        show={addAccountModal}
+        onHide={() => setAddAccountModal(false)}
+        />
       )}
 
+      
+      {/* Hiện thông báo có muốn tiếp tục tạo tài khoản cho sinh viên hay không */}
+      {accountNotice && (
+      <AccountNotice
+      show={accountNotice}
+      onHide={resetForm}    // ấn X hoặc nút "Không"
+      onConfirm={onConfirm} // ấn "Có"
+      />
+)}
+
+    {/* Hiện thông báo ra màn hình */}
       {alertBox && (<AlertBox message = {alertBox.message}  
                               type = {alertBox.type} 
                               onClose = {()=>{setAlertBox(false)}} />

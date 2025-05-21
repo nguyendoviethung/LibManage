@@ -1,6 +1,6 @@
 import { Modal, Button } from 'react-bootstrap';
 
-function NotificationModal({ show, onHide, onConfirm }) {
+function AccountNotice({ show, onHide, onConfirm }) {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -21,5 +21,5 @@ function NotificationModal({ show, onHide, onConfirm }) {
   );
 }
 
-export default NotificationModal;
+export default AccountNotice;
     

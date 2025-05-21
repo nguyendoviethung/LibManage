@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function ReaderModal({ show, onHide, actionState, handleUpdate,handleAdd, initialData, checkAccountReader}) {
+function ReaderModal({ show, onHide, actionState, handleUpdate,handleAddReader, initialData, checkAccountReader}) {
   // Dữ liệu hiển thị trong form 
   const [reader, setReader] = useState({  
     student_id: '',
@@ -52,7 +52,7 @@ function ReaderModal({ show, onHide, actionState, handleUpdate,handleAdd, initia
   e.preventDefault();
   actionState === 'update'
     ? handleUpdate({...reader, keepAccountStatus }) //...reader (đang dùng Spread Operator) là các thuộc tính của reader luôn (student_id: "...",full_name: "...",email: "...",...)
-    : handleAdd(reader);
+    : handleAddReader(reader);
 }
   return (
     <Modal show={show} onHide={onHide}>
