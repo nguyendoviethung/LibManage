@@ -1,5 +1,9 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json');
+
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 include '../../helpers/validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty,username,password
 if (!$conn) {

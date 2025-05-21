@@ -14,3 +14,9 @@ export const searchReader = (data) =>
 
 export const checkAccount =(data) =>
    axios.post(`${BASE_URL}/check-account.php`, data).then(res => res.data);
+
+export const updateReader = (data) =>
+   axios.post(`${BASE_URL}/update-reader.php`, data).then(res => res.data);
+
+export const addReader = (data) =>
+   axios.post(`${BASE_URL}/add-reader.php`, data).then(res => res.data);

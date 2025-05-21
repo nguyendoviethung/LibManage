@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function ReaderModal({ show, onHide, actionState, handleSubmit, initialData,checkAccountReader }) {
+function ReaderModal({ show, onHide, actionState, handleUpdate,handleAdd, initialData, checkAccountReader}) {
   // Dữ liệu hiển thị trong form 
   const [reader, setReader] = useState({  
     student_id: '',
@@ -48,12 +48,12 @@ function ReaderModal({ show, onHide, actionState, handleSubmit, initialData,chec
     }));
   };
 
-   //  Gửi dữ liệu
-  const onSubmit = (e) => {
-    e.preventDefault();
-    handleSubmit({ ...reader, keepAccountStatus });
-  };
-
+  const handleSubmit = (e) => {
+  e.preventDefault();
+  actionState === 'update'
+    ? handleUpdate({...reader, keepAccountStatus }) //...reader (đang dùng Spread Operator) là các thuộc tính của reader luôn (student_id: "...",full_name: "...",email: "...",...)
+    : handleAdd(reader);
+}
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -62,7 +62,7 @@ function ReaderModal({ show, onHide, actionState, handleSubmit, initialData,chec
         </Modal.Title>
       </Modal.Header>
 
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3">
             <Form.Label>Mã sinh viên</Form.Label>
@@ -143,7 +143,7 @@ function ReaderModal({ show, onHide, actionState, handleSubmit, initialData,chec
                   <option value="Banned">Banned</option>
                 </Form.Select>
               </Form.Group>
- {checkAccountReader && (
+          {checkAccountReader && (
               <Form.Group className="mb-3">
                 <Form.Check
                   type="checkbox"
@@ -158,7 +158,7 @@ function ReaderModal({ show, onHide, actionState, handleSubmit, initialData,chec
 
         <Modal.Footer>
           {actionState === 'update' ? (
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" >
               Cập nhật
             </Button>
           ) : (

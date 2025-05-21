@@ -1,5 +1,9 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json');
+
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 include '../../helpers/validation.php'; // Bao gồm các hàm kiểm tra định dang email, phoneNumber, studentID, faculty,username,password
 if (!$conn) {
@@ -9,28 +13,19 @@ if (!$conn) {
 
 $data = json_decode(file_get_contents('php://input'), true);
 // Lấy dữ liệu từ client
-$newStudentID = $data['studentID'];
-$newName = $data['name'] ;
+$studentID = $data['student_id'];
+$newName = $data['full_name'] ;
 $newEmail = $data['email'];
-$newPhone = $data['phoneNumber'];
+$newPhone = $data['phone_number'];
 $newFaculty = $data['faculty'];
 $newStatus = $data['status'];
 $valueCheckBox = $data['keepAccountStatus']; 
-$originalStudentID = $data['originalStudentID']; 
-// I.Kiểm tra sự tồn tại của MSSV, Email, SĐT trong cơ sở dữ liệu
 
-// 1.  Truy vấn này sẽ kiểm tra xem mã số sinh viên mới đã tồn tại trong cơ sở dữ liệu chưa và thuộc về sinh viên đang học(active)
-$queryMSV = "SELECT 1 FROM reader WHERE student_id = $1 AND student_id != $2";
-$resMSV = pg_query_params($conn, $queryMSV, [$newStudentID, $originalStudentID]);
-if (pg_num_rows($resMSV) > 0) {
-    echo json_encode(['success' => false, 'message' => '❗Mã số sinh viên này đã thuộc về sinh viên khác.']);
-    pg_close($conn);
-    exit;
-}
+// I.Kiểm tra sự tồn tại của MSSV, Email, SĐT trong cơ sở dữ liệu
 
 // 2. Kiểm tra SĐT đã tồn tại ở sinh viên khác chưa và thuộc về sinh viên đang học(active)
 $queryPhone = "SELECT 1 FROM reader WHERE phone_number = $1 AND student_id != $2";
-$resPhone = pg_query_params($conn, $queryPhone, [$newPhone, $originalStudentID]);
+$resPhone = pg_query_params($conn, $queryPhone, [$newPhone, $studentID]);
 if (pg_num_rows($resPhone) > 0) {
     echo json_encode(['success' => false, 'message' => '❗Số điện thoại đã tồn tại.']);
     pg_close($conn);
@@ -40,14 +35,14 @@ if (pg_num_rows($resPhone) > 0) {
 // II.Kiểm tra định dạng của các trường dữ liệu
 
 // 1. Kiểm tra định dạng mã số sinh viên
-if (!isValidStudentID($newStudentID)) {
+if (!isValidStudentID($studentID)) {
     echo json_encode(['success' => false, 'message' => '❗Mã số sinh viên không hợp lệ.']);
     pg_close($conn);
     exit;
 }
 
 // 2.Kiểm tra định dạng email
-if (!isValidSchoolEmail($newEmail, $newName, $newStudentID)) {
+if (!isValidSchoolEmail($newEmail, $newName, $studentID)) {
     echo json_encode(['success' => false, 'message' => '❗Email không hợp lệ.']);
     pg_close($conn);
     exit;
@@ -72,10 +67,10 @@ if (!isValidFaculty($newFaculty)) {
 // 1.Cập nhật thông tin sinh viên trong cơ sở dữ liệu
 
     $query = "UPDATE reader 
-          SET full_name = $1, student_id = $2, email = $3, phone_number = $4, faculty = $5, status = $6 
-          WHERE student_id = $7";
+          SET full_name = $1, email = $2, phone_number = $3, faculty = $4, status = $5
+          WHERE student_id = $6";
     $updateResult = pg_query_params($conn, $query, [
-    $newName, $newStudentID, $newEmail, $newPhone, $newFaculty, $newStatus, $originalStudentID]);
+    $newName, $newEmail, $newPhone, $newFaculty, $newStatus, $studentID]);
 
 //  2.Cập nhật đồng thời status của tài khoản người dùng
 
@@ -83,13 +78,13 @@ if (!isValidFaculty($newFaculty)) {
     if ($valueCheckBox == true) {
     if($newStatus == 'Inactive') {
         $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
-        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Disabled', $originalStudentID]);
+        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Disabled', $studentID]);
     } else if ($newStatus == 'Banned'){
         $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
-        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Banned', $originalStudentID]);
+        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Banned', $studentID]);
     }else if ($newStatus == 'Active') {
         $queryStatus = "UPDATE readeraccounts SET status = $1 WHERE student_id = $2";
-        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Active', $originalStudentID]);
+        $updateStatusResult = pg_query_params($conn, $queryStatus, ['Active', $studentID]);
     }
  }
 

@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import {
   listReader,
   searchReader,
-  checkAccount
+  checkAccount,
+  updateReader,
+  addReader,
 } from '../../api/ReaderManagementAPI';
 import AlertBox from '../alert-box/AlertBox'
 import ReaderModal from './ReaderFormModal';
@@ -20,8 +22,9 @@ const UserManagementPage = () => {
   const [selectedReader, setSelectedReader] = useState(null);  // Trạng thái dữ liệu sẽ hiển thị ra trong form khi nhấn vào add hoặc update(với add là null với update là data của sinh viên tương ứng)
   const [option,setOption] = useState('Tất cả'); // Trạng thái của bộ lọc
   const [addAccount, setAddAccount] = useState (false); // Trạng thái hiện của modal thêm tài khoản cho sinh viên 
-  const [alertBox,setAlertBox] = useState(false); // Hiển thị thông báo 
+  const [alertBox,setAlertBox] = useState(null); // Hiển thị thông báo 
   const [checkAccountReader, setCheckAccountReader] = useState(null); // Tình trạng sinh viên có tài khoản hay chưa 
+
   // Gọi API lấy danh sách sinh viên khi component được mount(lấy toàn bộ sinh viên ra)
   useEffect(() => {
     const fetchUsers = async () => {
@@ -41,15 +44,37 @@ const UserManagementPage = () => {
     setOption(op)
    }
 
-  // Hàm xử lý khi submit form trong modal
- const handleSubmit = async (formData) => {
+  // Hàm xử lý khi cập nhật sinh viên
+ const handleUpdate = async (formData) => {
   try {
-    
-    // setReaderModal(false); // Đóng modal sau thao tác
+    const res = await updateReader(formData);
+    if (res.success) {
+      setAlertBox({ message: res.message, type: "success" });
+
+     // Cập nhật lại danh sách sinh viên (students) sau khi chỉnh sửa một sinh viên, mà không cần reload trang.
+     // Khi dùng callback function trong setState, React sẽ gọi hàm đó với giá trị state hiện tại, và kết quả trả về sẽ là state mới.(prev) => prev.map(student) thì prev chính là giá trị trước update của students 
+      setStudents((prev) =>
+        prev.map((student) =>
+          student.student_id === formData.student_id
+            ? {
+                ...student,
+                full_name: formData.full_name,
+                email: formData.email,
+                phone_number: formData.phone_number,
+                faculty: formData.faculty,
+                status: formData.status,
+              }
+            : student
+        )
+      );
+    } else {
+      setAlertBox({ message: res.message, type: "error" });
+    }
   } catch (error) {
-    console.error('Lỗi khi xử lý sinh viên:', error);
+    console.error("Lỗi khi xử lý sinh viên:", error);
   }
 };
+
 
 // Xử lí khi tìm kiếm
 const handleSearch = async () => {
@@ -58,13 +83,26 @@ const handleSearch = async () => {
     if (res.success) {
       setStudents(res.data);
     } else {
-      setAlertBox(true);
+      setAlertBox({message:res.message , type : "error"})
     }
   } catch (err) {
     console.error("Lỗi tìm kiếm:", err);
   }
 };
 
+//Hàm xử lí khi thêm sinh viên 
+const handleAdd = async (formData)=>{
+  try{
+    const res = await addReader(formData);
+    if(res.success){
+      console.log(res.message)
+    }else{
+      console.log(res.message)
+    }
+  }catch (err){
+    console.error("lỗi:",err);
+  }
+}
 //Xử lí khi đóng modal 
 const handleCloseModal = () => {
   setReaderModal(false);
@@ -179,7 +217,8 @@ const handleCheckAccount = async (studentID) => {
         show={readerModal}
         onHide={handleCloseModal}
         actionState={actionState}
-        handleSubmit={handleSubmit}
+        handleUpdate={handleUpdate}
+        handleAdd = {handleAdd}
         initialData={selectedReader}
         checkAccountReader = {checkAccountReader}
       />
@@ -192,8 +231,8 @@ const handleCheckAccount = async (studentID) => {
         <AddAccountModal show={accountModal} onHide={() => setAccountModal(false)} />
       )}
 
-      {alertBox && (<AlertBox message = {"Không tìm thấy sinh viên này trong hệ thống"}  
-                              type = {"error"} 
+      {alertBox && (<AlertBox message = {alertBox.message}  
+                              type = {alertBox.type} 
                               onClose = {()=>{setAlertBox(false)}} />
                               )}
     </div>
