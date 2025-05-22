@@ -1,0 +1,57 @@
+.user-management {
+  .search-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      transition: box-shadow 0.3s ease;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(73, 83, 93, 0.25);
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        min-width: 120px;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(36, 36, 36, 0.1);
+        }
+      }
+    }
+  }
+
+  .table th {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .table td {
+    vertical-align: middle;
+  }
+
+  .table button {
+    margin: 0.2rem;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+}
+    

@@ -9,38 +9,43 @@ function UpdateAccountModal({ show, onHide, accountData, handleUpdateAccount }) 
     status: ''
   });
 
+ // Khi modal hiện ra thì tự động điền  username và status của người dùng 
   useEffect(() => {
     if (accountData) {
       setForm({
         username: accountData.username,
         password: '',
         confirmPassword: '',
-        status:  'Active',
+        status: 'Active',
       });
     }
   }, [accountData]);
 
+  //Xử lí khi khi input thay đổi 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (form.password && form.password !== form.confirmPassword) {
-      alert("Mật khẩu xác nhận không khớp!");
-      return;
-    }
+  //Xử lí khi submit form
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const payload = {
-      username: form.username,
-      password: form.password || null, // nếu để trống thì không đổi
-      status: form.status
-    };
-
-    handleUpdateAccount(payload);
-    onHide(); // đóng modal sau khi gửi
+  const payload = {
+    confirmPassword: form.confirmPassword,
+    password: form.password || null,
+    username: form.username,
+    status: form.status
   };
+  
+  //Gọi hàm handUpdateAccount và đợi nó hoàn thiện xong thì xem kết quả nếu thành công thì đóng modal và reset state
+  const success = await handleUpdateAccount(payload);
+  if (success) {
+    onHide();
+    setForm({ username: '', password: '', confirmPassword: '', status: '' });
+  }
+};
+
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -63,6 +68,7 @@ function UpdateAccountModal({ show, onHide, accountData, handleUpdateAccount }) 
               value={form.password}
               onChange={handleChange}
               placeholder="Nhập mật khẩu mới"
+              autoComplete="new-password"
             />
           </Form.Group>
 
@@ -74,6 +80,8 @@ function UpdateAccountModal({ show, onHide, accountData, handleUpdateAccount }) 
               value={form.confirmPassword}
               onChange={handleChange}
               placeholder="Xác nhận mật khẩu"
+              autoComplete="new-password"
+
             />
           </Form.Group>
 

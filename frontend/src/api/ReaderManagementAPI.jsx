@@ -28,6 +28,10 @@ export const addReader = (data) =>
 export const addAccount = (data) =>
    axios.post(`${BASE_URL}/add-account-reader.php`, data).then(res => res.data);
 
+//Lấy username của người dùng để bỏ vào input trong modal
 export const getUserName = (data) =>
    axios.post(`${BASE_URL}/get-user-name.php`, data).then(res => res.data);
 
+//Cập nhật tài khoản người dùng
+export const updateAccountReader = (data) =>
+   axios.post(`${BASE_URL}/update-account.php`, data).then(res => res.data);
