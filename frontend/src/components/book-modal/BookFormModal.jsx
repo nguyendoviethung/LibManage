@@ -1,7 +1,7 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect } from 'react';
-import { addBook, searchBook, updateBook, deleteBook } from '../../api/BookManagemetnAPI'; // Import các hàm API
+import { addBook, searchBook, updateBook, deleteBook } from '../../api/BookManagementAPI'; // Import các hàm API
 
 function BookFormModal({ show, hide, crudAction,setAlertBox }) {
 
