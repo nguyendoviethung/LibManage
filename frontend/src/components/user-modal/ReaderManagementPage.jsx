@@ -6,12 +6,14 @@ import {
   updateReader,
   addReader,
   addAccount,
+  getUserName,
 } from '../../api/ReaderManagementAPI';
 import AlertBox from '../alert-box/AlertBox'
 import ReaderModal from './ReaderFormModal';
 import AddAccountModal from './AddAccountModal';
 import AccountNotice from './AccountNotice';
 import { Form, Button, Table } from 'react-bootstrap';
+import UpdateAccountModal from './UpdateAccountModal'
 
 const UserManagementPage = () => {
   const [searchTerm, setSearchTerm] = useState(''); // Trạng thái cho thanh tìm kiếm 
@@ -25,6 +27,10 @@ const UserManagementPage = () => {
   const [alertBox,setAlertBox] = useState(null); // Hiển thị thông báo 
   const [checkAccountReader, setCheckAccountReader] = useState(null); // Tình trạng sinh viên có tài khoản hay chưa 
   const [lastStudentID, setLastStudentID] = useState(null); // Lưu mã số sinh viên khi thêm sinh viên 
+  const [accountStatus, setAccountStatus] = useState({});
+  const [updateAccount,setUpdateAccount] = useState(false);
+  const [userName,setUserName] = useState('');
+
   // Gọi API lấy danh sách sinh viên khi component được mount(lấy toàn bộ sinh viên ra)
   useEffect(() => {
     const fetchUsers = async () => {
@@ -39,7 +45,7 @@ const UserManagementPage = () => {
   }, []);
 
    // Xử lí khi bộ lọc thay đổi
-   const handleChangeOption = (e) =>{
+  const handleChangeOption = (e) =>{
     const op = e.target.value
     setOption(op)
    }
@@ -75,6 +81,21 @@ const UserManagementPage = () => {
   }
 };
 
+//Kiểm tra từng sinh viên xem có tài khoản hay chưa
+  useEffect(() => {
+    const fetchAccountStatuses = async () => {
+    const statuses = {};
+    for (let student of students) {
+      const res = await checkAccount({ studentID: student.student_id });
+      statuses[student.student_id] = res.success; // true: có tài khoản
+    }
+    setAccountStatus(statuses);
+  };
+
+  if (students.length > 0) {
+    fetchAccountStatuses();
+  }
+}, [students]);
 
 // Xử lí khi tìm kiếm
 const handleSearch = async () => {
@@ -114,7 +135,7 @@ const handleAddAccount = async(formData) => {
   try {
     if(formData.password !== formData.confirmPassword){
       setAlertBox({ message: "Mật khẩu không khớp!", type: "error" });
-      return false; // ✳️ không thành công
+      return false; // Không thành công
     }
 
     const data = {
@@ -127,7 +148,7 @@ const handleAddAccount = async(formData) => {
 
     if (res.success) {
       setAlertBox({ message: res.message, type: "success" });
-      return true; // ✅ thành công
+      return true; // Thành công
     } else {
       setAlertBox({ message: res.message || "Lỗi không xác định", type: "error" });
       return false;
@@ -172,7 +193,21 @@ const resetForm = () => {
   setAccountNotice(false);     // ẩn thông báo
 };
 
+//Lấy username của người dùng đã có tài khoản 
+const handleUserName = async (studentID) => {
+  try {
+    const res = await getUserName({ student_id: studentID }); // gửi đúng định dạng object nếu PHP nhận từ JSON
+    if (res.success) {
+      setUserName(res.data);
+    } else {
+      setUserName('');
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
+//Xử lí khi chỉnh sửa tài khoản
   return (
     <div className="container mt-4">
 
@@ -256,8 +291,35 @@ const resetForm = () => {
                     setReaderModal(true);        // mở modal
                   }}
                 >
-                  ✏️
+                  ✏️ Sửa thông tin cá nhân
                 </Button>
+
+        {accountStatus[student.student_id] === false && (
+          <Button
+              variant="primary"
+              size="sm"
+              onClick={() => {
+              setLastStudentID(student.student_id); // truyền ID để tạo tài khoản
+              setAddAccountModal(true); // mở modal tạo tài khoản
+                              }}
+              >
+            ➕ Tạo tài khoản
+          </Button>
+        )}
+
+        {accountStatus[student.student_id] === true && (
+          <Button
+            variant="info"
+            size="sm"
+            onClick={() => {
+              setLastStudentID(student.student_id);
+              handleUserName(student.student_id)
+              setUpdateAccount(true)
+            }}
+          >
+            ⚙️ Sửa tài khoản
+          </Button>
+        )}
               </td>
             </tr>
           ))}
@@ -284,7 +346,6 @@ const resetForm = () => {
         />
       )}
 
-      
       {/* Hiện thông báo có muốn tiếp tục tạo tài khoản cho sinh viên hay không */}
       {accountNotice && (
       <AccountNotice
@@ -293,6 +354,14 @@ const resetForm = () => {
       onConfirm={onConfirm} // ấn "Có"
       />
 )}
+    
+    {/* Modal tạo tài khoản cho sinh viên */}
+    {updateAccount && (
+     <UpdateAccountModal show = {updateAccount}
+                        onHide = {()=>{setUpdateAccount(false)}}  
+                        accountData={userName}  
+    />
+    )}
 
     {/* Hiện thông báo ra màn hình */}
       {alertBox && (<AlertBox message = {alertBox.message}  

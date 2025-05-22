@@ -28,3 +28,6 @@ export const addReader = (data) =>
 export const addAccount = (data) =>
    axios.post(`${BASE_URL}/add-account-reader.php`, data).then(res => res.data);
 
+export const getUserName = (data) =>
+   axios.post(`${BASE_URL}/get-user-name.php`, data).then(res => res.data);
+
