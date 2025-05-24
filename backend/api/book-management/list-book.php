@@ -7,9 +7,9 @@ header('Content-Type: application/json');
 include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
 // Câu truy vấn SQL: lấy tất cả sách và sắp xếp theo ID tăng dần
-$query = "SELECT * FROM books ORDER BY book_id ASC";
+$query = "SELECT * FROM books WHERE is_deleted = $1 ORDER BY book_id ASC";
 
-$result = pg_query($conn, $query);
+$result = pg_query_params($conn, $query,['false']);
 
 if (!$result) {
     echo json_encode([

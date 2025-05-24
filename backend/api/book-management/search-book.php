@@ -19,15 +19,15 @@ $category = $data['category'] ?? '';  // Giá trị bộ lọc theo thể loại
 // Truy vấn dữ liệu
 if($searchTerm === ''){ // Nếu giá trị thanh tìm kiếm rỗng thì tìm theo yêu cầu về thể loại
     if($category === "Tất cả"){
-        $query = "SELECT * FROM books ORDER BY book_id ASC";
-        $result = pg_query($conn, $query);
+        $query = "SELECT * FROM books WHERE is_deleted = $1 ORDER BY book_id ASC";
+        $result = pg_query_params($conn, $query,['false']);
     }else {
-        $query = "SELECT * FROM books WHERE genre = $1 ORDER BY book_id ASC";
-        $result = pg_query_params($conn, $query,[$category]);
+        $query = "SELECT * FROM books WHERE genre = $1 AND is_deleted = $2 ORDER BY book_id ASC";
+        $result = pg_query_params($conn, $query,[$category,'false']);
     }
 }else{ // Tìm theo giá trị của thanh tìm kiếm
-    $query = "SELECT * FROM books WHERE title = $1 ORDER BY book_id ASC";
-    $result = pg_query_params($conn, $query,[$searchTerm]);
+    $query = "SELECT * FROM books WHERE title = $1 AND is_deleted = $2 ORDER BY book_id ASC";
+    $result = pg_query_params($conn, $query,[$searchTerm,'false']);
 }
 // Kiểm tra kết quả trả về từ SQL
 if (!$result) {

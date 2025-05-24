@@ -91,11 +91,12 @@ const handleUpdate = async(data) =>{
   }
 
   // Xử lý xoá sách
-  const handleDelete = async (bookID) => {
+  const handleDelete = async (data) => {
       try {
-        const res = await deleteBook({ book_id: bookID });
+        const res = await deleteBook({ book_id: data });
         if (res.success) {
           setAlertBox({ message: res.message, type: 'success' });
+          setSelectedBook('')
           fetchBooks();
         } else {
           console.log(res)
@@ -212,7 +213,8 @@ const handleUpdate = async(data) =>{
             ))}
           </tbody>
         </Table>
-
+       
+       {/* Hiện modal thêm sách */}
         {crudAction === 'add' && (
           <AddBookModal
             show ={true}    // Trạng thái modal thêm sách mở 
@@ -221,6 +223,7 @@ const handleUpdate = async(data) =>{
           />
         )}
 
+       {/* Hiện modal cập nhật sách */}
         {crudAction === 'update' && (
           <UpdateBookModal
             show = {true}
@@ -230,10 +233,14 @@ const handleUpdate = async(data) =>{
           />
         )}
 
+      {/* Hiện modal xóa sách */}
         {crudAction === 'delete' && (
           <DeleteBookModal
             show ={true}
-            hide ={()=>{setCrudAction('')}}
+            hide ={() => {
+                           setCrudAction('');
+                           setSelectedBook(null); 
+                                }}
             bookData={selectedBook}
             handleDelete={handleDelete}
           />

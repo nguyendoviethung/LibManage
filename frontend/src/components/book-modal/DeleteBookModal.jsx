@@ -5,6 +5,7 @@ function DeleteBookModal({ show, hide, bookData, handleDelete }) {
     handleDelete(bookData.book_id); // Gọi hàm xóa với ID của sách
     hide(); // Đóng modal sau khi gọi
   };
+  
 
   return (
     <Modal show={show} onHide={hide} centered>
