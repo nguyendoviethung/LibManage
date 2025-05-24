@@ -7,30 +7,18 @@ include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
 
 // Lấy dữ liệu JSON từ body của request
 $data = json_decode(file_get_contents("php://input"), true);
+$bookID = $data['book_id'];
 
-// Kiểm tra dữ liệu hợp lệ
-if (isset($data['bookName']) && !empty($data['bookName'])) {
-    $bookName = $data['bookName'];
-
-    // Kiểm tra kết nối CSDL (Nếu chưa kết nối thì dừng)
-    if (!$conn) {
-        die("Kết nối thất bại: " . pg_last_error());
-    }
-
-    // Truy vấn để xóa sách khỏi cơ sở dữ liệu
-    $delete_query = "DELETE FROM books WHERE title = $1";
-    $delete_result = pg_query_params($conn, $delete_query, [$bookName]);
-
-    // Kiểm tra kết quả xóa
-    if ($delete_result) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Lỗi khi xóa sách: ' . pg_last_error()]);
-    }
-
-    // Đóng kết nối
-    pg_close($conn);
+   if (pg_result_error_field($delete_result, PGSQL_DIAG_SQLSTATE) === '23503') {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Không thể xoá sách vì đang có người mượn.'
+    ]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Tên sách không hợp lệ']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Lỗi khi xoá sách: ' . pg_last_error($conn)
+    ]);
 }
+
 ?>

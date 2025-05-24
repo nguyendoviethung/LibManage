@@ -16,7 +16,6 @@ import './BookManagement.scss';
 
 function BookManagementPage() {
   const [books, setBooks] = useState([]); // Mảng sách được in ra màn hình
-  const [showModal, setShowModal] = useState(false); // Trạng thái hiển thị modal
   const [crudAction, setCrudAction] = useState(null); // Tên hành động CRUD
   const [selectedBook, setSelectedBook] = useState(null); // Sách được chọn
   const [alertBox, setAlertBox] = useState(null); // Thông báo
@@ -44,7 +43,8 @@ function BookManagementPage() {
   // Xử lý tìm kiếm
   const handleSearch = async () => {
     try {
-      const res = await searchBook({ searchTerm, category: filterCategory });
+      const res = await searchBook({ searchTerm :searchTerm, 
+                                     category : filterCategory });
       if (res.success) setBooks(res.data);
       else setAlertBox({ message: res.message, type: 'error' });
     } catch (err) {
@@ -52,22 +52,60 @@ function BookManagementPage() {
     }
   };
 
+  // Xử lý thêm sách
+  const handleAdd = async (data) => {
+    try {
+      const res = await addBook(data);
+      if (res.success) {
+       setAlertBox({ message: res.message, type: 'success' });
+       return true;
+      } else {  
+        setAlertBox({ message: res.message, type: 'error' });
+        return false;
+      }
+    } catch (err) {
+      console.error('Lỗi tìm kiếm:', err);
+      return false;
+    }
+  };
+
+// Xử lí cập nhật sách
+const handleUpdate = async(data) =>{
+  const res = await updateBook(data);
+     try { 
+      if (res.success) {
+       setAlertBox({ message: res.message, type: 'success' });
+       setSelectedBook(null)
+       fetchBooks();
+       console.log(res)
+       return true;
+      } else {  
+        console.log(res )
+        setAlertBox({ message: res.message, type: 'error' });
+        return false;
+      }
+    } catch (err) {
+      console.error('Lỗi tìm kiếm:', err);
+      return false;
+    }
+  }
+
   // Xử lý xoá sách
   const handleDelete = async (bookID) => {
-    if (window.confirm('Bạn có chắc chắn muốn xoá sách này không?')) {
       try {
         const res = await deleteBook({ book_id: bookID });
         if (res.success) {
           setAlertBox({ message: res.message, type: 'success' });
           fetchBooks();
         } else {
+          console.log(res)
           setAlertBox({ message: res.message, type: 'error' });
         }
       } catch (err) {
         console.error('Lỗi xoá sách:', err);
       }
     }
-  };
+
 
   return (
     <Container className="mt-4">
@@ -92,13 +130,12 @@ function BookManagementPage() {
           <div className="action-buttons">
             <Form.Select
               value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
+               onChange={(e) => setFilterCategory(e.target.value)}
             >
-              <option value="Tất cả">Tất cả thể loại</option>
-              <option value="Lập trình">Lập trình</option>
-              <option value="AI">AI</option>
-              <option value="Thiết kế">Thiết kế</option>
-              <option value="Văn học">Văn học</option>
+              <option value="Tất cả">Tất cả</option>
+              <option value="Lập trình & Giải thuật">Lập trình & Giải thuật</option>
+              <option value="An toàn thông tin">An toàn thông tin</option>
+              <option value="Hệ thống máy tính & Mạng">Hệ thống máy tính & Mạng</option>
             </Form.Select>
 
             <Button
@@ -112,7 +149,6 @@ function BookManagementPage() {
               onClick={() => {
                 setCrudAction('add');
                 setSelectedBook(null);
-                setShowModal(true);
               }}
             >
               Thêm sách
@@ -141,8 +177,8 @@ function BookManagementPage() {
               <tr key={book.book_id}>
                 <td className="text-center">{index + 1}</td>
                 <td className="text-center">{book.book_id}</td>
-                <td>{book.title}</td>
-                <td>{book.author_name}</td>
+                <td className="text-center">{book.title}</td>
+                <td className="text-center">{book.author_name}</td>
                 <td className="text-center">{book.lang}</td>
                 <td className="text-center">{book.publisher_year}</td>
                 <td className="text-center">{book.location}</td>
@@ -156,7 +192,6 @@ function BookManagementPage() {
                       onClick={() => {
                         setCrudAction('update');
                         setSelectedBook(book);
-                        setShowModal(true);
                       }}
                     >
                       ✏️ Sửa
@@ -164,7 +199,10 @@ function BookManagementPage() {
                     <Button
                       variant="danger"
                       size="sm"
-                      onClick={() => handleDelete(book.book_id)}
+                       onClick={() => {
+                        setCrudAction('delete');
+                        setSelectedBook(book);
+                      }}
                     >
                       🗑️ Xoá
                     </Button>
@@ -177,27 +215,27 @@ function BookManagementPage() {
 
         {crudAction === 'add' && (
           <AddBookModal
-            show={showModal}
-            hide={() => setShowModal(false)}
-            setAlertBox={setAlertBox}
+            show ={true}    // Trạng thái modal thêm sách mở 
+            hide = {()=>setCrudAction('')} // Đóng modal lại khi click X
+            addBook = {handleAdd}
           />
         )}
 
         {crudAction === 'update' && (
           <UpdateBookModal
-            show={showModal}
-            hide={() => setShowModal(false)}
-            setAlertBox={setAlertBox}
+            show = {true}
+            hide = {()=>setCrudAction('')}
+            handleUpdate = {handleUpdate}
             bookData={selectedBook}
           />
         )}
 
         {crudAction === 'delete' && (
           <DeleteBookModal
-            show={showModal}
-            hide={() => setShowModal(false)}
-            setAlertBox={setAlertBox}
+            show ={true}
+            hide ={()=>{setCrudAction('')}}
             bookData={selectedBook}
+            handleDelete={handleDelete}
           />
         )}
       </div>

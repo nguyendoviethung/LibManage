@@ -13,12 +13,22 @@ if (!$conn) {
 
 // Đọc dữ liệu JSON từ client
 $data = json_decode(file_get_contents('php://input'), true);
-$bookName = $data['bookName'] ?? ''; //Gán biến $bookName bằng $data['bookName'] nếu có, nếu không có (không tồn tại hoặc null) thì gán bằng chuỗi rỗng ''.
+$searchTerm = $data['searchTerm'] ?? ''; //Giá trị tìm kiếm
+$category = $data['category'] ?? '';  // Giá trị bộ lọc theo thể loại
 
 // Truy vấn dữ liệu
-$query = "SELECT title, lang, publisher_year, location, genre, quantity, author_name FROM public.books WHERE title = $1";
-$result = pg_query_params($conn, $query, [$bookName]);
-
+if($searchTerm === ''){ // Nếu giá trị thanh tìm kiếm rỗng thì tìm theo yêu cầu về thể loại
+    if($category === "Tất cả"){
+        $query = "SELECT * FROM books ORDER BY book_id ASC";
+        $result = pg_query($conn, $query);
+    }else {
+        $query = "SELECT * FROM books WHERE genre = $1 ORDER BY book_id ASC";
+        $result = pg_query_params($conn, $query,[$category]);
+    }
+}else{ // Tìm theo giá trị của thanh tìm kiếm
+    $query = "SELECT * FROM books WHERE title = $1 ORDER BY book_id ASC";
+    $result = pg_query_params($conn, $query,[$searchTerm]);
+}
 // Kiểm tra kết quả trả về từ SQL
 if (!$result) {
     echo json_encode(["error" => "⚠️ Lỗi truy vấn: " . pg_last_error($conn)]);
@@ -28,29 +38,28 @@ if (!$result) {
 $books = []; // Mảng để lưu trữ kết quả
 while ($row = pg_fetch_assoc($result)) {
     $books[] = [
+        'book_id' => $row['book_id'],
         'title' => $row['title'],
-        'language' => $row['lang'],
-        'year' => $row['publisher_year'],
+        'lang' => $row['lang'],
+        'publisher_year' => $row['publisher_year'],
         'location' => $row['location'],
         'genre' => $row['genre'],
         'quantity' => $row['quantity'],
-        'author' => $row['author_name']
+        'author_name' => $row['author_name']
     ];
 }
 
-// Nếu không có kết quả
-// Nếu có kết quả trong mảng $books
 if (count($books) > 0) {
-    // Giả sử chỉ lấy phần tử đầu tiên (nếu bạn chỉ cần lấy 1 cuốn sách)
+   //Nếu có sách thì trả về mảng sách theo yêu cầu 
     echo json_encode([
         "success" => true,
-        "data"   => $books[0]
+        "data"   => $books
     ]);
 } else {
     // Không tìm thấy sách nào
     echo json_encode([
         "success" => false,
-        "message" => "Không tìm thấy sách nào!"
+        "message" => "Không tìm thấy sách nào !"
     ]);
 }
 // Đóng kết nối
