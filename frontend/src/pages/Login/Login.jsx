@@ -36,10 +36,10 @@ function Login() {
         if (role === 'admin') {
           navigate(`/admin-dashboard`,{ replace: true });
           // { replace: true } là một tùy chọn (option) truyền vào hàm navigate() của React Router, để thay thế URL hiện tại thay vì thêm mới vào lịch sử (history stack).
-          //  Điều hướng đến /admin-dashboard, nhưng không lưu trang hiện tại (/login) vào lịch sử trình duyệt
+          //  Điều hướng đến /ad  min-dashboard, nhưng không lưu trang hiện tại (/login) vào lịch sử trình duyệt
           //  => Khi nhấn back không quay lại trang login được 
         } else {
-          navigate(`/dashboard/user/${userID}`,{ replace: true })
+          navigate(`/user/${userID}`,{ replace: true })
         }
       }
        else {

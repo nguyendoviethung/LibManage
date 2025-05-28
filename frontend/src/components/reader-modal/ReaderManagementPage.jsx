@@ -250,6 +250,7 @@ const UserManagementPage = () => {
   </div>
 
   {/* Bảng danh sách sinh viên */}
+  <div className="table-scroll-wrapper">
   <Table striped bordered hover responsive className="custom-table">
     <thead>
       <tr>
@@ -318,7 +319,7 @@ const UserManagementPage = () => {
       ))}
     </tbody>
   </Table>
-
+</div>
       {/* Modal các loại */}
         {/* Modal dùng để cập nhật người dùng và thêm người dùng */}
       <ReaderModal show={readerModal} onHide={handleCloseModal} actionState={actionState} handleUpdate={handleUpdate} handleAddReader={handleAddReader} initialData={selectedReader} checkAccountReader={checkAccountReader} />
@@ -334,4 +335,4 @@ const UserManagementPage = () => {
   );
 };
 
-export default UserManagementPage;
+export default UserManagementPage; 

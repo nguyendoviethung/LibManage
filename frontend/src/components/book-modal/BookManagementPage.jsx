@@ -121,42 +121,37 @@ const handleUpdate = async(data) =>{
 
         {/* Thanh tìm kiếm và bộ lọc */}
         <div className="search-bar-container mb-3">
-          <input
-            type="text"
-            className="form-control search-input"
-            placeholder="Tìm kiếm theo tên sách hoặc mã"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div className="action-buttons">
-            <Form.Select
-              value={filterCategory}
-               onChange={(e) => setFilterCategory(e.target.value)}
-            >
-              <option value="Tất cả">Tất cả</option>
-              <option value="Lập trình & Giải thuật">Lập trình & Giải thuật</option>
-              <option value="An toàn thông tin">An toàn thông tin</option>
-              <option value="Hệ thống máy tính & Mạng">Hệ thống máy tính & Mạng</option>
-            </Form.Select>
+  <input
+    type="text"
+    className="form-control search-input"
+    placeholder="Tìm kiếm theo tên sách hoặc mã"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+  <Form.Select
+    value={filterCategory}
+    onChange={(e) => setFilterCategory(e.target.value)}
+  >
+    <option value="Tất cả">Tất cả</option>
+    <option value="Lập trình & Giải thuật">Lập trình & Giải thuật</option>
+    <option value="An toàn thông tin">An toàn thông tin</option>
+    <option value="Hệ thống máy tính & Mạng">Hệ thống máy tính & Mạng</option>
+  </Form.Select>
+  <Button variant="primary" onClick={handleSearch}>
+    Tìm kiếm
+  </Button>
+  <Button
+    variant="success"
+    onClick={() => {
+      setCrudAction('add');
+      setSelectedBook(null);
+    }}
+  >
+    Thêm sách
+  </Button>
+</div>
 
-            <Button
-              variant="primary"
-              onClick={handleSearch}
-            >
-              Tìm kiếm
-            </Button>
-            <Button
-              variant="success"
-              onClick={() => {
-                setCrudAction('add');
-                setSelectedBook(null);
-              }}
-            >
-              Thêm sách
-            </Button>
-          </div>
-        </div>
-
+   <div className="table-scroll-wrapper">
         {/* Bảng hiển thị sách */}
         <Table striped bordered hover responsive className="custom-table">
           <thead>
@@ -213,7 +208,7 @@ const handleUpdate = async(data) =>{
             ))}
           </tbody>
         </Table>
-       
+       </div>
        {/* Hiện modal thêm sách */}
         {crudAction === 'add' && (
           <AddBookModal

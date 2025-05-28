@@ -9,9 +9,11 @@ export const menuItemsAdmin = [
 ];
 
 
+const userID = localStorage.getItem("userID");
+
 export const menuItemsUser = [
-  { label: "Home", path: "/dashboard", icon: faHouse }, 
-  { label: "Book Management", path: "/book-management", icon: faBook },
-  { label: "Reader Management", path: "/user-management", icon: faUsers },
-  { label: "Book Loan Management", path: "/book-lending-and-return-management", icon: faReceipt },
+  { label: "Hồ sơ cá nhân", path: `/user/${userID}/profile`, icon: faHouse },
+  { label: "Lịch sử mượn sách", path: `/user/${userID}/borrowed-books`, icon: faBook },
+  { label: "Dashboard", path: `/user/${userID}/dashboard-user`, icon: faUsers },
+  { label: "Tìm kiếm sách", path: `/user/${userID}/books-search`, icon: faReceipt },
 ];
