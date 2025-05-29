@@ -6,7 +6,7 @@ import Button from '../button/Button';
 import { checkStudentId } from '../../api/LendingService';
 import AlertBox from '../alert-box/AlertBox';
 
-function QRScannerModal({ onScanSuccess, onClose, NotificationBookCode, setNotificationBookCode }) {
+function BorrowBooks({ onScanSuccess, onClose, NotificationBookCode, setNotificationBookCode }) {
   const [formData, setFormData] = useState({
     studentId: '',
     bookIDs: []
@@ -157,4 +157,4 @@ function QRScannerModal({ onScanSuccess, onClose, NotificationBookCode, setNotif
   );
 }
 
-export default QRScannerModal;
+export default BorrowBooks;

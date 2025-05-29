@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import QRScannerModal from './QRScannerModal';
+import BorrowBooks from './BorrowBooks';
+import ReturnBooks from './ReturnBooks';
 import ActionButton from '../action-button/ActionButton';
-import { bookLendingProcess } from '../../api/LendingService';
+import { bookLendingProcess ,bookReturnProcess} from '../../api/LendingService';
 function QRScanner() {
- const [showScanner, setShowScanner] = useState(false); // State để điều khiển hiển thị QRScanner ra màn hình 
- const [NotificationBookCode, setNotificationBookCode] = useState(null); // Thông báo khi quét mã Q của sách
+ const [borrowBooks, setBorrowBooks] = useState(false); // State để điều khiển hiển thị QRScanner ra màn hình để mượn sách
+ const [returnBooks, setReturnBooks] = useState (false)  // State để điều khiển hiển thị QRScanner ra màn hình để trả sách
+ const [NotificationBookCode, setNotificationBookCode] = useState(null); // Thông báo khi quét mã QR của sách
+
  //Gọi APi để mượn sách
-  const handleScan = async (data) => {
+  const handleBorrowBooks = async (data) => {
   try {
     const response = await bookLendingProcess(data);
     console.log("Mượn sách thành công:", response);
@@ -19,21 +22,47 @@ function QRScanner() {
   }
 };
 
+ //Gọi APi để xử lí trả sách
+  const handleReturnBooks = async (data) => {
+  try {
+    const response = await bookReturnProcess(data);
+    console.log("Mượn sách thành công:", response);
+   if(response.success) {
+      setNotificationBookCode(true); // Hiện thông báo thành công
+    }
+  } catch (error) {
+    console.error("Lỗi mượn sách:", error);
+    setNotificationBookCode(false); //Hiện thông báo lỗi
+  }
+};
+
   return (
-    //Nút quét mã QR
     <div>
+      {/* Phần mượn sách */}
       <ActionButton
-        onClick={() => setShowScanner(true)}
-        label="Quét mã QR"
+        onClick={() => setBorrowBooks(true)}
+        label="Mượn sách"
         className="qr-scan"
       />
-    {/* showScanner === true thì hiển thị ra màn hình máy ảnh quét QR*/}
-      {showScanner && (
-        <QRScannerModal
-          onScanSuccess={handleScan}
-          onClose={() => setShowScanner(false)}
-          NotificationBookCode={NotificationBookCode}
-          setNotificationBookCode={setNotificationBookCode}
+    {/* borrowBooks === true thì hiển thị ra màn hình máy ảnh quét QR*/}
+      {borrowBooks && (
+        <BorrowBooks
+          onScanSuccess={handleBorrowBooks}
+          onClose={() => setBorrowBooks(false)}
+        />
+      )}
+
+       {/*Phần trả sách  */}
+      <ActionButton
+        onClick={() => returnBooks(true)}
+        label="Trả sách"
+        className="qr-scan"
+      />
+    {/* borrowBooks === true thì hiển thị ra màn hình máy ảnh quét QR*/}
+      {returnBooks && (
+        <ReturnBooks
+          onScanSuccess={handleReturnBooks}
+          onClose={() => setReturnBooks(false)}
         />
       )}
     </div>
