@@ -1,9 +1,11 @@
 function DashboardUser(){
     return (
-        <h1>•	🧾 Thông tin sinh viên: họ tên, mã SV, email, trạng thái tài khoản
-•	📌 Số sách đã mượn + số sách đang mượn + quá hạn
-•	📚 Thông báo hệ thống: sách sắp đến hạn, sách bị trễ, cảnh báo trạng thái tài khoản
-</h1>
+        <h1>
+            📊 Tổng quan mượn sách	Tổng số sách đã mượn / đang mượn / quá hạn(có nút xuất pdf sách )
+                 Biểu đồ: mượn theo tháng, thể loại yêu thích...
+                 🔔 Thông báo hệ thống	Sách sắp hết hạn, cảnh báo tài khoản
+                 
+        </h1>
     )
 }
 

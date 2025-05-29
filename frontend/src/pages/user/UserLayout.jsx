@@ -21,7 +21,7 @@ const UserLayout = () => {
       }
     };
 
-    checkAuth();
+    checkAuth();  
   }, [navigate]);
 
   return (

@@ -8,8 +8,8 @@ import UserManagement from './pages/admin/ReaderManagement.jsx';
 import AdminLayout from './pages/admin/AdminLayout.jsx';
 import BookSearch from './pages/user/BookSearch.jsx'
 import DashboardUser from './pages/user/DashboardUser.jsx';
-import MyAccount from './pages/user/MyAccount.jsx';
-import MyBorrowedBooks from './pages/user/MyBorrowedBooks.jsx';
+import Feedback from './pages/user/Feedback.jsx';
+import Profile from './pages/user/Profile.jsx';
 import UserLayout from './pages/user/UserLayout.jsx'
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
     Bên trong AdminLayout có Sidebar và một thẻ <Outlet /> - đây là nơi React sẽ "nhét" nội dung của các route con vào.
     Vì ta chỉ truy cập /admin-dashboard mà không kèm theo đường dẫn con nào (như /book-management), nên React Router sẽ tự động render route có index, tức là AdminDashBoard.
     Kết quả là: khi vừa đăng nhập, ta thấy giao diện quản trị (AdminLayout) với sidebar ở bên trái và nội dung trang AdminDashBoard ở bên phải. 
-    và khi chuyển tran thì Phần Outlet sẽ thay đổi còn phần được khai báo trước đó trong AdminLayout được giữ nguyên*/}
+    và khi chuyển trang thì Phần Outlet sẽ thay đổi còn phần được khai báo trước đó trong AdminLayout được giữ nguyên*/}
    
       <Route path="/admin-dashboard" element={<AdminLayout />}>  
         <Route index element={<AdminDashBoard />} />
@@ -35,10 +35,10 @@ function App() {
 
     {/* Layout cho user */}
     <Route path="/user/:id" element={<UserLayout />}>
-      <Route path="profile" element={<MyAccount />} />
-      <Route path="borrowed-books" element={<MyBorrowedBooks />} />
-      <Route path="dashboard-user" element={<DashboardUser />} />
+      <Route index element={<DashboardUser />} />
       <Route path="books-search" element={<BookSearch />} />
+      <Route path="feedback" element={<Feedback />} />
+      <Route path="profile" element={<Profile />} />
     </Route> 
     
   </Routes>

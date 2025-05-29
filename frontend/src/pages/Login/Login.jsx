@@ -33,6 +33,7 @@ function Login() {
       if (data.success) {
         const role = data.role // Phân quyền 
         const userID = data.userID // Mã số sinh viên 
+        localStorage.setItem("userID", userID); // Lưu UserID vào storage
         if (role === 'admin') {
           navigate(`/admin-dashboard`,{ replace: true });
           // { replace: true } là một tùy chọn (option) truyền vào hàm navigate() của React Router, để thay thế URL hiện tại thay vì thêm mới vào lịch sử (history stack).
