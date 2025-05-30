@@ -6,13 +6,14 @@ import Button from '../button/Button';
 import AlertBox from '../alert-box/AlertBox';
 import { getBooks } from '../../api/LendingService';
 
-function ReturnBooks({ onScanSuccess, onClose }) {
+function ReturnBooks({ handleReturnBooks, onClose }) {
   const [formData, setFormData] = useState({
     studentId: '',
     books: [] // chứa mảng sách từ backend
   });
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState(null); // Thông báo ra màn hình 
 
+  // Bỏ chọn những sách không muốn trả ngay bây giờ
   const removeBook = (index) => {
     setFormData((prev) => ({
       ...prev,
@@ -29,14 +30,14 @@ function ReturnBooks({ onScanSuccess, onClose }) {
         const code = decodedText.trim();
         const studentID = code.split(':')[1]?.trim();
 
-        const res = await getBooks(studentID);
+        const res = await getBooks(studentID); // Láy sách từ mã số sinh viên quét được
 
-        if (res?.success) {
+        if (res?.success) { // Nếu sinh viên có sách thì gán sách và mã số sinh viên vào trong formData
           setFormData({
             studentId: studentID,
             books: res.data
           });
-          setNotification(null);
+          setNotification(null); 
         } else {
           setNotification({
             message: res.message || "Không tìm thấy thông tin sách.",
@@ -54,15 +55,17 @@ function ReturnBooks({ onScanSuccess, onClose }) {
     };
   }, []);
 
+  // Xử lí khi submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    onScanSuccess({
-      studentId: formData.studentId,
-      bookIDs: formData.books.map((book) => book.book_id)
+    handleReturnBooks({
+      studentID: formData.studentId,
+      bookIDs: formData.books.map(book => book.book_id)
     });
     setFormData({ studentId: '', books: [] });
   };
 
+  // Xử lí khi đóng camera
   const handleClose = () => {
     setFormData({ studentId: '', books: [] });
     onClose();
@@ -70,6 +73,7 @@ function ReturnBooks({ onScanSuccess, onClose }) {
 
   return (
     <>
+    {/* Thông báo ra màn hình */}
       {notification && (
         <AlertBox
           message={notification.message}
@@ -77,7 +81,7 @@ function ReturnBooks({ onScanSuccess, onClose }) {
           onClose={() => setNotification(null)}
         />
       )}
-
+          {/* Phần hiện camera và hiển thị danh sách sách đã mượn để trả lại thư viện */}
       <div className="qr-modal">
         <div className="qr-header">
           <span>Quét mã QR</span>
@@ -102,7 +106,7 @@ function ReturnBooks({ onScanSuccess, onClose }) {
                 disabled={true}
               />
               <button type="button" onClick={() => removeBook(index)} className="cancel-btn">
-                Hủy
+                Hủy 
               </button>
             </div>
           ))}

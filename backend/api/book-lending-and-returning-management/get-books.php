@@ -10,18 +10,16 @@ include '../../config/connect.php';
 $data = json_decode(file_get_contents("php://input"), true);
 $studentID = $data['studentID'];
 
-// Truy vấn sách chưa trả của sinh viên
-$query = "SELECT 
-    b.title,
-    b.author_name,
-    br.borrow_date,
-    br.due_date
+// Lấy tiêu đề của sách mà sinh viên đang mượn
+$query = "SELECT
+  br.book_id,
+  b.title
 FROM borrowrecords br
 JOIN reader r ON br.reader_id = r.reader_id
 JOIN books b ON br.book_id = b.book_id
 WHERE r.student_id = $1
-  AND br.return_date IS NULL
-  AND b.is_deleted = false";
+AND br.return_date is NULL
+AND b.is_deleted = false";
 
 $result = pg_query_params($conn, $query, [$studentID]);
 

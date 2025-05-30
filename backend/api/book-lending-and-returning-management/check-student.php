@@ -21,6 +21,7 @@
   WHERE r.student_id = $1 
   AND ra.status = 'Active' ";
 
+
 // Thực hiện truy vấn với tham số
   $result = pg_query_params($conn, $query, [$studentId]);
 
@@ -31,12 +32,15 @@
   if ($check_result) {
     echo json_encode([
         'success' => true,
-        'reader_id' => $check_result['reader_id']
+        'reader_id' => $check_result['reader_id'],
+        'message' => 'Sinh viên này được phép mượn sách'
     ]);
 } else {
     echo json_encode([
         'success' => false,
-        'message' => 'Sinh viên không được phép mượn sách do tài khoản đã bị khóa hoặc tạm ngưng. Vui lòng liên hệ thủ thư để được hỗ trợ.'
+        'message' => 'Sinh viên không được phép mượn sách do tài khoản không còn hoạt động'
     ]);
+    // Sau này phát triển thêm kiểm tra xem có sách chưa trả vượt quá mức cho phép hay không 
+    
 }
 ?>

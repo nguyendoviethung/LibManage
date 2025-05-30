@@ -6,14 +6,14 @@ import Button from '../button/Button';
 import { checkStudentId } from '../../api/LendingService';
 import AlertBox from '../alert-box/AlertBox';
 
-function BorrowBooks({ onScanSuccess, onClose, NotificationBookCode, setNotificationBookCode }) {
+function BorrowBooks({ handleBorrowBooks, onClose }) {
   const [formData, setFormData] = useState({
     studentId: '',
     bookIDs: []
   });
-  // const [lastScannedCode, setLastScannedCode] = useState('');
-  const [NotificationStudentID, setNotificationStudentID] = useState(null); // Thông báo khi quét mã Q của sinh viên và sách
+
   const scannedBookIDsRef = useRef(new Set()); // Để lưu trữ mã sách đã quét
+  const [notification,setNotification] = useState(null); // State thông báo
 
   useEffect(() => {
     const html5QrCode = new Html5Qrcode("qrcode"); // Tạo một instance(đối tượng cụ thể) của Html5Qrcode
@@ -35,9 +35,9 @@ function BorrowBooks({ onScanSuccess, onClose, NotificationBookCode, setNotifica
               ...prev,
               studentId: Id
             }));
-            setNotificationStudentID(true); // Thông báo sinh viên hợp lệ ra màn hình
+            setNotification({message : result.message, type : "success"}) // Thông báo sinh viên hợp lệ ra màn hình
           } else {
-            setNotificationStudentID(false); // Thông báo sinh viên không hợp lệ ra màn hình
+            setNotification({message : result.message, type : "error"})  // Thông báo sinh viên không hợp lệ ra màn hình
             setFormData((prev) => ({ // Reset lại formData
               ...prev,
               studentId: ''
@@ -73,7 +73,7 @@ function BorrowBooks({ onScanSuccess, onClose, NotificationBookCode, setNotifica
     console.log("Gửi dữ liệu:", formData);
 
     // Gửi dữ liệu mượn sách (dạng object JSON) về component cha để xử lý
-    onScanSuccess({
+    handleBorrowBooks({
       studentId: formData.studentId,
       bookIDs: formData.bookIDs
     });
@@ -101,23 +101,15 @@ function BorrowBooks({ onScanSuccess, onClose, NotificationBookCode, setNotifica
   return (
     <>
       {/* Thông báo xem sinh viên có hợp lệ hay không */}
-      {NotificationStudentID !== null && (
+      {notification !== null && (
         <AlertBox //
-          message={NotificationStudentID ? 'Sinh viên được phép mượn sách!' : 'Sinh viên không được phép mượn sách!'}
-          type={NotificationStudentID ? 'success' : 'error'}
-          onClose={() => setNotificationStudentID(null)}
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
         />
       )}
 
-      {/* Thông báo xem có mượn sách thành công hay không */}
-      {NotificationBookCode !== null && (
-        <AlertBox
-          message={NotificationBookCode ? 'Mượn sách thành công!' : 'Mượn sách không thành công!'}
-          type={NotificationBookCode ? 'success' : 'error'}
-          onClose={() => setNotificationBookCode(null)}
-        />
-      )}
-
+     
       <div className="qr-modal">
         <div className="qr-header">
           <span>Quét mã QR</span>

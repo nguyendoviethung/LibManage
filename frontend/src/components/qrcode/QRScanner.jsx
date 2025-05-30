@@ -2,66 +2,81 @@ import { useState } from 'react';
 import BorrowBooks from './BorrowBooks';
 import ReturnBooks from './ReturnBooks';
 import ActionButton from '../action-button/ActionButton';
-import { bookLendingProcess ,bookReturnProcess} from '../../api/LendingService';
+import { bookLendingProcess, bookReturnProcess } from '../../api/LendingService';
+import AlertBox from '../alert-box/AlertBox';
+
 function QRScanner() {
- const [borrowBooks, setBorrowBooks] = useState(false); // State để điều khiển hiển thị QRScanner ra màn hình để mượn sách
- const [returnBooks, setReturnBooks] = useState (false)  // State để điều khiển hiển thị QRScanner ra màn hình để trả sách
- const [NotificationBookCode, setNotificationBookCode] = useState(null); // Thông báo khi quét mã QR của sách
+  const [borrowBooks, setBorrowBooks] = useState(false);
+  const [returnBooks, setReturnBooks] = useState(false);
+  const [notification, setNotification] = useState(null);
 
- //Gọi APi để mượn sách
+  // Xử lý mượn sách
   const handleBorrowBooks = async (data) => {
-  try {
-    const response = await bookLendingProcess(data);
-    console.log("Mượn sách thành công:", response);
-   if(response.success) {
-      setNotificationBookCode(true); // Hiện thông báo thành công
+    try {
+      const response = await bookLendingProcess(data);
+      console.log("Mượn sách thành công:", response);
+      if (response.success) {
+        setNotification({ message: response.message, type: "success" });
+      } else {
+        setNotification({ message: response.message, type: "error" });
+      }
+    } catch (error) {
+      console.error("Lỗi mượn sách:", error);
+      setNotification({ message: "Đã xảy ra lỗi khi mượn sách.", type: "error" });
     }
-  } catch (error) {
-    console.error("Lỗi mượn sách:", error);
-    setNotificationBookCode(false); //Hiện thông báo lỗi
-  }
-};
+  };
 
- //Gọi APi để xử lí trả sách
+  // Xử lý trả sách
   const handleReturnBooks = async (data) => {
-  try {
-    const response = await bookReturnProcess(data);
-    console.log("Mượn sách thành công:", response);
-   if(response.success) {
-      setNotificationBookCode(true); // Hiện thông báo thành công
+    try {
+      const response = await bookReturnProcess(data);
+      console.log("Trả sách thành công:", response);
+      if (response.success) {
+        setNotification({ message: response.message, type: "success" });
+      } else {
+        setNotification({ message: response.message, type: "error" });
+      }
+    } catch (error) {
+      console.error("Lỗi trả sách:", error);
+      setNotification({ message: "Đã xảy ra lỗi khi trả sách.", type: "error" });
     }
-  } catch (error) {
-    console.error("Lỗi mượn sách:", error);
-    setNotificationBookCode(false); //Hiện thông báo lỗi
-  }
-};
+  };
 
   return (
     <div>
-      {/* Phần mượn sách */}
+      {/* Hiển thị thông báo nếu có */}
+      {notification && (
+        <AlertBox
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
+
+      {/* Nút mượn sách */}
       <ActionButton
         onClick={() => setBorrowBooks(true)}
         label="Mượn sách"
         className="qr-scan"
       />
-    {/* borrowBooks === true thì hiển thị ra màn hình máy ảnh quét QR*/}
+
       {borrowBooks && (
         <BorrowBooks
-          onScanSuccess={handleBorrowBooks}
+          handleBorrowBooks ={handleBorrowBooks}
           onClose={() => setBorrowBooks(false)}
         />
       )}
 
-       {/*Phần trả sách  */}
+      {/* Nút trả sách */}
       <ActionButton
-        onClick={() => returnBooks(true)}
+        onClick={() => setReturnBooks(true)}
         label="Trả sách"
         className="qr-scan"
       />
-    {/* borrowBooks === true thì hiển thị ra màn hình máy ảnh quét QR*/}
+
       {returnBooks && (
         <ReturnBooks
-          onScanSuccess={handleReturnBooks}
+          handleReturnBooks ={handleReturnBooks}
           onClose={() => setReturnBooks(false)}
         />
       )}
