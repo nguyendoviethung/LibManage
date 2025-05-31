@@ -10,7 +10,7 @@ include '../../config/connect.php';
 $data = json_decode(file_get_contents("php://input"), true);
 $studentID = $data['studentID'];
 
-// Lấy tiêu đề của sách mà sinh viên đang mượn
+// Lấy tiêu đề, ID của sách mà sinh viên đang mượn
 $query = "SELECT
   br.book_id,
   b.title

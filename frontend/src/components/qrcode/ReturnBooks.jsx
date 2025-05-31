@@ -30,7 +30,7 @@ function ReturnBooks({ handleReturnBooks, onClose }) {
         const code = decodedText.trim();
         const studentID = code.split(':')[1]?.trim();
 
-        const res = await getBooks(studentID); // Láy sách từ mã số sinh viên quét được
+        const res = await getBooks({studentID}); // Láy sách từ mã số sinh viên quét được
 
         if (res?.success) { // Nếu sinh viên có sách thì gán sách và mã số sinh viên vào trong formData
           setFormData({
@@ -39,6 +39,7 @@ function ReturnBooks({ handleReturnBooks, onClose }) {
           });
           setNotification(null); 
         } else {
+          console.log(formData)
           setNotification({
             message: res.message || "Không tìm thấy thông tin sách.",
             type: "error"
