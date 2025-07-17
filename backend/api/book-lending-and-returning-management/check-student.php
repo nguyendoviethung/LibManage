@@ -15,15 +15,14 @@
 }
 
 // Câu truy vấn lấy reader_id nếu tài khoản còn hoạt động 
-  $query = "SELECT r.reader_id
-  FROM reader r
-  JOIN readeraccounts ra ON r.student_id = ra.student_id
-  WHERE r.student_id = $1 
-  AND ra.status = 'Active' ";
+  $query = "SELECT reader_id
+  FROM reader 
+  WHERE student_id = $1 
+  AND status = $2 ";
 
 
 // Thực hiện truy vấn với tham số
-  $result = pg_query_params($conn, $query, [$studentId]);
+  $result = pg_query_params($conn, $query, [$studentId,'Active']);
 
 //Lấy kết quả truy vấn
   $check_result = pg_fetch_assoc($result);
@@ -38,7 +37,7 @@
 } else {
     echo json_encode([
         'success' => false,
-        'message' => 'Sinh viên không được phép mượn sách do tài khoản không còn hoạt động'
+        'message' => 'Sinh viên không được phép mượn do sinh viên không tồn tại hoặc đã bị khóa'
     ]);
     // Sau này phát triển thêm kiểm tra xem có sách chưa trả vượt quá mức cho phép hay không 
     

@@ -52,7 +52,7 @@ function QRScanner() {
           onClose={() => setNotification(null)}
         />
       )}
-
+    <div className="d-flex justify-content-center gap-4 my-4">
       {/* Nút mượn sách */}
       <ActionButton
         onClick={() => setBorrowBooks(true)}
@@ -80,6 +80,7 @@ function QRScanner() {
           onClose={() => setReturnBooks(false)}
         />
       )}
+      </div>
     </div>
   );
 }

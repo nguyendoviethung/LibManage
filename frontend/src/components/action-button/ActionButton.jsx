@@ -1,4 +1,3 @@
-// src/components/ActionButton.jsx
   import './ActionButton.scss'
   function ActionButton({ onClick, label = "Thêm", icon = null, className = ""}) {
     return (

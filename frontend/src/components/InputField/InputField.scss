@@ -1,31 +1,31 @@
-.input-wrapper {
-    position: relative;
+// Icon bên trái input
+.input-icon-left {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #000000;
+    font-size: 18px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+// Input
+  input {
     width: 100%;
-  
-    input {
-      width: 100%;
-      padding: 12px 40px 12px 16px; // 👈 chừa bên phải cho icon
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      background: #eaf1ff;
-      font-size: 16px;
-      outline: none;
-      box-sizing: border-box; // 👈 không vượt quá wrapper
-      transition: border-color 0.3s ease;
-  
-      &:focus {
-        border-color: #3498db;
-      }
-    }
-  
-    i.icon-right {
-      position: absolute;
-      top: 50%;
-      right: 12px;
-      transform: translateY(-50%);
-      color: #888;
-      font-size: 18px;
-      pointer-events: none;
+    padding: 12px 40px 12px 40px; // padding-left 40px nếu có icon bên trái dùng để cho icon không che lấp input
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #eaf1ff;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #3498db;
     }
   }
+  
+
   

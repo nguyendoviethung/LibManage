@@ -15,7 +15,7 @@ if (!$conn) {
 $data = json_decode(file_get_contents('php://input'), true);
 $searchTerm = $data['searchTerm'] ?? ''; //Giá trị tìm kiếm
 $category = $data['category'] ?? '';  // Giá trị bộ lọc theo thể loại
-
+$searchTermLike = '%' . $searchTerm . '%';
 // Truy vấn dữ liệu
 if($searchTerm === ''){ // Nếu giá trị thanh tìm kiếm rỗng thì tìm theo yêu cầu về thể loại
     if($category === "Tất cả"){
@@ -26,8 +26,8 @@ if($searchTerm === ''){ // Nếu giá trị thanh tìm kiếm rỗng thì tìm t
         $result = pg_query_params($conn, $query,[$category,'false']);
     }
 }else{ // Tìm theo giá trị của thanh tìm kiếm
-    $query = "SELECT * FROM books WHERE title = $1 AND is_deleted = $2 ORDER BY book_id ASC";
-    $result = pg_query_params($conn, $query,[$searchTerm,'false']);
+    $query = "SELECT * FROM books WHERE title ILIKE $1 AND is_deleted = $2 ORDER BY book_id ASC";
+    $result = pg_query_params($conn, $query,[$searchTermLike,'false']);
 }
 // Kiểm tra kết quả trả về từ SQL
 if (!$result) {

@@ -4,6 +4,8 @@ import axios from 'axios';
 import LoginForm from '../../components/loginform/LoginForm';
 import TextHeader from '../../components/textheader/TextHeader';
 import AlertBox from '../../components/alert-box/AlertBox';
+import FooterLogin from '../../components/footer/FooterLogin';
+import HeaderLogin from '../../components/header/HeaderLogin';
 import "./LoginBackground.scss"
  
 function Login() {
@@ -52,8 +54,8 @@ function Login() {
     }
   };
   //  handleLogin();
-    return (
-  <>
+  return (
+    <>
       {loginStatus && (
         <AlertBox
           message= "Tài khoản hoặc mật khẩu không chính xác"
@@ -61,19 +63,22 @@ function Login() {
           onClose={() => setLoginStatus(false)}
         /> 
       )}
+
     <div className = "login-background">
+      <HeaderLogin />
         <TextHeader text="Chào mừng đến với Thư viện Đại học Công nghệ Kết nối Toàn Cầu" />
         <div className="login-container">
         <LoginForm
           username={username}
-          setUsername={setUsername}
           password={password}
+          setUsername={setUsername}
           setPassword={setPassword}
           onSubmit={handleLogin}
         />
         </div>
+      <FooterLogin />
     </div>
-  </>
+    </>
     );
 }
 

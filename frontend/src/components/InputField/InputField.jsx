@@ -1,18 +1,18 @@
 import "./InputField.scss";
 
-function InputField({ type, value, onChange, placeholder, iconClass, disabled = false}) {
+function InputField({ type, value, onChange, placeholder, iconLeft, disabled = false }) {
   return (
-    <div className="input-wrapper">
+    <>
+      {iconLeft && <span className="input-icon-left">{iconLeft}</span>}
       <input
-        type={type}
+        typ={type}
         value={value}
-        onChange={onChange} 
+        onChange={onChange}
         placeholder={placeholder}
-        disabled={disabled} // ✅ Thêm dòng này
-        required 
+        disabled={disabled}
+        required
       />
-      <i className={`bi ${iconClass} icon-right`}></i>
-    </div>
+    </>
   );
 }
 

@@ -124,7 +124,7 @@ const handleUpdate = async(data) =>{
   <input
     type="text"
     className="form-control search-input"
-    placeholder="Tìm kiếm theo tên sách hoặc mã"
+    placeholder="Tìm kiếm theo tên sách"
     value={searchTerm}
     onChange={(e) => setSearchTerm(e.target.value)}
   />

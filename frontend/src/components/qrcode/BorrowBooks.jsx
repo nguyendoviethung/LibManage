@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
 import './QRScannerModal.scss';
-import InputField from '../inputfield/InputField';
-import Button from '../button/Button';
+import InputField from '../inputfield/InputField.jsx';
+import Button from '../button/Button.jsx';
 import { checkStudentId } from '../../api/LendingService';
 import AlertBox from '../alert-box/AlertBox';
 
