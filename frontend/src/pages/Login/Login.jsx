@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // sử dụng để chuyển hướng nội bộ
 import axios from 'axios';
 import LoginForm from '../../components/loginform/LoginForm';
-import TextHeader from '../../components/textheader/TextHeader';
 import AlertBox from '../../components/alert-box/AlertBox';
 import FooterLogin from '../../components/footer/FooterLogin';
 import HeaderLogin from '../../components/header/HeaderLogin';
@@ -53,7 +52,7 @@ function Login() {
       alert('Đã có lỗi xảy ra khi kết nối đến máy chủ.')
     }
   };
-  //  handleLogin();
+  
   return (
     <>
       {loginStatus && (
@@ -63,21 +62,22 @@ function Login() {
           onClose={() => setLoginStatus(false)}
         /> 
       )}
+        
+    <HeaderLogin />
 
-    <div className = "login-background">
-      <HeaderLogin />
-        <TextHeader text="Chào mừng đến với Thư viện Đại học Công nghệ Kết nối Toàn Cầu" />
+     <div className = "login-background">
         <div className="login-container">
-        <LoginForm
+          <LoginForm
           username={username}
           password={password}
           setUsername={setUsername}
           setPassword={setPassword}
           onSubmit={handleLogin}
-        />
+          />
         </div>
-      <FooterLogin />
-    </div>
+      </div>
+
+    <FooterLogin />
     </>
     );
 }

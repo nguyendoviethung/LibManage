@@ -5,7 +5,7 @@ function InputField({ type, value, onChange, placeholder, iconLeft, disabled = f
     <>
       {iconLeft && <span className="input-icon-left">{iconLeft}</span>}
       <input
-        typ={type}
+        type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
