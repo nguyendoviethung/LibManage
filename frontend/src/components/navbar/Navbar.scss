@@ -4,12 +4,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
+    background: #1e9ddc;
     height: 70px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(10, 0, 0, 0.05);
     top: 0;
     z-index: 100;
-    overflow: visible; // ✅ thêm dòng này
+    overflow: visible; 
     .navbar-right {
       display: flex;
       align-items: center;

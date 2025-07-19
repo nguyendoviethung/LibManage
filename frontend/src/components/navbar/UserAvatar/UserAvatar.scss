@@ -4,15 +4,15 @@
   cursor: pointer;
 
   img {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #9cccf5;
+    border: 4px solid #ecf0f4;
     transition: border-color 0.3s ease;
     margin-right: 40px;
     &:hover {
-      border-color: #2980b9;
+      border-color: #5002fa;
     }
   }
 
@@ -24,7 +24,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 8px 0;
-    min-width: 90px;
+    min-width: 200px;
     z-index: 999;
     display: block;
 
@@ -41,7 +41,7 @@
       transition: background 0.2s ease;
 
       &:hover {
-        background: #bdd8df;
+        background: #80a2db;
       }
     }
   }

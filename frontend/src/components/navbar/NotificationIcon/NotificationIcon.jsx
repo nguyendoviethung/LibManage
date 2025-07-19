@@ -1,10 +1,11 @@
-import './NotificationIcon.scss'; // Import style riêng
-
-function NotificationIcon({ count}) {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
+import './NotificationIcon.scss';
+function NotificationIcon({count}) {
   return (
-    <div className="notification-icon">
-      <i className="bi bi-bell"></i> {/* Bootstrap Icons */}
-      {count > 0 && <span className="badge">{count}</span>}
+    <div className="bell-icon">
+      <FontAwesomeIcon icon={faBell} />
+      {count > 0 && <span className="notification-count">{count}</span>}
     </div>
   );
 };

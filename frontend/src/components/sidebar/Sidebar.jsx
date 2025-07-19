@@ -8,10 +8,11 @@ export function SidebarAdmin() {
     <div className="sidebar">
       <ul className="sidebar-menu">
         {menuItemsAdmin.map(item => ( //Lặp qua các item trong menuItems và tạo ra các thẻ <li> cho từng item
-          <li key={item.path}>
+          <li key={item.path} >
+            {/* Sử dụng Link từ react-router-dom để điều hướng đến các trang khác */}
             <Link to={item.path} className="menu-link">
-              <FontAwesomeIcon icon={item.icon} style={{ marginRight: '12px' }} />
-              <span>{item.label}</span>
+              <FontAwesomeIcon icon={item.icon} className = "sidebar-icon" />
+              <span className = "item-label"> {item.label} </span>
             </Link>
           </li>
         ))}

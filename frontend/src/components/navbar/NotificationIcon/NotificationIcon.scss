@@ -1,33 +1,26 @@
-.notification-icon {
+.bell-icon {
     position: relative;
-    display: inline-block;
+    display: block;
     font-size: 20px; // kích thước icon
-    color: #555;
+    color: #000b00;
     cursor: pointer;
     transition: color 0.3s ease;
-  
+   
     &:hover {
-      color: #2980b9; // đổi màu khi hover
+      color: #81d4ee; // đổi màu khi hover
     }
   
-    i {
+   .notification-count{
       display: block;
-    }
-  
-    .badge {
       position: absolute;
-      top: -8px;
+      top: -6px;
       right: -12px;
-      background: red;
-      color: white;
-      font-size: 10px;
-      padding: 2px 6px;
+      background-color: #f14734; // màu nền đỏ
+      color: white; // màu chữ trắng
       border-radius: 50%;
-      font-weight: bold;
-      line-height: 1;
-      min-width: 16px;
-      text-align: center;
-      box-shadow: 0 0 2px rgba(0,0,0,0.2);
-    }
+      padding: 2px 6px;
+      font-size: 12px; // kích thước chữ
+      font-weight: bold; // đậm chữ
+   }
   }
   

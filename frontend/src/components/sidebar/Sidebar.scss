@@ -1,10 +1,11 @@
 .sidebar {
-    width: 220px;
-  height: calc(100vh - 70px); // vì navbar cao 70px
-  background-color: #fff;
+  width: 250px;
+  height: 100%;
+  background-color:  #e3f4fd ;
   border-right: 1px solid #ddd;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  flex-shrink: 0;
     
     .sidebar-menu {
       list-style: none;
@@ -22,16 +23,23 @@
           color: #333;
           transition: background 0.2s;
   
-          i {
-            margin-right: 12px;
-            font-size: 18px;
-          }
+        .sidebar-icon {
+          font-size: 20px;
+          color: #2980b9;
+          margin-right: 12px;
+        }
+        .item-label {
+          font-size: 16px;
+          font-weight: 500;
+        }
   
-          &:hover {
-            background-color: #f0f0f0;
-            color: #2980b9;
+          &:hover{
+           background: #85bef6;
+           color: #090000;
+           border-left: 3px solid #21a1e1;
           }
         }
+        
       }
     }
   }

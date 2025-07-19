@@ -25,14 +25,13 @@ const AdminLayout = () => {
   }, [navigate]);
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className="layout-container">
       <Navbar />
-      <div style={{ display: "flex" }}>
+      <div className="layout-content">
         <SidebarAdmin />
-        <main style={{ flex: 1, overflowY: "auto", position: "relative" }}>
+        <main className="main-content">
           <Outlet />
         </main>
-
       </div>
     </div>
   );
