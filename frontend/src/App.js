@@ -4,13 +4,14 @@ import { BrowserRouter } from 'react-router-dom';
 import AdminDashBoard from './pages/admin/AdminDashBoard.jsx';
 import BookLendingAndReturningManagement from './pages/admin/BookLendingAndReturningManagement.jsx';
 import BookManagement from './pages/admin/BookManagement.jsx';
-import UserManagement from './pages/admin/ReaderManagement.jsx';
+import ReaderManagement from './pages/admin/ReaderManagement.jsx';
 import AdminLayout from './pages/admin/AdminLayout.jsx';
 import BookSearch from './pages/user/BookSearch.jsx'
 import DashboardUser from './pages/user/DashboardUser.jsx';
 import Feedback from './pages/user/Feedback.jsx';
 import Profile from './pages/user/Profile.jsx';
-import UserLayout from './pages/user/UserLayout.jsx'
+import UserLayout from './pages/user/UserLayout.jsx';
+
 function App() {
   return (
     <BrowserRouter>
@@ -30,7 +31,7 @@ function App() {
         <Route index element={<AdminDashBoard />} />
         <Route path="book-lending-and-returning-management" element={<BookLendingAndReturningManagement />} />
         <Route path="book-management" element={<BookManagement />} />
-        <Route path="user-management" element={<UserManagement />} />
+        <Route path="user-management" element={<ReaderManagement />} />
       </Route>
 
     {/* Layout cho user */}

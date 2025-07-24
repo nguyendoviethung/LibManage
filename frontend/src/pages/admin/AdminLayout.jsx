@@ -1,4 +1,3 @@
-// src/layouts/AdminLayout.jsx
 import { Outlet, useNavigate } from "react-router-dom";
 import { SidebarAdmin } from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";

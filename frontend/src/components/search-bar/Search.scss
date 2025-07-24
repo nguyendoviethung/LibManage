@@ -1,0 +1,32 @@
+.search-wrapper {
+      position: relative;
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      min-width: 240px;
+      max-width: 400px;
+      
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        color: #1e78ed;
+        font-size: 1.2rem;
+      }
+    
+    .search-input {
+      flex: 1 1 240px;
+      min-width: 220px;
+      max-width: 300px;
+      border-radius: 10px;
+      padding-left: 40px;
+      border: 1.5px solid #e2e8f0;
+      background: #f7fafc;
+      font-size: 1rem;
+      transition: box-shadow 0.3s, border-color 0.3s;
+      &:focus {
+        border-color: #72a8c4;
+        box-shadow: 0 0 0 4px #2d8ce533;
+        background: #fff;
+      }
+    }
+  }

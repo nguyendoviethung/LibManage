@@ -1,13 +1,14 @@
-  import './ActionButton.scss'
-  function ActionButton({ onClick, label = "Thêm", icon = null, className = ""}) {
+  import './ActionButton.scss';
+  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+  import { Button } from 'react-bootstrap';
+  function ActionButton({ onClick, label, icon, className }) {
     return (
-      <div
-        onClick={onClick}
-        className="action-button"
-      >
-        {icon && <span style={{ marginRight: '8px' }}>{icon}</span>}
-        {label}
-      </div>  
+      <Button
+                className= {`action-button ${className}`}
+                onClick= {onClick}
+              >
+                <FontAwesomeIcon icon={icon} style={{marginRight: 6}} /> {label}
+              </Button>
     );
   }
 

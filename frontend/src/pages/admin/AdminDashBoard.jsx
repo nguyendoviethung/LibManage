@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faBook, 
   faUsers, 
@@ -9,7 +8,7 @@ import {
 import BookCategoryChart from '../../components/charts/BookCategoryChart';
 import BorrowChart from '../../components/charts/MonthlyBookLoan';
 import './AdminDashboard.scss';
-
+import StatCard from '../../components/stat-card/stat-card'; 
 export default function AdminDashBoard() {
   const [stats, setStats] = useState({
     totalBooks: 0,
@@ -46,48 +45,14 @@ export default function AdminDashBoard() {
 
   return (
     <div className="admin-dashboard">
-      {/* Header Section - Statistics Cards */}
+      {/* Phần tiêu đề - Thẻ thống kê */}
+
       <div className="stats-section">
         <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faBook} />
-            </div>
-            <div className="stat-content">
-              <h3>{stats.totalBooks.toLocaleString()}</h3>
-              <p>Tổng số sách</p>
-            </div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faUsers} />
-            </div>
-            <div className="stat-content">
-              <h3>{stats.totalReaders.toLocaleString()}</h3>
-              <p>Độc giả đăng ký</p>
-            </div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faBookOpen} />
-            </div>
-            <div className="stat-content">
-              <h3>{stats.borrowedBooks.toLocaleString()}</h3>
-              <p>Sách đang mượn</p>
-            </div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FontAwesomeIcon icon={faClock} />
-            </div>
-            <div className="stat-content">
-              <h3>{stats.overdueBooks.toLocaleString()}</h3>
-              <p>Sách quá hạn</p>
-            </div>
-          </div>
+          <StatCard icon = {faBook} value={stats.totalBooks} label="Tổng số sách" />
+          <StatCard icon = {faUsers} value={stats.totalReaders} label="Tổng số độc giả" />
+          <StatCard icon = {faBookOpen} value={stats.borrowedBooks} label="Sách đang mượn" />
+          <StatCard icon = {faClock} value={stats.overdueBooks} label="Sách quá hạn" />
         </div>
       </div>
 

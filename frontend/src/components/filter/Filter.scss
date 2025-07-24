@@ -1,0 +1,50 @@
+
+.filter-group {
+  width: 280px;
+  min-width: 270px;
+  max-width: 280px;
+  flex: 0 0 220px;
+  margin-bottom: 0;
+
+  .filter-label {
+    display: flex;
+    align-items: center;
+    background: #f7fafc;
+    border-radius: 8px 8px 0 0;
+    padding: 6px 14px 6px 10px;
+    font-weight: 600;
+    color: #1976d2;
+    font-size: 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-bottom: none;
+    width: 100%;
+    
+    .filter-icon {
+      margin-right: 8px;
+      color: #1976d2;
+      font-size: 1.1rem;
+    }
+  }
+
+  select, .form-select {
+    border-radius: 0 0 8px 8px;
+    border-top: none;
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    background: #f7fafc;
+    transition: box-shadow 0.3s, border-color 0.3s;
+    &:focus {
+      border-color: #1e9ddc;
+      box-shadow: 0 0 0 2px #09a1ec33;
+      background: #fff;
+    }
+  }
+}
+
+.filter-group select,
+.filter-group .form-select {
+  max-width: 100%;
+}
+
