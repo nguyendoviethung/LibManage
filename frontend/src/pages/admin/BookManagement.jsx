@@ -213,9 +213,9 @@ const handleUpdate = async(data) =>{
         )}
 
         {/* Thanh tìm kiếm và bộ lọc */}
-  <div div className="search-bar-container mb-3">
+  <div div className="search-bar-container ">
 
-    <div className="search-row">
+    <div className="filter-row">
       {/* Bộ lọc thể loại sách */}
       <Filter
         icon={faFilter}
@@ -251,33 +251,31 @@ const handleUpdate = async(data) =>{
         setFilter={setFilterLang}
         uniqueKeyword={uniqueLangs}
       />
+    </div>
+
+    <div className="search-row" >
+      <div>
+        <Search
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
+          placeholder="Tìm kiếm sách theo tên"
+        />
       </div>
-
-    <div className="search-row">
-     <Search
-        setSearchTerm={setSearchTerm}
-        searchTerm={searchTerm}
-        placeholder= "Tìm kiếm sách theo tên"
+      <ActionButton
+        onClick={handleSearch}
+        label="Tìm kiếm"
+        icon={faSearch}
+        className="btn-custom-search"
       />
-  
-      <div className="search-actions">
-       <ActionButton
-          onClick={handleSearch}
-          label="Tìm kiếm"
-          icon={faSearch}
-          className="action-button btn-custom-search"
-        />
-
-        <ActionButton
-          onClick={() => {
-            setCrudAction('add');
-            setSelectedBook(null);
-          }}
-          label="Thêm sách"
-          icon={faPlus}
-          className="action-button btn-custom-add"
-        />
-      </div>  
+      <ActionButton
+        onClick={() => {
+          setCrudAction('add');
+          setSelectedBook(null);
+        }}
+        label="Thêm sách"
+        icon={faPlus}
+        className="btn-custom-add-book"
+      />
     </div>
   </div>
 
@@ -335,28 +333,25 @@ const handleUpdate = async(data) =>{
                   <td className="text-center">{book.genre}</td>
                   <td className="text-center">
                     <div className="d-flex justify-content-center gap-2 flex-wrap">
-                      <Button
-                        className="btn-custom-edit"
-                        variant="warning"
-                        size="sm"
+                      <ActionButton
                         onClick={() => {
                           setCrudAction('update');
                           setSelectedBook(book);
                         }}
-                      >
-                        <FontAwesomeIcon icon={faPenToSquare} style={{marginRight: 6}} /> Sửa
-                      </Button>
-                      <Button
-                        className="btn-custom-delete"
-                        variant="danger"
-                        size="sm"
-                         onClick={() => {
+                        label="Sửa"
+                        icon={faPenToSquare}
+                        className="btn-custom-edit"
+                      />
+                      
+                     <ActionButton
+                        onClick={() => {
                           setCrudAction('delete');
                           setSelectedBook(book);
                         }}
-                      >
-                        <FontAwesomeIcon icon={faTrash} style={{marginRight: 6}} /> Xoá
-                      </Button>
+                        label="Xoá"
+                        icon={faTrash}
+                        className="btn-custom-delete"
+                      />
                     </div>
                   </td>
                 </tr>

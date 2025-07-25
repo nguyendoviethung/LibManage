@@ -8,10 +8,9 @@ import {
   Tooltip,
   Legend,
   Title,
-  Filler // ✅ thêm cái này
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { monthlyBookLoan } from "../../api/DrawCharts";
+import { monthlyBookLoan } from "../../api/Admin-Dashboard";
 
 // Đăng ký các thành phần cần dùng của Chart.js
 ChartJS.register( LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend, Title);

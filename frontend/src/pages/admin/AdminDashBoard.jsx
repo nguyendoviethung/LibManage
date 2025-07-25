@@ -5,11 +5,13 @@ import {
   faBookOpen, 
   faClock
 } from '@fortawesome/free-solid-svg-icons';
-import BookCategoryChart from '../../components/charts/BookCategoryChart';
-import BorrowChart from '../../components/charts/MonthlyBookLoan';
+import BookCategoryChart from '../../components/admin-dashboard/BookCategoryChart';
+import BorrowChart from '../../components/admin-dashboard/MonthlyBookLoan';
+import {statsData} from '../../api/Admin-Dashboard';
 import './AdminDashboard.scss';
 import StatCard from '../../components/stat-card/stat-card'; 
-export default function AdminDashBoard() {
+
+ export default function AdminDashBoard() {
   const [stats, setStats] = useState({
     totalBooks: 0,
     totalReaders: 0,
@@ -21,26 +23,22 @@ export default function AdminDashBoard() {
   const [recentReaders, setRecentReaders] = useState([]);
 
   useEffect(() => {
-    // TODO: Fetch statistics from API
-    setStats({
-      totalBooks: 1250,
-      totalReaders: 450,
-      borrowedBooks: 89,
-      overdueBooks: 12
-    });
+     const res = async () => {
+      try {
+        const statsRes = await statsData();
+        // const booksRes = await axios.get('/api/dashboard/recent-books');
+        // const readersRes = await axios.get('/api/dashboard/recent-readers');
+        console.log('Dữ liệu từ API:', statsRes);
 
-    // TODO: Fetch recent books and readers
-    setRecentBooks([
-      { id: 1, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', addedDate: '2024-01-15' },
-      { id: 2, title: 'Nhà Giả Kim', author: 'Paulo Coelho', addedDate: '2024-01-14' },
-      { id: 3, title: 'Tuổi Trẻ Đáng Giá Bao Nhiêu', author: 'Rosie Nguyễn', addedDate: '2024-01-13' }
-    ]);
-
-    setRecentReaders([
-      { id: 1, name: 'Nguyễn Văn A', email: 'nguyenvana@email.com', joinedDate: '2024-01-15' },
-      { id: 2, name: 'Trần Thị B', email: 'tranthib@email.com', joinedDate: '2024-01-14' },
-      { id: 3, name: 'Lê Văn C', email: 'levanc@email.com', joinedDate: '2024-01-13' }
-    ]);
+        setStats(statsRes); // dữ liệu dạng: { totalBooks: ..., totalReaders: ..., ... }
+        // setRecentBooks(booksRes.data); // mảng sách mới thêm
+        // setRecentReaders(readersRes.data); // mảng người đọc mới thêm
+      } catch (error) {
+        console.error('Lỗi khi fetch dữ liệu dashboard:', error);
+      }
+    };
+    // Gọi hàm fetch dữ liệu
+    res(); 
   }, []);
 
   return (
@@ -56,7 +54,7 @@ export default function AdminDashBoard() {
         </div>
       </div>
 
-      {/* Main Content Section */}
+      {/* Phần nội dung chính*/}
       <div className="main-content">
         <div className="charts-section">
           <div className="chart-container">

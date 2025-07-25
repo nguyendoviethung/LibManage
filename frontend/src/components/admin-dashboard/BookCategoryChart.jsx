@@ -8,9 +8,8 @@ import {
   Tooltip,
   Legend,
   Title,
-  Filler // ✅ thêm cái này
 } from 'chart.js';
-import {bookCategoryChart}from '../../api/DrawCharts'
+import {bookCategoryChart}from '../../api/Admin-Dashboard'
 // Đăng ký các thành phần cần dùng của chart.js
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title);
 
@@ -32,8 +31,8 @@ function BookCategoryChart() {
             {
               label: 'Number of Books',
               data: counts,
-              backgroundColor: 'rgba(200, 158, 169, 0.7)',
-              borderColor: 'rgb(110, 191, 191)',
+              backgroundColor: 'rgba(242, 164, 185, 0.7)',
+              borderColor: 'rgba(229, 122, 150, 0.7)',
               borderWidth: 1
             }
           ]

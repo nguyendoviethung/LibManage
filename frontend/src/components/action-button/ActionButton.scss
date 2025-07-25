@@ -1,32 +1,33 @@
 .action-button {
+  min-width: 120px ;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.98rem;
   color: #fff;
   border: none;
-  border-radius: 10px;
+  border-radius:10px; 
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(33,161,225,0.07);
-  transition: background 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(3, 18, 26, 0.07) ;
+  transition: background 0.18s, box-shadow 0.18s ;
+  height: 44px;
 }
 
 .btn-custom-search {
-  background: #3380f3;
+  background: #2795da ;
   &:hover {
-    background: #1976d2;
+    background: #1770c9 ; 
     color: #fff;
-    box-shadow: 0 6px 18px rgba(33,161,225,0.13);
+    transform: translateY(-1.8px) scale(1) ;
+    box-shadow: 0 6px 18px rgba(33,161,225,0.13) ;
   }
 }
 
-.btn-custom-add {
-  background: #05c582;
+ .btn-custom-add-book {
+  background: #09e196;
   &:hover {
-    background: #06b276;
+    background: #06a578 ;
     color: #fff;
+    transform: translateY(-1.8px) scale(1);
     box-shadow: 0 6px 18px rgba(67,197,158,0.13);
-  }
-  &:active, &:focus {
-    background: #06b276;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(67,197,158,0.18);
   }
 }
 
@@ -35,12 +36,8 @@
   &:hover {
     background: #079ad0;
     color: #fff;
+    transform: translateY(-1.8px) scale(1);
     box-shadow: 0 6px 18px rgba(255,179,0,0.13);
-  }
-  &:active, &:focus {
-    background: #079ad0;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(255,179,0,0.18);
   }
 }
 
@@ -50,11 +47,7 @@
     background: #cf3737;
     color: #fff;
     box-shadow: 0 6px 18px rgba(244,67,54,0.13);
-  }
-  &:active, &:focus {
-    background: #cf3737;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(244,67,54,0.18);
+    transform: translateY(-1.8px) scale(1);
   }
 }
 
@@ -64,66 +57,56 @@
     background: #13d484;
     color: #fff;
     box-shadow: 0 6px 18px rgba(240,173,78,0.13);
-  }
-  &:active, &:focus {
-    background: #13d484;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(240,173,78,0.18);
+     transform: translateY(-1.8px) scale(1);
   }
 }
 
 .btn-custom-refresh{
   background: #b7b4b1;
   &:hover {
-    background: #6c6b69;
+    background: #848380;
     color: #fff;
     box-shadow: 0 6px 18px rgba(240,173,78,0.13);
-  }
-  &:active, &:focus {
-    background: #6c6b69;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(240,173,78,0.18);
+     transform: translateY(-1.8px) scale(1);
   }
 }
 
 .btn-custom-add-reader {
-  background: #3380f3;
+  background: #0466f9;
   &:hover {
-    background: #2566c7;
+    background: #053fc8;
     color: #fff;
     box-shadow: 0 6px 18px rgba(51,128,243,0.13);
-  }
-  &:active, &:focus {
-    background: #2566c7;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(51,128,243,0.18);
+     transform: translateY(-1.8px) scale(1);
   }
 }
 
 .btn-custom-edit-personal-information{
-  background: #17b4ed;
+  background: #2fcde5;
   &:hover {
-    background: #079ad0;
+    background:rgb(6, 192, 173);
     color: #fff;
     box-shadow: 0 6px 18px rgba(23,180,237,0.13);
-  }
-  &:active, &:focus {
-    background: #079ad0;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(23,180,237,0.18);
+     transform: translateY(-1.8px) scale(1);
   }
 }
 
 .btn-custom-edit-account-information{
-  background: #05c582;
+  background: #3be663;
   &:hover {
-    background: #06b276;
+    background: #1dc544;
     color: #fff;
     box-shadow: 0 6px 18px rgba(5,197,130,0.13);
+     transform: translateY(-1.8px) scale(1);
   }
-  &:active, &:focus {
-    background: #06b276;
+}
+
+.btn-custom-add-account{
+  background: #8963d1;
+  &:hover {
+    background: #6f42c1;
     color: #fff;
-    box-shadow: 0 4px 12px rgba(5,197,130,0.18);
+    box-shadow: 0 6px 18px rgba(5,197,130,0.13);
+     transform: translateY(-1.8px) scale(1);
   }
 }

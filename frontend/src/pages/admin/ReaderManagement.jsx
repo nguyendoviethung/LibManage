@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faUserPlus, faFileExport, faRotate, faPenToSquare, faUserEdit,faUserGear, faBuildingColumns } from '@fortawesome/free-solid-svg-icons';
 import Search from '../../components/search-bar/Search';
 import Filter from '../../components/filter/Filter';
-
+import ActionButton from '../../components/action-button/ActionButton';
 function UserManagementPage() {
   // Trạng thái các input và modals
   const [searchTerm, setSearchTerm] = useState(''); // Giá trị nhập vào từ ô tìm kiếm
@@ -227,9 +227,9 @@ function UserManagementPage() {
   };
 
   return (
-    <>
+  <>
    <div className="user-management container mt-4">
-  {/* Thanh tìm kiếm và bộ lọc */}
+    {/* Thanh tìm kiếm và bộ lọc */}
   <div className="search-bar-container mb-3">
     <div className="filter-bar">
       <Search
@@ -237,6 +237,7 @@ function UserManagementPage() {
         searchTerm={searchTerm}
         placeholder="Tìm kiếm theo tên, mã sinh viên"
       />
+      {/* Bộ lọc theo khoa */}
       <Filter
         icon = {faBuildingColumns}
         filterTitle = {"Lọc theo khoa"}
@@ -254,25 +255,38 @@ function UserManagementPage() {
       />
     </div>
     <div className="toolbar-actions">
-        <Button variant="primary" onClick={handleSearch}>
-          <FontAwesomeIcon icon={faSearch} style={{marginRight: 6}} /> Tìm kiếm
-        </Button>
-        <Button variant="success">
-          <FontAwesomeIcon icon={faFileExport} style={{marginRight: 6}} /> Xuất file
-        </Button>
-        <Button variant="secondary" onClick={fetchUsers}>
-          <FontAwesomeIcon icon={faRotate} style={{marginRight: 6}} /> Làm mới
-        </Button>
-        <Button
-          variant="info"
+        <ActionButton
+          onClick={handleSearch}
+          label="Tìm kiếm"
+          icon={faSearch}
+          className="btn-custom-search"
+        />
+        <ActionButton
+          onClick={() => {
+            setActionState("export");
+            setSelectedReader(null);
+            setReaderModal(true);
+          }}
+          label="Xuất file"
+          icon={faFileExport}
+          className="btn-custom-export"
+        />
+        <ActionButton
+          onClick={fetchUsers}
+          label="Làm mới"
+          icon={faRotate}
+          className="btn-custom-refresh"
+        />
+        <ActionButton
           onClick={() => {
             setActionState("add");
             setSelectedReader(null);
             setReaderModal(true);
           }}
-        >
-          <FontAwesomeIcon icon={faUserPlus} style={{marginRight: 6}} /> Thêm sinh viên
-        </Button>
+          label="Thêm sinh viên"
+          icon={faUserPlus}
+          className="btn-custom-add-reader"
+        />
       </div>
     </div>
      {/* Bảng danh sách sinh viên */}
@@ -300,45 +314,44 @@ function UserManagementPage() {
           <td>{student.faculty}</td>
           <td className="text-center">
             <div className="d-flex flex-wrap justify-content-center gap-2">
-              <Button
-                variant="warning"
-                size="sm"
+              <ActionButton
                 onClick={() => {
                   setActionState("update");
                   setSelectedReader(student);
                   handleCheckAccount(student.student_id);
                   setReaderModal(true);
                 }}
+                icon = {faPenToSquare} 
+                className = "btn-custom-edit-personal-information"
+                label = "Sửa thông tin"
               >
-                <FontAwesomeIcon icon={faPenToSquare} /> Sửa thông tin cá nhân
-              </Button>
+              </ActionButton>
 
               {accountStatus[student.student_id] === false && (
-                <Button
-                  className="btn-custom-add"
-                  variant="primary"
-                  size="sm"
+                <ActionButton
+                  className="btn-custom-add-account"
                   onClick={() => {
                     setLastStudentID(student.student_id);
                     setAddAccountModal(true);
                   }}
+                  icon={faUserPlus}
+                  label={"Thêm tài khoản"}
                 >
-                  <FontAwesomeIcon icon={faUserPlus} style={{marginRight: 6, color: '#fff'}} /> Tạo tài khoản
-                </Button>
+                </ActionButton>
               )}
 
               {accountStatus[student.student_id] === true && (
-                <Button
-                  variant="info"
-                  size="sm"
+                <ActionButton
                   onClick={() => {
                     setLastStudentID(student.student_id);
                     handleUserName(student.student_id);
                     setUpdateAccount(true);
                   }}
+                  icon={faUserEdit}
+                  label = "Cập nhật tài khoản"
+                  className={"btn-custom-edit-account-information"}
                 >
-                  <FontAwesomeIcon icon={faUserEdit} /> Sửa tài khoản
-                </Button>
+                </ActionButton>
               )}
             </div>
           </td>
@@ -395,7 +408,7 @@ function UserManagementPage() {
         {/* Modal thông báo */}
       {alertBox && <AlertBox message={alertBox.message} type={alertBox.type} onClose={() => setAlertBox(null)} />}
    
-    </>
+ </>
   );
 }
 
