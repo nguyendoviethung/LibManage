@@ -20,14 +20,10 @@
   // Phần Nội dung Chính
   .main-content {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1.9fr 1.2fr;
     gap: 24px;
     margin-bottom: 32px;
     
-    @media (max-width: 1024px) {
-      grid-template-columns: 1fr;
-    }
-
     // Biểu đồ và thống kê
     .charts-section {
       .chart-container {
@@ -95,7 +91,7 @@
               transition: background-color 0.2s ease;
 
               &:hover {
-                background-color: #59bafb;
+                background-color: #71c1f7;
               }
             }
           }

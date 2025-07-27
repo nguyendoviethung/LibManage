@@ -31,8 +31,7 @@ const BorrowChart = () => {
             {
               label: "Lượt mượn",
               data: counts,
-              borderColor: "#8884d8",
-              backgroundColor: "rgba(136, 132, 216, 0.2)",
+              borderColor: "#34c7f0ff",
               tension: 0.4, // đường cong mềm
               fill: true,
               pointBackgroundColor: "#8884d8"

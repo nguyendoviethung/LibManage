@@ -5,34 +5,35 @@ import {
   faBookOpen, 
   faClock
 } from '@fortawesome/free-solid-svg-icons';
-import BookCategoryChart from '../../components/admin-dashboard/BookCategoryChart';
-import BorrowChart from '../../components/admin-dashboard/MonthlyBookLoan';
-import {statsData} from '../../api/Admin-Dashboard';
+import BookCategoryChart from '../../components/chart/BookCategoryChart';
+import BorrowChart from '../../components/chart/MonthlyBookLoan';
+import {statsData, newBooksAdd, mostBorrowedBooks} from '../../api/Admin-Dashboard';
 import './AdminDashboard.scss';
 import StatCard from '../../components/stat-card/stat-card'; 
 
  export default function AdminDashBoard() {
+  // Thông kê sách 
   const [stats, setStats] = useState({
     totalBooks: 0,
     totalReaders: 0,
     borrowedBooks: 0,
     overdueBooks: 0
   });
-
-  const [recentBooks, setRecentBooks] = useState([]);
-  const [recentReaders, setRecentReaders] = useState([]);
+  // Sách mới thêm vào 
+  const [newBooks, setNewBooks] = useState([]);
+  // Sách được mượn nhiều nhất từ trước đến nay
+  const [mostBorrowedBooksData, setMostBorrowedBooksData] = useState([]);
 
   useEffect(() => {
      const res = async () => {
       try {
         const statsRes = await statsData();
-        // const booksRes = await axios.get('/api/dashboard/recent-books');
-        // const readersRes = await axios.get('/api/dashboard/recent-readers');
-        console.log('Dữ liệu từ API:', statsRes);
-
-        setStats(statsRes); // dữ liệu dạng: { totalBooks: ..., totalReaders: ..., ... }
-        // setRecentBooks(booksRes.data); // mảng sách mới thêm
-        // setRecentReaders(readersRes.data); // mảng người đọc mới thêm
+        const newBooksRes = await newBooksAdd();
+        const mostBorrowedBooksRes = await mostBorrowedBooks();
+        
+        setStats(statsRes); 
+        setNewBooks(newBooksRes);
+        setMostBorrowedBooksData(mostBorrowedBooksRes);
       } catch (error) {
         console.error('Lỗi khi fetch dữ liệu dashboard:', error);
       }
@@ -77,15 +78,15 @@ import StatCard from '../../components/stat-card/stat-card';
                   <tr>
                     <th>Tên sách</th>
                     <th>Tác giả</th>
-                    <th>Ngày thêm</th>
+                    <th>Số lượng hiện tại</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {recentBooks.map(book => (
+                  {newBooks.map(book => (
                     <tr key={book.id}>
                       <td>{book.title}</td>
-                      <td>{book.author}</td>
-                      <td>{new Date(book.addedDate).toLocaleDateString('vi-VN')}</td>
+                      <td>{book.author_name}</td>
+                      <td>{book.quantity}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -94,22 +95,22 @@ import StatCard from '../../components/stat-card/stat-card';
           </div>
 
           <div className="recent-readers">
-            <h2>Độc giả mới đăng ký</h2>
+            <h2>Sách được mượn nhiều nhất từ trước đến nay</h2>
             <div className="table-container">
               <table>
                 <thead>
                   <tr>
-                    <th>Họ tên</th>
-                    <th>Email</th>
-                    <th>Ngày đăng ký</th>
+                    <th>Tên sách</th>
+                    <th>Tác giả</th>
+                    <th>Số lượt mượn</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {recentReaders.map(reader => (
-                    <tr key={reader.id}>
-                      <td>{reader.name}</td>
-                      <td>{reader.email}</td>
-                      <td>{new Date(reader.joinedDate).toLocaleDateString('vi-VN')}</td>
+                  {mostBorrowedBooksData.map(book => (
+                    <tr key={book.id}>
+                      <td>{book.title}</td>
+                      <td>{book.author_name}</td>
+                      <td>{book.times}</td>
                     </tr>
                   ))}
                 </tbody>

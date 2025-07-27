@@ -26,7 +26,6 @@ function BookManagement() {
   const [selectedBook, setSelectedBook] = useState(null); // Sách được chọn
   const [alertBox, setAlertBox] = useState(null); // Thông báo
   const [searchTerm, setSearchTerm] = useState(''); // Input tìm kiếm
-  const [filterCategory, setFilterCategory] = useState('Tất cả'); // Bộ lọc thể loại
   // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 8; // Số sách hiển thị trên mỗi trang
@@ -34,11 +33,12 @@ function BookManagement() {
   // Sắp xếp
   const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
   // Filter nâng cao
+  const [filterCategory, setFilterCategory] = useState('Tất cả'); // Bộ lọc thể loại
   const [filterAuthor, setFilterAuthor] = useState('Tất cả')
   const [filterYear, setFilterYear] = useState('Tất cả');
   const [filterLang, setFilterLang] = useState('Tất cả');
+  // Trạng thái loading
   const [loading, setLoading] = useState(false);
-
   // Modal chi tiết sách
   const [detailModal, setDetailModal] = useState(false);
   const [detailBook, setDetailBook] = useState(null);
@@ -48,6 +48,7 @@ function BookManagement() {
   const uniqueYears = ['Tất cả', ...Array.from(new Set(books.map(b => b.publisher_year).filter(Boolean)))];
   const uniqueLangs = ['Tất cả', ...Array.from(new Set(books.map(b => b.lang).filter(Boolean)))];
   const uniqueCategories = ['Tất cả',  ...Array.from(new Set(books.map(b => b.genre).filter(Boolean)))];
+
   // Hàm lọc nâng cao
   const getFilteredBooks = () => {
     return books.filter(book => {
@@ -64,7 +65,8 @@ function BookManagement() {
   const filteredBooks = getFilteredBooks(); // Sách đã được lọc 
   const sortedBooks = getSortedBooks(filteredBooks); // Sách đã được sắp xếp
   const paginatedBooks = sortedBooks.slice((currentPage - 1) * booksPerPage, currentPage * booksPerPage);
-
+  
+  // Hàm để xử lý sắp xếp
   const handleSort = (key) => {
     setSortConfig((prev) => {
       if (prev.key === key) {

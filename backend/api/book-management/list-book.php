@@ -19,13 +19,18 @@ if (!$result) {
     exit;
 }
 
-$data = [];
-while ($row = pg_fetch_assoc($result)) {
-    $data[] = $row;
-}
+$data = pg_fetch_all($result);
 
+if($data === false) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Không có sách nào được tìm thấy"
+    ]);
+    exit;
+} else {
 echo json_encode([
     "success" => true,
     "data" => $data
 ]);
+}
 ?>
