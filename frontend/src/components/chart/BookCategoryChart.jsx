@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
   Title,
+  Filler,
 } from 'chart.js';
 import {bookCategoryChart}from '../../api/Admin-Dashboard'
 // Đăng ký các thành phần cần dùng của chart.js

@@ -1,18 +1,15 @@
-.book-management {
-  background: #f8f9fa;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 32px 28px 28px 28px;
-  margin-bottom: 32px;
-  min-height: 80vh;
-
-  .search-bar-container {
+ .search-bar-container {
     gap: 1.5rem;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    padding: 20px 24px 16px 24px;
+    padding: 20px 24px 16px 20px;
     margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 600px) {
+      padding: 10px 6px 8px 6px;
+    }
   }
 
    .filter-row{
@@ -26,24 +23,36 @@
   }
 
    .search-row{
-    margin: 12px 10px 14px 5px;
+    margin-left : 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
     align-items: center;
     width: 100%;
     justify-content: flex-start;
+    @media (max-width: 600px) {
+      gap: 0.5rem;
+      margin: 6px 2px 8px 2px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  .ml-3 {
+    margin-left: 1.5rem;
+    @media (max-width: 600px) {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
   }
    .table-scroll-wrapper {
     background: #fff;
     border-radius: 14px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     padding: 18px 12px 8px 12px;
-    max-height: 600px;
-    overflow-y: auto;
+   
     margin-bottom: 16px;
+  
   }
-
   .custom-table {
     width: 100%;
     border-collapse: collapse;
@@ -61,15 +70,70 @@
       color: #1e293b;
       font-size: 1.05rem;
       letter-spacing: 0.5px;
+      user-select: none;
     }
     td {
       color: #222;
       font-weight: 500;
       background: #fff;
     }
-
+    .sort-col {
+      cursor: pointer;
+      transition: background 0.2s;
+      &:hover {
+        background: #e6f4fa;
+      }
+    }
   }
-}
+
+  .pagination-wrapper {
+    .btn {
+      margin-bottom: 20px;
+      min-width: 36px;
+      min-height: 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+      &.active, &.btn-primary {
+        background: #1e9ddc !important;
+        color: #fff !important;
+        border: none;
+      }
+      &.btn-outline-primary {
+        background: #fff;
+        color: #1e9ddc;
+        border: 1.5px solid #1e9ddc;
+      }
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+    span {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #888;
+      margin: 0 6px;
+      user-select: none;
+    }
+    @media (max-width: 600px) {
+      flex-wrap: wrap;
+      .btn, span {
+        min-width: 28px;
+        font-size: 0.95rem;
+        margin: 0 2px;
+      }
+    }
+  }
+
+  .custom-table .spinner-border {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    display: block;
+  }
+
 
  
 

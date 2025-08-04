@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
   Title,
+  Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { monthlyBookLoan } from "../../api/Admin-Dashboard";
@@ -34,7 +35,7 @@ const BorrowChart = () => {
               borderColor: "#34c7f0ff",
               tension: 0.4, // đường cong mềm
               fill: true,
-              pointBackgroundColor: "#8884d8"
+              pointBackgroundColor: "#726cedff"
             }
           ]
         });

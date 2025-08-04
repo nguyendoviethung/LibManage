@@ -33,7 +33,7 @@ if ($row = pg_fetch_assoc($result)) {
         $_SESSION['username'] = $row['username'];
         $_SESSION['role'] = $row['role'];
         $_SESSION['student_id'] = $row['student_id'];
-
+        
         // Cập nhật lần đăng nhập
         $updateQuery = "UPDATE readeraccounts SET last_login = NOW() WHERE username = $1";
         pg_query_params($conn, $updateQuery, [$loginUsername]);
