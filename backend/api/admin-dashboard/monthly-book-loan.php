@@ -1,41 +1,38 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Credentials: true");
-header("Content-Type: application/json");
+require __DIR__ . '/../../middleware/auth-middleware.php';
 
-include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+ checkAdminRole($decode);
 
-// Kiểm tra kết nối
-if (!$conn) {
-    http_response_code(500);
-    echo json_encode(["error" => "Kết nối cơ sở dữ liệu thất bại"]);
-    exit;
-}
+    try {
+        $query = "
+            SELECT 
+                TO_CHAR(borrow_date, 'YYYY-MM') AS month,
+                COUNT(*) AS count
+            FROM borrowrecords
+            WHERE borrow_date >= date_trunc('month', CURRENT_DATE) - INTERVAL '12 months'
+              AND borrow_date <= date_trunc('month', CURRENT_DATE) + INTERVAL '1 month' - INTERVAL '1 day'
+            GROUP BY month
+            ORDER BY month
+        ";
 
-$query = "SELECT 
-        TO_CHAR(borrow_date, 'YYYY-MM') AS month,
-        COUNT(*) AS count
-        FROM borrowrecords
-        WHERE borrow_date >= date_trunc('month', CURRENT_DATE) - INTERVAL '12 months'
-        AND borrow_date <= date_trunc('month', CURRENT_DATE) + INTERVAL '1 month' - INTERVAL '1 day'
-        GROUP BY month
-        ORDER BY month";
+        $stmt = $pdo->query($query);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$result = pg_query($conn, $query);
+        // Nếu không có dữ liệu thì trả về mảng rỗng
+        if (!$data) {
+            $data = [];
+        }
 
-// Kiểm tra kết quả truy vấn
-if (!$result) {
-    http_response_code(500);
-    echo json_encode(["error" => "Lỗi truy vấn cơ sở dữ liệu"]);
-    exit;
-}
+        echo json_encode([
+            "status" => "success",
+            "data" => $data
+        ]);
 
-$data = pg_fetch_all($result);
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Lỗi truy vấn cơ sở dữ liệu: " . $e->getMessage()
+        ]);
+    }
 
-// Nếu không có dữ liệu, trả về mảng rỗng
-if (!$data) {
-    $data = [];
-}
-
-echo json_encode($data);
-?>

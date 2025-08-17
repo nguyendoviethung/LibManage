@@ -1,4 +1,4 @@
-  import { useState, useEffect , useCallback} from 'react';
+  import { useState, useEffect, useCallback} from 'react';
   import { Container, Button, Table, Modal, Spinner } from 'react-bootstrap';
   import AlertBox from '../../components/alert-box/AlertBox';
   import 'bootstrap/dist/css/bootstrap.min.css';
@@ -41,16 +41,16 @@
     const [filterAuthor, setFilterAuthor] = useState('Tất cả');
     const [filterYear, setFilterYear] = useState('Tất cả');
     const [filterLang, setFilterLang] = useState('Tất cả');
-    const [sortConfig, setSortConfig] = useState({ key: 'create_at', direction: 'desc' });
+    const [sortConfig, setSortConfig] = useState({ key: '', direction: 'desc' });
     const [currentPage, setCurrentPage] = useState(1);
-    const [booksPerPage, setBooksPerPage] = useState(8);
     const [loading, setLoading] = useState(false);
     const [detailModal, setDetailModal] = useState(false);
     const [detailBook, setDetailBook] = useState(null);
     const [filterOptions, setFilterOptions] = useState({ authors: [], years: [], langs: [], categories: [] });
-
+    const booksPerPage = 5; // Số sách hiển thị trên mỗi trang
+    
     // Debounce cho searchTerm
-    const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+    const debouncedSearchTerm = useDebounce(searchTerm, 700);
 
     // Hàm fetch sách từ server (API hỗ trợ phân trang, filter, search, sort)
         const fetchBooks = useCallback(async (params = {}) => {
@@ -72,22 +72,22 @@
               setBooks(res.data.books);
               setTotalBooks(res.data.total);
               setFilterOptions(res.data.filterOptions)
-              console.log(res.data  )
             } else {
               setBooks([]); 
               setTotalBooks(0);
+           
               setAlertBox({ message: res.message, type: 'error' });
             }
           } catch (err) {
             setBooks([]);
             setTotalBooks(0);
+            console.error('Error fetching books:', err);
             setAlertBox({ message: 'Lỗi lấy danh sách sách', type: 'error' });
           } finally {   
             setLoading(false);
           }
         }, [currentPage, booksPerPage, debouncedSearchTerm, filterCategory, filterAuthor, filterYear, filterLang, sortConfig]);
 
-    // Fetch sách khi mount, khi filter/search/sort/page thay đổi
   // Gọi fetchBooks mỗi khi currentPage hoặc các tiêu chí khác thay đổi
   useEffect(() => {
         fetchBooks();
@@ -98,17 +98,17 @@
     setCurrentPage(1);
   }, [debouncedSearchTerm, filterCategory, filterAuthor, filterYear, filterLang]);
 
-    // Khi đổi booksPerPage, reset về trang 1
-    useEffect(() => {
-      setCurrentPage(1);
-    }, [booksPerPage]);
+
+const handleChangePage = (newPage) => {
+  setCurrentPage(newPage);
+};
 
     // Xử lý sắp xếp
     const handleSort = (key) => {
       setSortConfig((prev) => {
         if (prev.key === key) {
           if (prev.direction === 'asc') return { key, direction: 'desc' };
-          if (prev.direction === 'desc') return { key: 'created_at', direction: 'desc' }; // Mặc định
+          if (prev.direction === 'desc') return { key: '', direction: 'desc' }; // Mặc định
         }
         return { key, direction: 'asc' };
       });
@@ -116,9 +116,15 @@
 
     // Hiển thị icon sắp xếp
     const renderSortIcon = (key) => {
-      if (sortConfig.key !== key) return <FontAwesomeIcon icon={faSort} style={{ marginLeft: 4, opacity: 0.5 }} />;
-      if (sortConfig.direction === 'asc') return <FontAwesomeIcon icon={faSortUp} style={{ marginLeft: 4, color: '#1e9ddc' }} />;
-      if (sortConfig.direction === 'desc') return <FontAwesomeIcon icon={faSortDown} style={{ marginLeft: 4, color: '#1e9ddc' }} />;
+      if (sortConfig.key !== key) return (
+        <FontAwesomeIcon icon={faSort} className="sort-icon inactive" />
+    );
+      if (sortConfig.direction === 'asc')return (
+        <FontAwesomeIcon icon={faSortUp} className="sort-icon asc" />
+    );
+      if (sortConfig.direction === 'desc') return (
+        <FontAwesomeIcon icon={faSortDown} className="sort-icon desc" />
+    );
       return null;
     };
 
@@ -163,7 +169,6 @@
     // Xử lý cập nhật sách
     const handleUpdate = async (data) => {
       try {
-        // Gọi API cập nhật sách
         const res = await updateBook(data);
         if (res.success) {
           setAlertBox({ message: res.message, type: 'success' });
@@ -183,7 +188,6 @@
     // Xử lý xoá sách
     const handleDelete = async (data) => {
       try {
-        // Gọi API xoá sách
         const res = await deleteBook({ book_id: data });
         if (res.success) {
           setAlertBox({ message: res.message, type: 'success' });
@@ -290,28 +294,25 @@
         <div className="table-scroll-wrapper">
           {/* Bảng hiển thị sách */}
           <Table striped bordered hover responsive className="custom-table">
-            <thead>
-              <tr>
-                <th className="text-center">STT</th>
-                <th className="text-center">Mã sách</th>
-                <th className="text-center sort-col" style={{ cursor: 'pointer' }} onClick={() => handleSort('title')}>
-                  Tên sách {renderSortIcon('title')}
-                </th>
-                <th className="text-center sort-col" style={{ cursor: 'pointer' }} onClick={() => handleSort('author_name')}>
-                  Tác giả {renderSortIcon('author_name')}
-                </th>
-                <th className="text-center">Ngôn ngữ</th>
-                <th className="text-center sort-col" style={{ cursor: 'pointer' }} onClick={() => handleSort('publisher_year')}>
-                  Năm xuất bản {renderSortIcon('publisher_year')}
-                </th>
-                <th className="text-center">Vị trí</th>
-                <th className="text-center sort-col" style={{ cursor: 'pointer' }} onClick={() => handleSort('quantity')}>
-                  Số lượng {renderSortIcon('quantity')}
-                </th>
-                <th className="text-center">Thể loại</th>
-                <th className="text-center">Hành động</th>
-              </tr>
-            </thead>
+           <thead>
+  <tr>
+    <th className="text-center" style={{ width: '7%' }}>STT</th>
+    <th className="text-center" style={{ width: '8%' }}>Mã sách</th>
+    <th className="text-center" style={{ width: '11%', cursor: 'pointer' }} onClick={() => handleSort('title')}>
+      Tên sách {renderSortIcon('title')}
+    </th>
+    <th className="text-center" style={{ width: '15%', cursor: 'pointer' }} onClick={() => handleSort('author_name')}>
+      Tác giả {renderSortIcon('author_name')}
+    </th>
+    <th className="text-center" style={{ width: '18%' }}>Vị trí</th>
+    <th className="text-center" style={{ width: '10%', cursor: 'pointer' }} onClick={() => handleSort('quantity')}>
+      Số lượng {renderSortIcon('quantity')}
+    </th>
+    <th className="text-center" style={{ width: '15%' }}>Thể loại</th>
+    <th className="text-center" style={{ width: '18%' }}>Hành động</th>
+  </tr>
+</thead>
+
             <tbody>
               {loading ? (
                 <tr>
@@ -340,8 +341,7 @@
                       </span>
                     </td>
                     <td className="text-center">{book.author_name}</td>
-                    <td className="text-center">{book.lang}</td>
-                    <td className="text-center">{book.publisher_year}</td>
+
                     <td className="text-center">{book.location}</td>
                     <td className="text-center">{book.quantity}</td>
                     <td className="text-center">{book.genre}</td>
@@ -380,7 +380,9 @@
                 size="sm"
                 className="mx-1"
                 disabled={currentPage === 1}
-                onClick={() => setCurrentPage(currentPage - 1)}
+                onClick={() => {
+                  handleChangePage(currentPage - 1)
+                }}
               >
                 &lt;
               </Button>
@@ -393,7 +395,9 @@
                     variant={currentPage === p ? 'primary' : 'outline-primary'}
                     size="sm"
                     className="mx-1"
-                    onClick={() => setCurrentPage(p)}
+                    onClick={() => {
+                      handleChangePage(p)
+                    }}
                   >
                     {p}
                   </Button>
@@ -402,9 +406,11 @@
               <Button
                 variant="outline-primary"
                 size="sm"
-                className="mx-1"
+                className="mx-1 btn-pagination"
                 disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage(currentPage + 1)}
+                onClick={() => {
+                  handleChangePage (currentPage + 1)
+                }}
               >
                 &gt;
               </Button>
@@ -473,3 +479,4 @@
 }
 
 export default BookManagement;
+

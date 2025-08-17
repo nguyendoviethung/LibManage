@@ -1,25 +1,36 @@
 <?php
-// Kết nối đến cơ sở dữ liệu
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Credentials: true");
-header("Content-Type: application/json");
+require __DIR__ . '/../../middleware/auth-middleware.php';
 
-include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
+ checkAdminRole($decode);
 
-// Lấy số lượng cuốn sách trong thư viện
-$query = "SELECT title, author_name,quantity 
-          FROM public.books
-          ORDER BY quantity 
-          DESC LIMIT 5 ;";
-          
-$result = pg_query($conn, $query);
-$new_books = pg_fetch_all($result);
+    try {
+        // Lấy 5 cuốn sách có số lượng nhiều nhất
+        $query = "
+            SELECT title, author_name, quantity
+            FROM public.books
+            ORDER BY quantity DESC
+            LIMIT 5
+        ";
 
-if ($new_books === false) {
-    echo json_encode(['error' => 'Không có sách mới được thêm']);
-} else {
-    echo json_encode($new_books); // Trả về mảng các object
-}
+        $stmt = $pdo->query($query);
+        $new_books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-pg_close($conn);
-?>
+        if (!$new_books) {
+            echo json_encode([
+                "status" => "error",
+                "message" => "Không có sách mới được thêm"
+            ]);
+        } else {
+            echo json_encode([
+                "status" => "success",
+                "data" => $new_books
+            ]);
+        }
+    } catch (PDOException $e) {
+        http_response_code(500);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Lỗi truy vấn cơ sở dữ liệu: " . $e->getMessage()
+        ]);
+    }
+

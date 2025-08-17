@@ -1,15 +1,16 @@
 import "./InputField.scss";
 
-function InputField({ type, value, onChange, placeholder, iconLeft, disabled = false }) {
+function InputField({ref, type, value, onChange, placeholder, iconLeft, onKeyDown }) {
   return (
     <>
       {iconLeft && <span className="input-icon-left">{iconLeft}</span>}
       <input
+        ref = {ref}
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        disabled={disabled}
+        onKeyDown={onKeyDown}
         required
       />
     </>

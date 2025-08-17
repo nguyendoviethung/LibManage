@@ -60,7 +60,7 @@
     th, td {
       text-align: center;
       vertical-align: middle;
-      padding: 12px 8px;
+      padding: 20px 12px;
       font-size: 1rem;
       border-bottom: 1px solid #e2e8f0;
     }
@@ -109,6 +109,10 @@
         opacity: 0.5;
         cursor: not-allowed;
       }
+      &:hover {
+        background: #1e9ddc;
+        color: #fff;
+      }
     }
     span {
       font-size: 1.1rem;
@@ -117,25 +121,34 @@
       margin: 0 6px;
       user-select: none;
     }
-    @media (max-width: 600px) {
-      flex-wrap: wrap;
-      .btn, span {
-        min-width: 28px;
-        font-size: 0.95rem;
-        margin: 0 2px;
-      }
-    }
-  }
-
-  .custom-table .spinner-border {
-    width: 48px;
-    height: 48px;
-    margin: 0 auto;
-    display: block;
   }
 
 
- 
+.sort-icon {
+  margin-left: 4px;
+  width: 16px;       /* kích thước cố định */
+  height: 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.sort-icon svg {
+  width: 90%;       /* icon SVG full vùng chứa */
+  height: 90%;
+}
+
+.sort-icon.inactive {
+  opacity: 0.5;
+  color: #000; /* màu mặc định */
+}
+
+.sort-icon.asc,
+.sort-icon.desc {
+  color: #1e9ddc;
+  opacity: 1;
+}
 
 
 

@@ -8,7 +8,7 @@ export default function StatCard({ icon, value, label }) {
             <FontAwesomeIcon icon={icon} />
         </div>
         <div className="stat-content">
-            <h3>{value.toLocaleString()}</h3>
+            <h3>{(value ?? 0).toLocaleString()}</h3>
             <p>{label}</p>
         </div>
         </div>

@@ -12,6 +12,8 @@ import './AdminDashboard.scss';
 import StatCard from '../../components/stat-card/stat-card'; 
 
  export default function AdminDashBoard() {
+
+  const token = localStorage.getItem("token");
   // Thông kê sách 
   const [stats, setStats] = useState({
     totalBooks: 0,
@@ -27,20 +29,20 @@ import StatCard from '../../components/stat-card/stat-card';
   useEffect(() => {
      const res = async () => {
       try {
-        const statsRes = await statsData();
-        const newBooksRes = await newBooksAdd();
-        const mostBorrowedBooksRes = await mostBorrowedBooks();
-        
-        setStats(statsRes); 
-        setNewBooks(newBooksRes);
-        setMostBorrowedBooksData(mostBorrowedBooksRes);
+        const statsRes = await statsData(token);
+        const newBooksRes = await newBooksAdd(token);
+        const mostBorrowedBooksRes = await mostBorrowedBooks(token);
+    
+        setStats(statsRes.data); 
+        setNewBooks(newBooksRes.data);
+        setMostBorrowedBooksData(mostBorrowedBooksRes.data);
       } catch (error) {
         console.error('Lỗi khi fetch dữ liệu dashboard:', error);
       }
     };
     // Gọi hàm fetch dữ liệu
     res(); 
-  }, []);
+  }, [token]);
 
   return (
     <div className="admin-dashboard">
@@ -60,12 +62,12 @@ import StatCard from '../../components/stat-card/stat-card';
         <div className="charts-section">
           <div className="chart-container">
             <h2>Thống kê sách theo thể loại</h2>
-            <BookCategoryChart />
+            <BookCategoryChart token ={token}  />
           </div>
           
           <div className="chart-container">
             <h2>Lượt mượn sách theo tháng</h2>
-            <BorrowChart />
+            <BorrowChart token = {token} />
           </div>
         </div>
 
@@ -82,14 +84,15 @@ import StatCard from '../../components/stat-card/stat-card';
                   </tr>
                 </thead>
                 <tbody>
-                  {newBooks.map(book => (
-                    <tr key={book.id}>
+                   {Array.isArray(newBooks) && newBooks.map((book,index) => (
+                    <tr key={index}>
                       <td>{book.title}</td>
                       <td>{book.author_name}</td>
                       <td>{book.quantity}</td>
                     </tr>
-                  ))}
+                           ))}
                 </tbody>
+
               </table>
             </div>
           </div>
@@ -105,15 +108,16 @@ import StatCard from '../../components/stat-card/stat-card';
                     <th>Số lượt mượn</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {mostBorrowedBooksData.map(book => (
-                    <tr key={book.id}>
-                      <td>{book.title}</td>
-                      <td>{book.author_name}</td>
-                      <td>{book.times}</td>
-                    </tr>
-                  ))}
-                </tbody>
+          <tbody>
+          {Array.isArray(mostBorrowedBooksData) && mostBorrowedBooksData.map((book,index) => (
+          <tr key={index}>
+           <td>{book.title}</td>
+           <td>{book.author_name}</td>
+           <td>{book.times}</td>
+          </tr>
+            ))}
+          </tbody>
+
               </table>
             </div>
           </div>
