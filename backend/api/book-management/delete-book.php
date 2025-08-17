@@ -1,39 +1,40 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header('Content-Type: application/json');
-include '../../config/connect.php';
+require __DIR__ . '/../../middleware/auth-middleware.php';
 
-// Lấy dữ liệu JSON từ body của request
-$data = json_decode(file_get_contents("php://input"), true);
-$bookID = $data['book_id'] ?? null;
+checkAdminRole($decode);
 
-// Kiểm tra dữ liệu đầu vào
-if (!$bookID) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Thiếu book_id để xoá.'
-    ]);
-    exit;
-}
+try {
+    $bookID = $data['book_id'] ?? null;
 
-// Thay vì xóa sách thật sự, ta đánh dấu is_deleted = true
-$query = "UPDATE books SET is_deleted = true WHERE book_id = $1";
-$result = pg_query_params($conn, $query, [$bookID]);
-
-if ($result) {
-    echo json_encode([
-        'success' => true,
-        'message' => 'Xóa sách thành công'
-    ]);
-} else {
-       echo json_encode([
+    // Kiểm tra dữ liệu đầu vào
+    if (!$bookID) {
+        echo json_encode([
             'success' => false,
-            'message' => 'Lỗi khi xoá sách: ' . pg_last_error($conn)
+            'message' => 'Thiếu book_id để xoá.'
+        ]);
+        exit;
+    }
+
+    // Thay vì xóa sách thật sự, ta đánh dấu is_deleted = true
+    $query = "UPDATE books SET is_deleted = true WHERE book_id = :book_id";
+    $stmt = $pdo->prepare($query);
+    $result = $stmt->execute([':book_id' => $bookID]);
+
+    if ($result) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'Xóa sách thành công'
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Không thể xoá sách'
         ]);
     }
 
-
-pg_close($conn);
-?>
+} catch (PDOException $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Lỗi CSDL: ' . $e->getMessage()
+    ]);
+}

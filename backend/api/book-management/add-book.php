@@ -1,45 +1,46 @@
-    <?php
-    header("Access-Control-Allow-Origin: http://localhost:3000");
-    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
-    header('Content-Type: application/json'); // Đặt tiêu đề cho phản hồi là JSON
+<?php
+require __DIR__ . '/../../middleware/auth-middleware.php';
 
-    include '../../config/connect.php'; // Kết nối đến cơ sở dữ liệu
-    // Lấy dữ liệu JSON từ body của request
-    $data = json_decode(file_get_contents("php://input"), true);
-    $title = $data['title'];
-    $author = $data['author_name'];
-    $language = $data['lang'];
-    $year = $data['publisher_year'];
-    $location = $data['location'];
-    $genre = $data['genre'];
-    $quantity = $data['quantity'];
+checkAdminRole($decode);
+
+try {
+
+    $title    = $data['title'] ?? null;
+    $author   = $data['author_name'] ?? null;
+    $language = $data['lang'] ?? null;
+    $year     = $data['publisher_year'] ?? null;
+    $location = $data['location'] ?? null;
+    $genre    = $data['genre'] ?? null;
+    $quantity = $data['quantity'] ?? null;
+
     // Kiểm tra dữ liệu hợp lệ
-    if (isset($title) && isset($author) && isset($language) && isset($year) && isset($location) && isset($genre) && isset($quantity)) {
+    if ($title && $author && $language && $year && $location && $genre && $quantity) {
 
-        // Kiểm tra kết nối CSDL (Nếu chưa kết nối thì dừng)
-        if (!$conn) {
-            die("Kết nối thất bại: " . pg_last_error());
-        }
         // Truy vấn để thêm sách vào cơ sở dữ liệu
         $query = "INSERT INTO books (title, author_name, lang, publisher_year, location, genre, quantity) 
-                  VALUES ($1, $2, $3, $4, $5, $6, $7)";
+                  VALUES (:title, :author, :lang, :year, :location, :genre, :quantity)";
 
-        $result = pg_query_params($conn, $query, [
-        $title,$author,$language,$year,$location,$genre,$quantity
-                                    ]);
+        $stmt = $pdo->prepare($query);
+        $result = $stmt->execute([
+            ':title'    => $title,
+            ':author'   => $author,
+            ':lang'     => $language,
+            ':year'     => $year,
+            ':location' => $location,
+            ':genre'    => $genre,
+            ':quantity' => $quantity
+        ]);
 
-        // Kiểm tra kết quả
         if ($result) {
             echo json_encode(['success' => true, 'message' => 'Sách đã được thêm']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Lỗi khi thêm sách: ' . pg_last_error()]);
+            echo json_encode(['success' => false, 'message' => 'Không thể thêm sách']);
         }
 
-        // Đóng kết nối
-        pg_close($conn);
     } else {
         echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
     }
 
-    ?>
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Lỗi CSDL: ' . $e->getMessage()]);
+}

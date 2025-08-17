@@ -18,19 +18,9 @@ function AddBookModal({ show, hide, addBook}) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if( await addBook(formData)){
-      setFormData({
-    title: '',
-    lang: '',
-    publisher_year: '',
-    location: '',
-    quantity: '',
-    author_name: '',
-    genre: ''
-      })
-    }
-  };
+     e.preventDefault();
+     addBook(formData)
+    };
 
   return (
    <Modal show={show} onHide={hide} centered>

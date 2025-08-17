@@ -1,51 +1,55 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header('Content-Type: application/json');
+require __DIR__ . '/../../middleware/auth-middleware.php';
 
-include '../../config/connect.php';
-// Lấy dữ liệu từ request
-$data = json_decode(file_get_contents("php://input"), true);
+checkAdminRole($decode);
 
-$title = $data['title'] ?? ''; // tên sách mới
-$author = $data['author_name'] ?? '';
-$language = $data['lang'] ?? '';
-$year = $data['publisher_year'] ?? '';
-$quantity = (is_numeric($data['quantity']) && $data['quantity'] !== '') ? (int)$data['quantity'] : null;
-$location = $data['location'] ?? '';
-$genre = $data['genre'] ?? '';
+try {
 
+    $bookId   = $data['book_id'] ?? null; // bắt buộc
+    $title    = $data['title'] ?? '';
+    $author   = $data['author_name'] ?? '';
+    $language = $data['lang'] ?? '';
+    $year     = $data['publisher_year'] ?? '';
+    $location = $data['location'] ?? '';
+    $genre    = $data['genre'] ?? '';
+    $quantity = (is_numeric($data['quantity']) && $data['quantity'] !== '') ? (int)$data['quantity'] : null;
 
-//Kiểm tra tên sách mới đã tồn tại trong hệ thống chưa
+    if (!$bookId) {
+        echo json_encode(['success' => false, 'message' => 'Thiếu book_id để cập nhật.']);
+        exit;
+    }
 
-$query = "UPDATE books SET 
-    title = $1,
-    author_name = $2,
-    lang = $3,
-    publisher_year = $4,
-    location = $5,
-    genre = $6,
-    quantity = $7
-    WHERE title = $1";
+    // Câu lệnh UPDATE
+    $query = "
+        UPDATE books 
+        SET 
+            title = :title,
+            author_name = :author,
+            lang = :lang,
+            publisher_year = :year,
+            location = :location,
+            genre = :genre,
+            quantity = :quantity
+        WHERE book_id = :book_id
+    ";
 
-$result = pg_query_params($conn, $query, [
-    $title,
-    $author,
-    $language,
-    $year,
-    $location,
-    $genre,
-    $quantity
-]);
+    $stmt = $pdo->prepare($query);
+    $result = $stmt->execute([
+        ':title'    => $title,
+        ':author'   => $author,
+        ':lang'     => $language,
+        ':year'     => $year,
+        ':location' => $location,
+        ':genre'    => $genre,
+        ':quantity' => $quantity,
+        ':book_id'  => $bookId
+    ]);
 
-if ($result) {
-    echo json_encode(['success' => true,'message' => 'Chỉnh sửa thành công']);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Lỗi khi cập nhật sách: ' . pg_last_error($conn)]);
+    if ($result) {
+        echo json_encode(['success' => true, 'message' => 'Chỉnh sửa thành công']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Không có thay đổi hoặc lỗi khi cập nhật']);
+    }
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Lỗi DB: ' . $e->getMessage()]);
 }
-
-
-
-pg_close($conn);
-?>

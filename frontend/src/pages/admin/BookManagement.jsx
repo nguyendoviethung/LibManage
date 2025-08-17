@@ -30,7 +30,7 @@
   }
 
   function BookManagement() {
-    // State bộ lọc, tìm kiếm, sắp xếp, phân trang
+    const token = localStorage.getItem("token"); // token 
     const [books, setBooks] = useState([]); // Dữ liệu sách hiện tại
     const [totalBooks, setTotalBooks] = useState(0); // Tổng số sách phù hợp
     const [crudAction, setCrudAction] = useState(null); // Modal CRUD
@@ -67,7 +67,7 @@
         sortKey: params.sortKey ?? sortConfig.key,
         sortOrder: params.sortOrder ?? sortConfig.direction
       };
-            const res = await listBook(finalParams);
+            const res = await listBook( finalParams, token);
             if (res.success) {
               setBooks(res.data.books);
               setTotalBooks(res.data.total);
@@ -86,7 +86,7 @@
           } finally {   
             setLoading(false);
           }
-        }, [currentPage, booksPerPage, debouncedSearchTerm, filterCategory, filterAuthor, filterYear, filterLang, sortConfig]);
+        }, [currentPage, booksPerPage, debouncedSearchTerm, filterCategory, filterAuthor, filterYear, filterLang, sortConfig,token]);
 
   // Gọi fetchBooks mỗi khi currentPage hoặc các tiêu chí khác thay đổi
   useEffect(() => {
@@ -150,11 +150,12 @@ const handleChangePage = (newPage) => {
     const handleAdd = async (data) => {
       try {
         // Gọi API thêm sách
-        const res = await addBook(data);
+        const res = await addBook(data,token);
         if (res.success) {
           setAlertBox({ message: res.message, type: 'success' });
-          fetchBooks({ page: 1 });
           setCurrentPage(1);
+          fetchBooks({ page: 1 });
+    
           return true;
         } else {
           setAlertBox({ message: res.message, type: 'error' });
@@ -167,39 +168,45 @@ const handleChangePage = (newPage) => {
     };
 
     // Xử lý cập nhật sách
-    const handleUpdate = async (data) => {
-      try {
-        const res = await updateBook(data);
-        if (res.success) {
-          setAlertBox({ message: res.message, type: 'success' });
-          fetchBooks({ page: currentPage });
-          setSelectedBook(null);
-          return true;
-        } else {
-          setAlertBox({ message: res.message, type: 'error' });
-          return false;
-        }
-      } catch (err) {
-        setAlertBox({ message: 'Lỗi cập nhật sách', type: 'error' });
-        return false;
-      }
-    };
-
+const handleUpdate = async (id,data) => {
+  try {
+    const res = await updateBook(id,data, token);
+    if (res.success) {
+      setAlertBox({ message: res.message, type: 'success' });
+      console.log(res)
+      // Cập nhật state books trực tiếp thay vì gọi lại API
+        setBooks(prevBooks => 
+          prevBooks.map(book => 
+            book.book_id === data.book_id ? {...book, ...data} : book
+          )
+        );
+      
+      setSelectedBook(null);
+      return true;
+    } else {
+      setAlertBox({ message: res.message, type: 'error' });
+      return false;
+    }
+  } catch (err) {
+    setAlertBox({ message: 'Lỗi cập nhật sách', type: 'error' });
+    return false;
+  }
+};
     // Xử lý xoá sách
-    const handleDelete = async (data) => {
-      try {
-        const res = await deleteBook({ book_id: data });
-        if (res.success) {
-          setAlertBox({ message: res.message, type: 'success' });
-          fetchBooks({ page: currentPage });
-          setSelectedBook(null);
-        } else {
-          setAlertBox({ message: res.message, type: 'error' });
+      const handleDelete = async (data) => {
+        try {
+          const res = await deleteBook(data,token);
+          if (res.success) {
+            setAlertBox({ message: res.message, type: 'success' });
+            fetchBooks({ page: currentPage });
+            setSelectedBook(null);
+          } else {
+            setAlertBox({ message: res.message, type: 'error' });
+          }
+        } catch (err) {
+          setAlertBox({ message: 'Lỗi xoá sách', type: 'error' });
         }
-      } catch (err) {
-        setAlertBox({ message: 'Lỗi xoá sách', type: 'error' });
-      }
-    };
+      };
 
     // Lấy giá trị filter từ API nếu có, nếu không thì lấy từ dữ liệu hiện tại
     const uniqueAuthors = filterOptions.authors.length > 0 ? filterOptions.authors : ['Tất cả'];
@@ -270,6 +277,7 @@ const handleChangePage = (newPage) => {
               label="Thêm sách"
               icon={faPlus}
               className="btn-custom-add-book "
+
             />
           </div>
             {/* <div className="ml-3">
@@ -423,17 +431,19 @@ const handleChangePage = (newPage) => {
             show={true}
             hide={() => setCrudAction('')}
             addBook={handleAdd}
+   
           />
         )}
         {/* Modal cập nhật sách */}
-        {crudAction === 'update' && (
-          <UpdateBookModal
-            show={true}
-            hide={() => setCrudAction('')}
-            handleUpdate={handleUpdate}
-            bookData={selectedBook}
-          />
-        )}
+          {crudAction === 'update' && (
+            <UpdateBookModal
+              show={true}
+              hide={() => setCrudAction('')}
+              handleUpdate={handleUpdate}
+              bookData={selectedBook}
+      
+            />
+          )}
         {/* Modal xóa sách */}
         {crudAction === 'delete' && (
           <DeleteBookModal

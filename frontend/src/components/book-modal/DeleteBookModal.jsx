@@ -1,9 +1,10 @@
 import { Modal, Button } from 'react-bootstrap';
 
-function DeleteBookModal({ show, hide, bookData, handleDelete }) {
-  const handleConfirmDelete = () => {
-    handleDelete(bookData.book_id); // Gọi hàm xóa với ID của sách
-    hide(); // Đóng modal sau khi gọi
+function DeleteBookModal({ show, hide, bookData, handleDelete}) {
+  const handleConfirmDelete =  async(e) =>{
+    e.preventDefault();
+    await handleDelete(bookData.book_id); 
+    hide(); 
   };
   
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-function UpdateBookModal({ show, hide, handleUpdate, bookData }) {
+function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
   const [formData, setFormData] = useState({
     book_id: '',
     title: '',
@@ -29,7 +29,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData }) {
   //Xử lí khi submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await handleUpdate(formData);
+    const success = await handleUpdate(formData.book_id,formData);
     if (success) hide();
   };
 
