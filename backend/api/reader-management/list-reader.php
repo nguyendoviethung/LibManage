@@ -1,34 +1,89 @@
-<?php
-header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header('Content-Type: application/json');
+    <?php
+    require __DIR__ . '/../../middleware/auth-middleware.php';
+    checkAdminRole($decode);
 
-include '../../config/connect.php';
+    try {
 
-// Truy vấn dữ liệu từ bảng reader
-$query = "SELECT * FROM reader WHERE status = $1 ORDER BY reader_id ASC";
-$result = pg_query_params($conn, $query,["Active"]);
+        $page       = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit      = isset($_GET['limit']) ? (int)$_GET['limit'] : 8;
+        $search     = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $faculty    = isset($_GET['faculty']) ? trim($_GET['faculty']) : '';
+        $status     = isset($_GET['status']) ? trim($_GET['status']) : '';
+        $sortKey    = isset($_GET['sortKey']) ? $_GET['sortKey'] : 'reader_id';
+        $sortOrder  = isset($_GET['sortOrder']) ? strtoupper($_GET['sortOrder']) : 'ASC';
 
-if (!$result) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Lỗi truy vấn dữ liệu"
-    ]);
-    exit;
-}
-//Mảng gồm các object
-$readers = [];
+        $allowedSortKeys = ['reader_id', 'full_name', 'faculty', 'status']; // whitelist cột cho phép sort
+        if (!in_array($sortKey, $allowedSortKeys)) {
+            $sortKey = 'reader_id';
+        }
+        $sortOrder = ($sortOrder === 'DESC') ? 'DESC' : 'ASC';
 
-while ($row = pg_fetch_assoc($result)) {
-    $readers[] = $row;
-}
+        $where  = ["student_id <> :id"];
+        $params = [":id" => "AdminLib2025"];
 
-// Trả về dữ liệu dưới dạng JSON
-echo json_encode([
-    "success" => true,
-    "data" => $readers
-]);
 
-pg_close($conn);
-?>
+        if ($search !== '') {
+            $where[] = "(full_name ILIKE :search OR student_id ILIKE :search)";
+            $params[":search"] = "%" . $search . "%";
+        }
+
+        if ($faculty !== '' && $faculty !== 'Tất cả') {
+            $where[] = "faculty = :faculty";
+            $params[":faculty"] = $faculty;
+        }
+
+        if ($status !== '' && $status !== 'Tất cả') {
+            $where[] = "status = :status";
+            $params[":status"] = $status;
+        }
+
+        $whereSql = "";
+        if (!empty($where)){
+        $whereSql = "WHERE " . implode(" AND ", $where);
+        }
+        // Lấy danh sách reader theo trang tương ứng cùng với các options đẫ chọn
+        $query_1 = "
+            SELECT *, COUNT(*) OVER() AS total_count 
+            FROM reader
+            $whereSql
+            ORDER BY $sortKey $sortOrder
+            LIMIT :limit OFFSET :offset
+            ";
+
+        $stmt_1 = $pdo->prepare($query_1);
+        foreach ($params as $key => $value) {
+            $stmt_1->bindValue($key, $value);
+        }
+
+        $stmt_1->bindValue(":limit", $limit, PDO::PARAM_INT);
+        $stmt_1->bindValue(":offset", ($page - 1) * $limit, PDO::PARAM_INT);
+        $stmt_1->execute();
+        $readers = $stmt_1->fetchAll(PDO::FETCH_ASSOC);
+
+    // Faculties
+    $query_2 = "
+    SELECT DISTINCT faculty
+    FROM reader
+    WHERE student_id <> :id
+    ";
+    $stmt_3 = $pdo->prepare($query_2);
+    $stmt_3->bindValue(":id", "AdminLib2025", PDO::PARAM_STR);
+    $stmt_3->execute();
+    $faculties = $stmt_3->fetchAll(PDO::FETCH_COLUMN);
+
+        echo json_encode([
+            "success" => true,
+            "data" => $readers,
+            "filterOptions" => [
+            "faculties" => array_merge(['Tất cả'], $faculties ?: []),
+            "statuses"  => array_merge(['Tất cả'], ['Active','Disabled','Banned']),
+            ]
+        ]);
+
+    } catch (PDOException $e) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Lỗi truy vấn dữ liệu: " . $e->getMessage()
+        ]);
+        exit;
+    }

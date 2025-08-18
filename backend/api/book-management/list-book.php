@@ -48,7 +48,9 @@
             ORDER BY $sortKey $sortOrderSafe 
             LIMIT :limit OFFSET :offset
         ";
+
         $stmt = $pdo->prepare($queryBooks);
+        
         foreach ($params as $key => $value) {
             $stmt->bindValue($key, $value);
         }
@@ -56,7 +58,7 @@
         $stmt->bindValue(":offset", ($page - 1) * $limit, PDO::PARAM_INT);
         $stmt->execute();
         $books = $stmt->fetchAll() ?: [];
-
+        
         // Query đếm tổng số
         $queryCount = "SELECT COUNT(*) FROM books WHERE $whereSql";
         $stmtCount = $pdo->prepare($queryCount);

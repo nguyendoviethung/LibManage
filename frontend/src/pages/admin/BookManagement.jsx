@@ -47,7 +47,7 @@
     const [detailModal, setDetailModal] = useState(false);
     const [detailBook, setDetailBook] = useState(null);
     const [filterOptions, setFilterOptions] = useState({ authors: [], years: [], langs: [], categories: [] });
-    const booksPerPage = 5; // Số sách hiển thị trên mỗi trang
+    const booksPerPage = 8; // Số sách hiển thị trên mỗi trang
     
     // Debounce cho searchTerm
     const debouncedSearchTerm = useDebounce(searchTerm, 700);

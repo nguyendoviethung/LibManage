@@ -1,84 +1,179 @@
-.user-management {
-  background: #f8f9fa;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-  padding: 32px 28px 28px 28px;
-  margin-bottom: 32px;
-  min-height: 80vh;
+/* ReaderManagement.scss */
 
+.reader-management {
+  /* Thanh tìm kiếm + filter */
   .search-bar-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 1.5rem;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    padding: 20px 24px 16px 24px;
-    min-height: 200px;
-  
-    .filter-bar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    padding: 20px 24px 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 600px) {
+      padding: 10px 6px 8px 6px;
+    }
+
+    .filter-row {
+      width: 100%;
       display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: space-evenly;
+      align-items: flex-end;
+      margin-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+
+    .search-row {
+      margin-left: 10px;
+      display: flex;
+      flex-wrap: wrap;
       gap: 1.5rem;
       align-items: center;
-      margin-bottom: 24px;
+      width: 100%;
+      justify-content: flex-start;
+
+      @media (max-width: 600px) {
+        gap: 0.5rem;
+        margin: 6px 2px 8px 2px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    .ml-3 {
+      margin-left: 1.5rem;
+
+      @media (max-width: 600px) {
+        margin-left: 0;
+        margin-top: 0.5rem;
+      }
     }
   }
 
+  /* Bảng */
   .table-scroll-wrapper {
-    max-height: 600px;
-    overflow-y: auto;
     background: #fff;
     border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     padding: 18px 12px 8px 12px;
     margin-bottom: 16px;
-    .table th {
-      text-align: center;
-      vertical-align: middle;
-    }
-    .table td {
-      vertical-align: middle;
-    }
-    .table button {
-      margin: 0.2rem;
-      border-radius: 6px;
-      font-weight: 500;
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: transparent;
+
+      th,
+      td {
+        text-align: center;
+        vertical-align: middle;
+        padding: 20px 12px;
+        font-size: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      th {
+        padding: 5px 5px;          
+        background: #f7fafc;
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 1.05rem;
+        letter-spacing: 0.5px;
+        user-select: none;
+         height: 60px;                // chiều cao cố định giống antd
+      }
+
+      td {
+        color: #222;
+        font-weight: 500;
+        background: #fff;
+      }
+
+      .sort-col {
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background: #e6f4fa;
+        }
+      }
     }
   }
 
-  .toolbar-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
+  /* Pagination */
   .pagination-wrapper {
     .btn {
-      min-width: 40px;
-      height: 40px;
+      margin-left: 10px;  
+      margin-top: 5px;    
+      margin-bottom: 20px; 
+      min-width: 36px;
+      min-height: 36px;
       font-size: 1rem;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
       font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+
+      &.active,
+      &.btn-primary {
+        background: #1e9ddc !important;
+        color: #fff !important;
+        border: none;
+      }
+
+      &.btn-outline-primary {
+        background: #fff;
+        color: #1e9ddc;
+        border: 1.5px solid #1e9ddc;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &:hover {
+        background: #1e9ddc;
+        color: #fff;
+      }
     }
-    .btn-outline-primary {
-      color: #3380f3 !important;
-      background: #fff !important;
-      border-color: #3380f3 !important;
-    }
-    .btn-outline-primary:hover,
-    .btn-outline-primary:focus {
-      background: #3380f3 !important;
-      color: #fff !important;
-    }
-    .btn-primary {
-      background: #3380f3 !important;
-      color: #fff !important;
-      border-color: #3380f3 !important;
+
+    span {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #888;
+      margin: 0 6px;
+      user-select: none;
     }
   }
-}   
+
+  /* Sort icon */
+  .sort-icon {
+    margin-left: 4px;
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+
+    svg {
+      width: 90%;
+      height: 90%;
+    }
+
+    &.inactive {
+      opacity: 0.5;
+      color: #000;
+    }
+
+    &.asc,
+    &.desc {
+      color: #1e9ddc;
+      opacity: 1;
+    }
+  }
+}
