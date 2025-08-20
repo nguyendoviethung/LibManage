@@ -1,7 +1,7 @@
   import { useState, useEffect } from 'react';
   import { Modal, Button, Form } from 'react-bootstrap';
-
-  function EditReaderInformation({ show, onHide, actionState, handleUpdate,handleAddReader, initialData, checkAccountReader}) {
+  import './Modal.scss';
+  function ReaderForm({ show, onHide, actionState, handleUpdate,handleAddReader, readerData}) {
     // Dữ liệu hiển thị trong form 
     const [reader, setReader] = useState({  
       student_id: '',
@@ -9,23 +9,23 @@
       email: '',
       phone_number: '',
       faculty: '',
-      status: ''
+      status: '',
+      keepAccountStatus: false,
     });
-    // State kiểm tra xem có muốn đồng bộ với tài khoản người dùng hay là không
-    const [keepAccountStatus, setKeepAccountStatus] = useState(false);
-
-      // Sử dụng useEffect để gán initialData khi modal hiện ra
+  
+      // Sử dụng useEffect để gán readerData khi modal hiện ra
       useEffect(() => {
-        if (actionState === 'update' && initialData) {
+        if (actionState === 'update-info-reader' && readerData) {
           setReader({
-            student_id: initialData.student_id || '',
-            full_name: initialData.full_name || '',
-            email: initialData.email || '',
-            phone_number: initialData.phone_number || '',
-            faculty: initialData.faculty || '',
-            status: initialData.status || ''
+            student_id: readerData.student_id || '',
+            full_name: readerData.full_name || '',
+            email: readerData.email || '',
+            phone_number: readerData.phone_number || '',
+            faculty: readerData.faculty || '',
+            status: readerData.status || '',
+            keepAccountStatus: false,
           });
-          setKeepAccountStatus(false);
+        
         } else if (actionState === 'add') {
           setReader({
             student_id: '',
@@ -33,32 +33,33 @@
             email: '',
             phone_number: '',
             faculty: '',
-            status: ''
+            status: '',
+            keepAccountStatus: false
           });
-          setKeepAccountStatus(false);
+         
         }
-      }, [initialData, actionState]);
+      }, [readerData, actionState]);
 
     // Xử lý thay đổi input
     const handleChange = (e) => {
-      const { name, value } = e.target;
-      setReader((prev) => ({
-        ...prev,
-        [name]: value
-      }));
-    };
+  const { name, type, value, checked } = e.target;
+  setReader(prev => ({
+    ...prev,
+    [name]: type === 'checkbox' ? checked : value
+  }));
+};
 
     const handleSubmit = (e) => {
     e.preventDefault();
-    actionState === 'update'
-      ? handleUpdate({...reader, keepAccountStatus }) //...reader (đang dùng Spread Operator) là các thuộc tính của reader luôn (student_id: "...",full_name: "...",email: "...",...)
+    actionState === 'update-info-reader'
+      ? handleUpdate( reader.student_id, reader )
       : handleAddReader(reader);
-  }
-    return (
+    }
+    return (  
       <Modal show={show} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {actionState === 'update' ? 'Cập nhật' : 'Thêm'} sinh viên
+            {actionState === 'update-info-reader' ? 'Cập nhật' : 'Thêm'} sinh viên
           </Modal.Title>
         </Modal.Header>
 
@@ -72,7 +73,7 @@
                 value={reader.student_id}
                 onChange={handleChange}
                 placeholder="Nhập mã sinh viên"
-                disabled={actionState === 'update'}
+                disabled={actionState === 'update-info-reader'}
               />
             </Form.Group>
 
@@ -94,6 +95,7 @@
                 name="email"
                 value={reader.email}
                 onChange={handleChange}
+                 disabled={actionState === 'update-info-reader'}
                 placeholder="Nhập email"
               />
             </Form.Group>
@@ -129,7 +131,7 @@
               </Form.Select>
             </Form.Group>
 
-            {actionState === 'update' && (
+            {actionState === 'update-info-reader' && (
               <>
                 <Form.Group className="mb-3">
                   <Form.Label>Trạng thái tài khoản</Form.Label>
@@ -143,27 +145,33 @@
                     <option value="Banned">Banned</option>
                   </Form.Select>
                 </Form.Group>
-            {checkAccountReader && (
-                <Form.Group className="mb-3">
-                  <Form.Check
-                    type="checkbox"
-                    label="Đồng bộ trạng thái tài khoản với người dùng"
-                    checked={keepAccountStatus}
-                    onChange={(e) => setKeepAccountStatus(e.target.checked)}
-                  />
-                </Form.Group> )}
+          
+            <Form.Group className="mb-3 d-flex align-items-center align-items-start">
+          <input
+            className="form-checkbox"
+            type="checkbox"
+            name="keepAccountStatus"
+            checked={reader.keepAccountStatus}
+            onChange={handleChange}
+          />
+
+               <label className="ms-2 form-check-label">
+                 Đồng bộ trạng thái tài khoản với người dùng
+               </label>
+            </Form.Group>
+
               </>
             )}
           </Modal.Body>
 
           <Modal.Footer>
-            {actionState === 'update' ? (
-              <Button variant="primary" type="submit" >
-                Cập nhật
+            {actionState === 'update-info-reader' ? (
+              <Button className = "btn-custom-update-reader" type="submit" >
+                Update
               </Button>
             ) : (
-              <Button variant="success" type="submit">
-                Thêm sinh viên
+              <Button className ="btn-add-reader" type="submit">
+                Add Reader
               </Button>
             )}
           </Modal.Footer>
@@ -172,4 +180,4 @@
     );
   }
 
-  export default EditReaderInformation;
+  export default ReaderForm;

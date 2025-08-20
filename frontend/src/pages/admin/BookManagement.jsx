@@ -274,7 +274,7 @@ const handleUpdate = async (id,data) => {
                 setCrudAction('add');
                 setSelectedBook(null);
               }}
-              label="Thêm sách"
+              label="Add book"
               icon={faPlus}
               className="btn-custom-add-book "
 
@@ -360,16 +360,16 @@ const handleUpdate = async (id,data) => {
                             setCrudAction('update');
                             setSelectedBook(book);
                           }}
-                          label="Sửa"
+                          label="Update"
                           icon={faPenToSquare}
-                          className="btn-custom-edit"
+                          className="btn-custom-update-book"
                         />
                         <ActionButton
                           onClick={() => {
                             setCrudAction('delete');
                             setSelectedBook(book);
                           }}
-                          label="Xoá"
+                          label="Delete"
                           icon={faTrash}
                           className="btn-custom-delete"
                         />

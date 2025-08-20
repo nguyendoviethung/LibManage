@@ -3,7 +3,7 @@ import { Container, Button, Table, Modal, Spinner } from 'react-bootstrap';
 import AlertBox from '../../components/alert-box/AlertBox';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortUp, faSortDown, faPenToSquare, faTrash, faPlus, faFilter, faUser, faBuilding, faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faSortUp, faSortDown, faPenToSquare, faTrash, faPlus, faFilter, faUser, faBuilding, faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import {
 listReader,
 checkAccount,
@@ -16,7 +16,7 @@ updateAccountReader,
 
 import AddAccountModal from '../../components/reader-modal/AddAccountModal';
 import UpdateAccountModal from '../../components/reader-modal/UpdateAccountModal';
-import EditReaderInformation from '../../components/reader-modal/EditReaderInformation.jsx';
+import ReaderForm from '../../components/reader-modal/ReaderForm.jsx';
 import AccountNotice from '../../components/reader-modal/AccountNotice';
 import './ReaderManagement.scss';
 import Filter from '../../components/filter/Filter.jsx';
@@ -121,7 +121,7 @@ export default function ReaderManagement() {
     return pages;
   };
 
-  const handleAdd = async (data) => {
+  const handleAddReader = async (data) => {
     try {
       const res = await addReader(data, token);
       if (res.success) {
@@ -139,11 +139,12 @@ export default function ReaderManagement() {
     }
   };
 
-  const handleUpdate = async (id, data) => {
+  const handleUpdateInfoReader = async (id, data) => {
     try {
       const res = await updateReader(id, data, token);
       if (res.success) {
         setAlertBox({ message: res.message, type: 'success' });
+   
         setReaders(prev => prev.map(r => r.student_id === data.student_id ? {...r, ...data} : r));
         setSelectedReader(null);
         return true;
@@ -157,21 +158,24 @@ export default function ReaderManagement() {
     }
   };
 
-  // const handleDelete = async (id) => {
-  //   try {
-  //     const res = await deleteReader(id, token);
-  //     if (res.success) {
-  //       setAlertBox({ message: res.message, type: 'success' });
-  //       fetchReaders({ page: currentPage });
-  //       setSelectedReader(null);
-  //     } else {
-  //       setAlertBox({ message: res.message, type: 'error' });
-  //     }
-  //   } catch {
-  //     setAlertBox({ message: 'Lỗi xoá người dùng', type: 'error' });
-  //   }
-  // };
-
+ const handleUpdateAccount = async(id,data) => {
+  try {
+    const res = await updateAccountReader(id,data,token);
+     if (res.success) {
+        setAlertBox({ message: res.message, type: 'success' });
+        setReaders(prev => prev.map(r => r.student_id === data.student_id ? {...r, ...data} : r));
+        setSelectedReader(null);
+        return true;
+      } else {
+        setAlertBox({ message: res.message, type: 'error' });
+        return false;
+      }
+    } catch {
+      setAlertBox({ message: 'Lỗi cập nhật người dùng', type: 'error' });
+      return false;
+    }
+  };
+ 
   const uniqueFaculties = (filterOptions.faculties && filterOptions.faculties.length > 0) 
     ? filterOptions.faculties 
     : ['Tất cả'];
@@ -217,7 +221,7 @@ export default function ReaderManagement() {
               />
             </div>
             <ActionButton
-              onClick={() => { setCrudAction('add'); setSelectedReader(null); }}
+              onClick={() => { setCrudAction('add-reader'); setSelectedReader(null); }}
               label="Thêm người dùng"
               icon={faPlus}
               className="btn-custom-add-reader"
@@ -233,11 +237,10 @@ export default function ReaderManagement() {
                 <th className="text-center" style = {{width : '7%'}}>STT</th>
                 <th className="text-center" onClick={() => handleSort('student_id')} style={{cursor:'pointer', width: '8%' }}>MSSV {renderSortIcon('student_id')}</th>
                 <th className="text-center" onClick={() => handleSort('full_name')} style={{cursor:'pointer',width: '15%'}}>Họ tên {renderSortIcon('full_name')}</th>
-                <th className="text-center" style = {{width: '15%'}}>Email</th>
-                <th className="text-center"style = {{width: '10%'}}>SĐT</th>
-                <th className="text-center"style = {{width: '25%'}}>Khoa</th>
+
+                <th className="text-center"style = {{width: '20%'}}>Khoa</th>
                 <th className="text-center"style = {{width: '10%'}}>Trạng thái</th>
-                <th className="text-center"style = {{width: '10%'}}>Hành động</th>
+                <th className="text-center"style = {{width: '30%'}}>Hành động</th>
               </tr>
             </thead>
             <tbody>
@@ -261,23 +264,26 @@ export default function ReaderManagement() {
                         {r.full_name}
                       </span>
                     </td>
-                    <td className="text-center">{r.email}</td>
-                    <td className="text-center">{r.phone_number}</td>
+                 
                     <td className="text-center">{r.faculty}</td>
                     <td className="text-center">{r.status}</td>
                     <td className="text-center">
                       <div className="d-flex justify-content-center gap-2 flex-wrap">
                         <ActionButton
-                          onClick={() => { setCrudAction('update'); setSelectedReader(r); }}
-                          label="Sửa"
-                          icon={faPenToSquare}
-                          className="btn-custom-edit"
+                          onClick={() => { setCrudAction('update-info-reader');
+                                           setSelectedReader(r);
+                                         }}
+                          label="Update personal information"
+                          icon={faUser} 
+                          className="btn-custom-update-reader-info"
                         />
                         <ActionButton
-                          onClick={() => { setCrudAction('delete'); setSelectedReader(r); }}
-                          label="Xoá"
-                          icon={faTrash}
-                          className="btn-custom-delete"
+                          onClick={() => { setCrudAction('update-account'); 
+                                           setSelectedReader(r); 
+                                         }}
+                          label="Update account information"
+                          icon={faAddressCard}
+                          className="btn-custom-update-account-information"
                         />
                       </div>
                     </td>
@@ -332,12 +338,9 @@ export default function ReaderManagement() {
             </div>
           )}
         </div>
-
-        {/* CRUD Modals */}
-        {/* {crudAction === 'add' && <AddReaderModal show={true} hide={()=>setCrudAction('')} addReader={handleAdd}/>}
-        {crudAction === 'update' && <UpdateReaderModal show={true} hide={()=>setCrudAction('')} handleUpdate={handleUpdate} readerData={selectedReader}/>}
-        {crudAction === 'delete' && <DeleteReaderModal show={true} hide={()=>{setCrudAction(''); setSelectedReader(null);}} readerData={selectedReader} handleDelete={handleDelete}/>} */}
-        {crudAction === 'update' && <EditReaderInformation show={true} hide={()=>setCrudAction('')} handleUpdate={handleUpdate} readerData={selectedReader}/>}
+        {crudAction === 'update-account' && <UpdateAccountModal show={true} onHide={()=>setCrudAction('')} handleUpdateAccount={handleUpdateAccount} readerData={selectedReader} token = {token} />}
+        {crudAction === 'update-info-reader' && <ReaderForm show={true} onHide={()=>setCrudAction('')} handleUpdate={handleUpdateInfoReader} readerData={selectedReader} actionState = {'update-info-reader'}/>}
+        {crudAction === 'add-reader' && <ReaderForm show={true} onHide={()=>setCrudAction('')} handleAddReader={handleAddReader} readerData={selectedReader} actionState = {'add'}/>}
       </div>
 
       {/* Detail Modal */}

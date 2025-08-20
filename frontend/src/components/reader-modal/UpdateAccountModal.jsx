@@ -1,25 +1,35 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import {getUserName} from '../../api/ReaderManagementAPI';
 
-function UpdateAccountModal({ show, onHide, accountData, handleUpdateAccount }) {
+function UpdateAccountModal({ show, onHide, readerData, handleUpdateAccount, token}) {
   const [form, setForm] = useState({
     username: '',
     password: '',
     confirmPassword: '',
     status: ''
   });
-
- // Khi modal hiện ra thì tự động điền  username và status của người dùng 
-  useEffect(() => {
-    if (accountData) {
-      setForm({
-        username: accountData.username,
-        password: '',
-        confirmPassword: '',
-        status: 'Active',
-      });
+ 
+//  Khi modal hiện ra thì tự động điền  username và status của người dùng 
+useEffect(() => {
+  const fetchUsername = async () => {
+    try {
+      const res = await getUserName({student_id :readerData.student_id}, token); 
+     
+      if (res.success) {
+        setForm(prev => ({ ...prev, username: res.data.username , status: res.data.status}));
+      }else{
+        console.log(res)
+      }
+    } catch (err) {
+      console.error("Lỗi khi lấy username:", err);
     }
-  }, [accountData]);
+  };
+
+  if (readerData?.student_id) {
+    fetchUsername();
+  }
+}, []);
 
   //Xử lí khi khi input thay đổi 
   const handleChange = (e) => {
@@ -30,27 +40,23 @@ function UpdateAccountModal({ show, onHide, accountData, handleUpdateAccount }) 
   //Xử lí khi submit form
  const handleSubmit = async (e) => {
   e.preventDefault();
-
   const payload = {
-    confirmPassword: form.confirmPassword,
     password: form.password || null,
     username: form.username,
     status: form.status
   };
   
-  //Gọi hàm handUpdateAccount và đợi nó hoàn thiện xong thì xem kết quả nếu thành công thì đóng modal và reset state
-  const success = await handleUpdateAccount(payload);
-  if (success) {
+  const result = await handleUpdateAccount(readerData.student_id,payload);
+  if (result.success) {
     onHide();
     setForm({ username: '', password: '', confirmPassword: '', status: '' });
   }
 };
 
-
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Cập nhật tài khoản</Modal.Title>
+        <Modal.Title>Cập nhật tài khoản </Modal.Title>
       </Modal.Header>
 
       <Form onSubmit={handleSubmit}>
@@ -96,7 +102,6 @@ function UpdateAccountModal({ show, onHide, accountData, handleUpdateAccount }) 
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>Huỷ</Button>
           <Button variant="primary" type="submit">Cập nhật</Button>
         </Modal.Footer>
       </Form>

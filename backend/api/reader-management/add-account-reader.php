@@ -40,7 +40,7 @@ if(!isValidPassword($password)){
     echo json_encode(['success' => false, 'message' => 'Mật khẩu không hợp lệ với định dạng yêu cầu,vui lòng kiểm tra lại.']);
     pg_close($conn);
     exit;
-}
+}   
 // Mã hóa mật khẩu trước khi lưu ( sau này nếu nếu đăng nhập thì so sánh với mật khẩu đã mã hóa này)
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 

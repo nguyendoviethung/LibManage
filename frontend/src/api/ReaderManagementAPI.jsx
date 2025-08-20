@@ -57,7 +57,7 @@ export const addAccount = (data, token) =>
 // 7. Lấy username của độc giả (GET)
 export const getUserName = (params, token) =>
   axios.get(`${BASE_URL}/get-user-name.php`, {
-    params, // { reader_id }
+    params, // { student_id }
     headers: {
       Authorization: `Bearer ${token}`,
     },

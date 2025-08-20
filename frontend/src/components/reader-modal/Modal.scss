@@ -1,0 +1,55 @@
+
+
+.form-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #307beb; // màu xanh primary giống Bootstrap
+  margin-top: 3px;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+
+  &:checked {
+    border-color: #2674e9;
+    background-color: #0d6efd;
+  }
+}
+
+.form-check-label {
+  font-size: 18px;
+  font-weight: 500;
+  color: #0b0c0c; // giống màu chữ bootstrap
+  user-select: none; // tránh bị bôi đen khi click
+}
+
+button.btn-custom-update-reader{
+    height: 40px;
+    width: 100px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #23b5eb;
+    &:hover {
+    background: #0993c6;
+    color: #fff;
+    transform: translateY(-1.2px) scale(1);
+    box-shadow: 0 6px 18px rgba(255,179,0,0.13);
+  }
+}
+
+button.btn-add-reader{
+    height: 40px;
+    width: 120px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #195fdf;
+    &:hover {
+    background: #0c49b9;
+    color: #fff;
+    transform: translateY(-1.2px) scale(1);
+    box-shadow: 0 6px 18px rgba(255,179,0,0.13);
+  }
+}
