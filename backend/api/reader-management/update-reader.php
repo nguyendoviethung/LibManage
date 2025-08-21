@@ -10,8 +10,8 @@ try {
     $newPhone       = $data['phone_number'];
     $newFaculty     = $data['faculty'];
     $newStatus      = $data['status'];
-    $valueCheckBox = filter_var($data['keepAccountStatus'] ?? false, FILTER_VALIDATE_BOOLEAN);   
-    // ============================
+    // $valueCheckBox = filter_var($data['keepAccountStatus'] ?? false, FILTER_VALIDATE_BOOLEAN);    
+     $valueCheckBox = $data['keepAccountStatus'];  
     // I. VALIDATION
     // ============================
     // Kiểm tra trùng số điện thoại
@@ -52,14 +52,15 @@ try {
         ':student_id' => $studentID
     ]);
 
-    $mapStatus = [
-        'Inactive' => 'Disabled',
-        'Banned'   => 'Banned',
-        'Active'   => 'Active'
-    ];
+  $mapStatus = [
+    'Inactive' => 'Disabled',
+    'Banned'   => 'Banned',
+    'Active'   => 'Active'
+];
+
     // Nếu tick checkbox → đồng bộ trạng thái tài khoản
     $updateStatusResult = true;
-    if (!$valueCheckBox) {
+    if ($valueCheckBox) {
         $accountStatus = $mapStatus[$newStatus] ?? 'Active';
         $sqlAcc = "UPDATE readeraccounts SET status = :accStatus WHERE student_id = :student_id";
         $stmtAcc = $pdo->prepare($sqlAcc);
@@ -68,8 +69,18 @@ try {
             ':student_id'  => $studentID
         ]);
     }
-
-    if ($updateResult && $updateStatusResult) {
+    
+    $autoEmailForwarding = true;
+    $query = "UPDATE readeraccounts 
+              SET username = :username
+              WHERE student_id = :student_id";
+    $stmt = $pdo->prepare($query);
+    $autoEmailForwarding = $stmt->execute([
+        ':username'   => $newEmail,
+        ':student_id' => $studentID
+    ]);
+    
+    if ($updateResult && $updateStatusResult && $autoEmailForwarding ) {
         $pdo->commit();
         echo json_encode(['success' => true, 'message' => '✅ Cập nhật thông tin sinh viên thành công.']);
     } else {

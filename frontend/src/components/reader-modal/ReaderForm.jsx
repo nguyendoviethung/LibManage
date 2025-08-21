@@ -1,12 +1,38 @@
   import { useState, useEffect } from 'react';
   import { Modal, Button, Form } from 'react-bootstrap';
   import './Modal.scss';
+
   function ReaderForm({ show, onHide, actionState, handleUpdate,handleAddReader, readerData}) {
+
+// Bỏ toàn bộ khoảng trắng (đầu/giữa/cuối)
+function removeSpaces(str = "") {
+  return str.replace(/\s+/g, "");
+}
+
+// Chuyển thường + bỏ dấu (xử lý cả Đ/đ)
+function toLowerNoAccent(str = "") {
+  return str
+    .toLowerCase()
+    .normalize("NFD")                 // tách dấu
+    .replace(/[\u0300-\u036f]/g, "") // xoá dấu
+    .replace(/đ/g, "d");             // map đ -> d (Đ đã toLowerCase thành đ)
+}
+
+// (Tuỳ chọn) lọc chỉ còn a-z0-9 cho local-part email
+function keepAlnum(str = "") {
+  return str.replace(/[^a-z0-9]/g, "");
+}
+
+// Kết hợp
+function formatString(str = "") {
+  return keepAlnum(removeSpaces(toLowerNoAccent(str)));
+}
+
     // Dữ liệu hiển thị trong form 
     const [reader, setReader] = useState({  
       student_id: '',
       full_name: '',
-      email: '',
+      email: '@stu.gcut.edu.vn',
       phone_number: '',
       faculty: '',
       status: '',
@@ -30,7 +56,7 @@
           setReader({
             student_id: '',
             full_name: '',
-            email: '',
+            email: '@stu.gcut.edu.vn',
             phone_number: '',
             faculty: '',
             status: '',
@@ -41,13 +67,29 @@
       }, [readerData, actionState]);
 
     // Xử lý thay đổi input
-    const handleChange = (e) => {
+const handleChange = (e) => {
   const { name, type, value, checked } = e.target;
-  setReader(prev => ({
-    ...prev,
-    [name]: type === 'checkbox' ? checked : value
-  }));
+
+  setReader(prev => {
+    // Giá trị mới của field đang thay đổi
+    const updatedValue = type === 'checkbox' ? checked : value;
+
+    // Dữ liệu tạm thời sau khi update field
+    const updatedReader = {
+      ...prev,
+      [name]: updatedValue,
+    };
+
+    // cập nhật lại email dựa trên full_name + student_id
+      updatedReader.email = 
+      formatString(updatedReader.full_name) + 
+      formatString(updatedReader.student_id) + 
+      "@stu.gcut.edu.vn";
+
+    return updatedReader;
+  });
 };
+
 
     const handleSubmit = (e) => {
     e.preventDefault();
@@ -95,7 +137,8 @@
                 name="email"
                 value={reader.email}
                 onChange={handleChange}
-                 disabled={actionState === 'update-info-reader'}
+                
+                 disabled = {true}
                 placeholder="Nhập email"
               />
             </Form.Group>

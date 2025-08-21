@@ -4,44 +4,77 @@
   cursor: pointer;
 
   img {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid #ecf0f4;
-    transition: border-color 0.3s ease;
-    margin-right: 40px;
+    border: 3px solid #2384da;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+    margin-right: 50px;
     &:hover {
-      border-color: #5002fa;
+    transform: scale(1.07);
     }
   }
 
   .dropdown-menu {
     position: absolute;
-    top: 140%; // dưới avatar 1 chút
-    right: 15px;
-    background: rgb(245, 239, 239) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 8px 0;
-    min-width: 200px;
+    top: 120%; // bên dưới avatar
+    right: 0;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    // padding: 8px 0;
+    min-width: 220px;
     z-index: 999;
     display: block;
 
+    .logout-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 40px;
+      padding-bottom: 20px;
+      padding-right: 75px;
+      padding-top: 20px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      border-radius: 8px;
+
+      &:hover {
+        background-color: #14bde3;
+        transform: translateX(2px);
+      }
+
+      .icon-logout {
+        color: #127bec;
+        font-size: 22px;
+      }
+
+      .logout-label {
+        font-size: 18px;
+        font-weight: 500;
+        color: #222;
+      }
+    }
+
+    /* Nếu còn button khác trong menu */
     button {
-      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       width: 100%;
       background: none;
       border: none;
-      padding: 8px 16px;
-      text-align: left;
-      cursor: pointer;
+      // padding: 12px 20px;
       font-size: 14px;
       color: #333;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 8px;
       transition: background 0.2s ease;
 
       &:hover {
-        background: #80a2db;
+        background-color: #f0f0ff;
       }
     }
   }

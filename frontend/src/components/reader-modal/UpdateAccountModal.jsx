@@ -14,8 +14,8 @@ function UpdateAccountModal({ show, onHide, readerData, handleUpdateAccount, tok
 useEffect(() => {
   const fetchUsername = async () => {
     try {
-      const res = await getUserName({student_id :readerData.student_id}, token); 
-     
+      const res = await getUserName({student_id : readerData.student_id}, token); 
+      console.log(res.data)
       if (res.success) {
         setForm(prev => ({ ...prev, username: res.data.username , status: res.data.status}));
       }else{
@@ -95,7 +95,7 @@ useEffect(() => {
             <Form.Label>Trạng thái</Form.Label>
             <Form.Select name="status" value={form.status} onChange={handleChange}>
               <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
+              <option value="Disabled">Disabled</option>
               <option value="Banned">Banned</option>
             </Form.Select>
           </Form.Group>

@@ -1,7 +1,7 @@
 <?php
   require __DIR__ . '/../../middleware/auth-middleware.php';
   checkAdminRole($decode);
-  
+
 try {
     $studentID = $_GET['student_id'] ?? '';
 
@@ -15,10 +15,13 @@ try {
     }
 
     // Truy vấn bằng PDO
-    $sql = "SELECT username, status FROM readeraccounts WHERE student_id = :student_id";
+    $sql = "SELECT username, status 
+    FROM readeraccounts 
+    WHERE student_id = :student_id
+    ";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':student_id' => $studentID]);
-
+   
     $account = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$account) {
