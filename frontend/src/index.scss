@@ -1,59 +1,16 @@
+@import './styles/variables';
+@import './styles/mixins';
+@import './styles/reset';
+@import './styles/typography';
+
 /* Global scrollbar styling */
-* {
-  box-sizing: border-box;
-}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: $neutral-100; border-radius: $radius-sm; }
+::-webkit-scrollbar-thumb { background: $neutral-300; border-radius: $radius-sm; }
+::-webkit-scrollbar-thumb:hover { background: $neutral-400; }
 
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
+main { scroll-behavior: smooth; }
 
-#root {
-  height: 100%;
-}
-
-/* Custom scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}
-
-/* Ensure main content area can scroll */
-main {
-  scroll-behavior: smooth;
-}
-
-/* Layout container styles */
-.layout-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.layout-content {
-  display: flex;
-  flex: 1;
-  height: calc(100vh - 70px); /* Adjust based on navbar height */
-}
-
-.main-content {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-}
+.layout-container { display: flex; flex-direction: column; height: 100vh; }
+.layout-content { display: flex; flex: 1; height: calc(100vh - $navbar-height); }
+.main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; padding: $space-5; }

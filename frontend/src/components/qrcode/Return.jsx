@@ -4,12 +4,13 @@ import './QRScannerModal.scss';
 import InputField from '../inputfield/InputField';
 import Button from '../button/Button';
 import AlertBox from '../alert-box/AlertBox';
-import { getBooks } from '../../api/LendingService';
+import { getBorrowedBooks } from '../../api/LendingService';
 
-function ReturnBooks({ handleReturnBooks, onClose }) {
+function ReturnBooks({ handleReturnBooks, onClose , token}) {
   const [formData, setFormData] = useState({
     studentId: '',
-    books: [] // chứa mảng sách từ backend
+    books: [] ,
+    reader_id :''
   });
   const [notification, setNotification] = useState(null); // Thông báo ra màn hình 
 
@@ -22,23 +23,23 @@ function ReturnBooks({ handleReturnBooks, onClose }) {
   };
 
   useEffect(() => {
-    const html5QrCode = new Html5Qrcode("qrcode");
+    const html5QrCode = new Html5Qrcode("qrcode_return");
     html5QrCode.start(
       { facingMode: "environment" },
-      { fps: 5, qrbox: 250 },
+      { fps: 3, qrbox: 270 },
       async (decodedText) => {
         const code = decodedText.trim();
         const studentID = code.split(':')[1]?.trim();
-
-        const res = await getBooks({studentID}); // Láy sách từ mã số sinh viên quét được
-
-        if (res?.success) { // Nếu sinh viên có sách thì gán sách và mã số sinh viên vào trong formData
+        const res = await getBorrowedBooks(studentID,{studentID: studentID},token); 
+        console.log(res)
+        if (res?.success) { 
           setFormData({
             studentId: studentID,
-            books: res.data
+            books: res.data,
+            reader_id: res.data.reader_id
           });
           setNotification(null); 
-        } else {
+        } else {  
           console.log(formData)
           setNotification({
             message: res.message || "Không tìm thấy thông tin sách.",
@@ -60,15 +61,15 @@ function ReturnBooks({ handleReturnBooks, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleReturnBooks({
-      studentID: formData.studentId,
+      readerID: formData.books[0]?.reader_id || '',
       bookIDs: formData.books.map(book => book.book_id)
     });
-    setFormData({ studentId: '', books: [] });
+    setFormData({ studentId: '', books: [], reader_id : ''});
   };
 
   // Xử lí khi đóng camera
   const handleClose = () => {
-    setFormData({ studentId: '', books: [] });
+    setFormData({ studentId: '', books: [] , reader_id : ''});
     onClose();
   };
 
@@ -85,34 +86,35 @@ function ReturnBooks({ handleReturnBooks, onClose }) {
           {/* Phần hiện camera và hiển thị danh sách sách đã mượn để trả lại thư viện */}
       <div className="qr-modal">
         <div className="qr-header">
-          <span>Quét mã QR</span>
+          <span>Scan QR code to return book</span>
           <button onClick={handleClose} className="close-btn">✕</button>
         </div>
 
-        <div id="qrcode" style={{ width: '100%' }}></div>
+        <div id="qrcode_return" style={{ width: '100%' }}></div>
 
         <form className="qr-form" onSubmit={handleSubmit}>
           {formData.studentId && (
             <div className="form-group">
-              <label>Mã số sinh viên</label>
+            <label>Student ID</label>
               <InputField type="text" value={formData.studentId} disabled={true} />
             </div>
           )}
 
           {formData.books.map((book, index) => (
             <div className="form-group" key={index} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <button type="button" onClick={() => removeBook(index)} className="cancel-btn">
+                Erase 
+              </button>
               <InputField
                 type="text"
                 value={book.title}
                 disabled={true}
               />
-              <button type="button" onClick={() => removeBook(index)} className="cancel-btn">
-                Hủy 
-              </button>
+           
             </div>
           ))}
 
-          {formData.books.length > 0 && <Button text="Hoàn tất trả sách" />}
+          {formData.books.length > 0 && <Button text="Return book" />}
         </form>
       </div>
     </>

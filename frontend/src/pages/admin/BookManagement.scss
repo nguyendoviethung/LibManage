@@ -1,8 +1,10 @@
+@import '../../styles/variables';
+
  .search-bar-container {
     gap: 1.5rem;
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
     padding: 20px 24px 16px 20px;
     margin-bottom: 24px;
     display: flex;
@@ -46,12 +48,10 @@
   }
    .table-scroll-wrapper {
     background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-radius: $radius-lg;
+    box-shadow: $shadow-md;
     padding: 18px 12px 8px 12px;
-   
     margin-bottom: 16px;
-  
   }
   .custom-table {
     width: 100%;
@@ -62,27 +62,25 @@
       vertical-align: middle;
       padding: 20px 12px;
       font-size: 1rem;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid $neutral-200;
     }
     th {
-      background: #f7fafc;
+      background: $neutral-100;
       font-weight: 700;
-      color: #1e293b;
+      color: $neutral-900;
       font-size: 1.05rem;
       letter-spacing: 0.5px;
       user-select: none;
     }
     td {
-      color: #222;
+      color: $neutral-800;
       font-weight: 500;
       background: #fff;
     }
     .sort-col {
       cursor: pointer;
-      transition: background 0.2s;
-      &:hover {
-        background: #e6f4fa;
-      }
+      transition: background $transition-base;
+      &:hover { background: rgba(30, 157, 220, 0.08); }
     }
   }
 
@@ -94,25 +92,14 @@
       font-size: 1rem;
       font-weight: 600;
       border-radius: 8px;
-      transition: background 0.2s, color 0.2s;
-      &.active, &.btn-primary {
-        background: #1e9ddc !important;
-        color: #fff !important;
-        border: none;
-      }
-      &.btn-outline-primary {
-        background: #fff;
-        color: #1e9ddc;
-        border: 1.5px solid #1e9ddc;
-      }
+      transition: background $transition-base, color $transition-base;
+      &.active, &.btn-primary { background: $brand-primary !important; color: #fff !important; border: none; }
+      &.btn-outline-primary { background: #fff; color: $brand-primary; border: 1.5px solid $brand-primary; }
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
       }
-      &:hover {
-        background: #1e9ddc;
-        color: #fff;
-      }
+      &:hover { background: $brand-primary; color: #fff; }
     }
     span {
       font-size: 1.1rem;

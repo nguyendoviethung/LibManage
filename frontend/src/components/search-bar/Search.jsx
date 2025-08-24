@@ -4,7 +4,7 @@ import './Search.scss';
 
 export default function Search ({setSearchTerm,searchTerm,placeholder}) {
   return (
-  <div className="search-row">
+  
     <div className="search-wrapper">
             <FontAwesomeIcon icon={faSearch} className = "search-icon" />
             <input
@@ -15,6 +15,6 @@ export default function Search ({setSearchTerm,searchTerm,placeholder}) {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
     </div>
-  </div>
+  
   );
 }

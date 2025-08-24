@@ -6,11 +6,11 @@ require __DIR__ . '/../../middleware/auth-middleware.php';
     try {
         $query = "
             SELECT 
-                TO_CHAR(borrow_date, 'YYYY-MM') AS month,
-                COUNT(*) AS count
+            TO_CHAR(borrow_date, 'YYYY-MM') AS month,
+            COUNT(*) AS count
             FROM borrowrecords
             WHERE borrow_date >= date_trunc('month', CURRENT_DATE) - INTERVAL '12 months'
-              AND borrow_date <= date_trunc('month', CURRENT_DATE) + INTERVAL '1 month' - INTERVAL '1 day'
+            AND borrow_date <= date_trunc('month', CURRENT_DATE) + INTERVAL '1 month' - INTERVAL '1 day'
             GROUP BY month
             ORDER BY month
         ";

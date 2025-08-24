@@ -1,13 +1,14 @@
+@import '../../styles/variables';
+
 .login-footer {
-  background: #1e9ddc;
-  color: #0b0d10;
+  background: $brand-primary;
+  color: #fff;
   padding: 20px 0;
-  font-family: 'Roboto', Arial, sans-serif;
   box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.04);
   width: 100%;
   text-align: center;
   bottom: 0;
-  position: absolute;
+  position: sticky;
 
   .footer-content {
     display: flex;
@@ -15,15 +16,7 @@
     padding: 0 20px; 
     text-align: left;
 
-    .footer-gcut {
-      font-size: 14px;
-      line-height: 1.5;
-      font-weight: 800 px;
-    }
-
-    .footer-info {
-      font-size: 12px;
-      font-weight: 400 px;
-    }
+    .footer-gcut { font-size: 14px; line-height: 1.5; font-weight: 700; }
+    .footer-info { font-size: 12px; font-weight: 500; opacity: 0.9; }
   }
 }

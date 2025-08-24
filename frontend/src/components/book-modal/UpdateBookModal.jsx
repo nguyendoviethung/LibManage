@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import  '../reader-modal/Modal.scss';
 
 function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
   const [formData, setFormData] = useState({
@@ -36,12 +37,13 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
   return (
     <Modal show={show} onHide={hide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Cập nhật sách</Modal.Title>
+        <Modal.Title>Book Update</Modal.Title>
       </Modal.Header>
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Tên sách</Form.Label>
+           <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Book Title</Form.Label>
+
             <Form.Control
               type="text"
               name="title"
@@ -53,7 +55,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Ngôn ngữ</Form.Label>
+            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Language</Form.Label>
             <Form.Control
               type="text"
               name="lang"
@@ -65,7 +67,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Năm xuất bản</Form.Label>
+            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Year of publication</Form.Label>
             <Form.Control
               type="number"
               name="publisher_year"
@@ -77,7 +79,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Vị trí</Form.Label>
+            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Location</Form.Label>
             <Form.Control
               type="text"
               name="location"
@@ -89,7 +91,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Số lượng</Form.Label>
+            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Quantity</Form.Label>
             <Form.Control
               type="number"
               name="quantity"
@@ -101,7 +103,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Tác giả</Form.Label>
+            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Author</Form.Label>
             <Form.Control
               type="text"
               name="author_name"
@@ -113,7 +115,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Thể loại</Form.Label>
+            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Category</Form.Label>
             <Form.Control
               type="text"
               name="genre"
@@ -126,7 +128,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
         </Modal.Body>
         <Modal.Footer>
          
-          <Button variant="info" type="submit">Cập nhật</Button>
+          <Button variant="info" type="submit">Update</Button>
         </Modal.Footer>
       </Form>
     </Modal>

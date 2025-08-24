@@ -1,4 +1,5 @@
 import { Modal, Button } from 'react-bootstrap';
+import  '../reader-modal/Modal.scss';
 
 function DeleteBookModal({ show, hide, bookData, handleDelete}) {
   const handleConfirmDelete =  async(e) =>{
@@ -11,17 +12,17 @@ function DeleteBookModal({ show, hide, bookData, handleDelete}) {
   return (
     <Modal show={show} onHide={hide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Xác nhận xoá sách</Modal.Title>
+        <Modal.Title>Confirm book deletion</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Bạn có chắc chắn muốn xoá sách <strong>{bookData?.title}</strong> không?</p>
+        <p>Are you sure you want to delete  <strong>{bookData?.title}</strong> ?</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={hide}>
-          Không
+        <Button className ="delete-book-refuse" onClick={hide}>
+          No
         </Button>
-        <Button variant="danger" onClick={handleConfirmDelete}>
-          Có
+        <Button className="delete-book-accept" onClick={handleConfirmDelete}>
+          Yes
         </Button>
       </Modal.Footer>
     </Modal>

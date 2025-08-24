@@ -306,11 +306,11 @@ const handleUpdate = async (id,data) => {
   <tr>
     <th className="text-center" style={{ width: '7%' }}>STT</th>
     <th className="text-center" style={{ width: '8%' }}>Mã sách</th>
-    <th className="text-center" style={{ width: '11%', cursor: 'pointer' }} onClick={() => handleSort('title')}>
-      Tên sách {renderSortIcon('title')}
+    <th className="text-center" style={{ width: '11%', cursor: 'pointer' }}>
+      Tên sách 
     </th>
-    <th className="text-center" style={{ width: '15%', cursor: 'pointer' }} onClick={() => handleSort('author_name')}>
-      Tác giả {renderSortIcon('author_name')}
+    <th className="text-center" style={{ width: '15%', cursor: 'pointer'}}>
+      Tác giả 
     </th>
     <th className="text-center" style={{ width: '18%' }}>Vị trí</th>
     <th className="text-center" style={{ width: '10%', cursor: 'pointer' }} onClick={() => handleSort('quantity')}>

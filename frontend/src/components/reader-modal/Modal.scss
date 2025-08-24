@@ -53,3 +53,63 @@ button.btn-add-reader{
     box-shadow: 0 6px 18px rgba(255,179,0,0.13);
   }
 }
+
+button.update-account-reader{
+    height: 40px;
+    width: 100px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #ef5e20;
+    &:hover {
+    background:#ef5e20;
+    color: #fff;
+    transform: translateY(-1.2px) scale(1);
+    box-shadow: 0 6px 18px rgba(255,179,0,0.13);
+  }
+}
+
+button.add-book-modal{
+    height: 40px;
+    width: 100px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #0bde8a;
+    &:hover {
+    background:#05c679;
+    color: #fff;
+    transform: translateY(-1.2px) scale(1);
+    box-shadow: 0 6px 18px rgba(255,179,0,0.13);
+  }
+}
+
+button.delete-book-refuse{
+    height: 40px;
+    width: 90px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #848783;
+    &:hover {
+    background:#636866;
+    color: #fff;
+    transform: translateY(-1.2px) scale(1);
+    box-shadow: 0 6px 18px rgba(255,179,0,0.13);
+  }
+}
+
+button.delete-book-accept{
+    height: 40px;
+    width: 90px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #d42424;
+    &:hover {
+    background:#d21a1a;
+    color: #fff;
+    transform: translateY(-1.2px) scale(1);
+    box-shadow: 0 6px 18px rgba(255,179,0,0.13);
+  }
+}

@@ -3,21 +3,16 @@ import { Container, Button, Table, Modal, Spinner } from 'react-bootstrap';
 import AlertBox from '../../components/alert-box/AlertBox';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortUp, faSortDown, faPenToSquare, faTrash, faPlus, faFilter, faUser, faBuilding, faAddressCard } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faSortUp, faSortDown, faPlus, faUser, faBuilding, faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import {
 listReader,
-checkAccount,
 updateReader,
 addReader,
-addAccount,
-getUserName,
 updateAccountReader,
 } from '../../api/ReaderManagementAPI';
 
-import AddAccountModal from '../../components/reader-modal/AddAccountModal';
 import UpdateAccountModal from '../../components/reader-modal/UpdateAccountModal';
 import ReaderForm from '../../components/reader-modal/ReaderForm.jsx';
-import AccountNotice from '../../components/reader-modal/AccountNotice';
 import './ReaderManagement.scss';
 import Filter from '../../components/filter/Filter.jsx';
 import Search from '../../components/search-bar/Search.jsx';
@@ -217,12 +212,12 @@ export default function ReaderManagement() {
               <Search
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
-                placeholder="Tìm kiếm người dùng theo tên"
+                placeholder="Search for readers by name or student ID"
               />
             </div>
             <ActionButton
               onClick={() => { setCrudAction('add-reader'); setSelectedReader(null); }}
-              label="Thêm người dùng"
+              label="Add reader"
               icon={faPlus}
               className="btn-custom-add-reader"
             />
@@ -236,7 +231,7 @@ export default function ReaderManagement() {
               <tr>
                 <th className="text-center" style = {{width : '7%'}}>STT</th>
                 <th className="text-center" onClick={() => handleSort('student_id')} style={{cursor:'pointer', width: '8%' }}>MSSV {renderSortIcon('student_id')}</th>
-                <th className="text-center" onClick={() => handleSort('full_name')} style={{cursor:'pointer',width: '15%'}}>Họ tên {renderSortIcon('full_name')}</th>
+                <th className="text-center" style={{cursor:'pointer',width: '15%'}}>Họ tên </th>
 
                 <th className="text-center"style = {{width: '20%'}}>Khoa</th>
                 <th className="text-center"style = {{width: '10%'}}>Trạng thái</th>

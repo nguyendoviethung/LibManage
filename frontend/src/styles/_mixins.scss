@@ -1,0 +1,31 @@
+@mixin card($radius: $radius-md, $shadow: $shadow-md, $padding: $space-5) {
+  background: $bg-surface;
+  border-radius: $radius;
+  box-shadow: $shadow;
+  padding: $padding;
+}
+
+@mixin focus-ring($color: $brand-primary) {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba($color, 0.2);
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin button-reset {
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+@mixin interactive {
+  transition: transform $transition-fast, box-shadow $transition-base, background-color $transition-base, color $transition-base;
+  &:active { transform: translateY(0); }
+}
+

@@ -7,15 +7,15 @@ require __DIR__ . '/../../middleware/auth-middleware.php';
         // Lấy 5 cuốn sách được mượn nhiều nhất
         $query = "
             SELECT 
-                b.title,
-                b.author_name,
-                COUNT(br.book_id) AS times
+            b.title,
+            b.author_name,
+            COUNT(br.book_id) AS times
             FROM borrowrecords br
             JOIN books b ON br.book_id = b.book_id
             GROUP BY br.book_id, b.title, b.author_name
             ORDER BY times DESC
             LIMIT 5
-        ";
+            ";
 
         $stmt = $pdo->query($query);
         $books = $stmt->fetchAll(PDO::FETCH_ASSOC);

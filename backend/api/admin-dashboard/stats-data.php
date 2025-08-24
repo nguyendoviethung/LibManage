@@ -5,7 +5,7 @@ checkAdminRole($decode);
 
     try {
         // Lấy số lượng cuốn sách trong thư viện
-        $stmt1 = $pdo->query("SELECT SUM(quantity) AS total_books FROM books;");
+        $stmt1 = $pdo->query("SELECT SUM(quantity) AS total_books FROM books WHERE is_deleted = false;");
         $total_books = $stmt1->fetch(PDO::FETCH_ASSOC);
 
         // Lấy số lượng độc giả đang mượn sách từ thư viện

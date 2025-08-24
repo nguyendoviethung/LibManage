@@ -85,9 +85,9 @@
 }
 
 .btn-custom-add-reader {
-  background: #0466f9;
+  background: #1488e6;
   &:hover {
-    background: #053fc8;
+    background: #255fe6;
     color: #fff;
     box-shadow: 0 6px 18px rgba(51,128,243,0.13);
      transform: translateY(-1.8px) scale(1);
@@ -121,6 +121,26 @@
   background: #8963d1;
   &:hover {
     background: #6f42c1;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(5,197,130,0.13);
+     transform: translateY(-1.8px) scale(1);
+  }
+}
+ 
+.btn-custom-borrow{
+  background: #0ae465;
+  &:hover {
+    background: #0ace45;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(5,197,130,0.13);
+     transform: translateY(-1.8px) scale(1);
+  }
+}
+
+.btn-custom-return{
+  background: #d4ea0f;
+  &:hover {
+    background: #d3da0e;
     color: #fff;
     box-shadow: 0 6px 18px rgba(5,197,130,0.13);
      transform: translateY(-1.8px) scale(1);

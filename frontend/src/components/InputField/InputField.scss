@@ -1,31 +1,36 @@
-// Icon bên trái input
+@import '../../styles/variables';
+
 .input-icon-left {
-    position: absolute;
-    top: 50%;
-    left: 12px;
-    transform: translateY(-50%);
-    color: #000000;
-    font-size: 18px;
-    pointer-events: none;
-    z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: $space-3;
+  transform: translateY(-50%);
+  color: $neutral-600;
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+input {
+  width: 100%;
+  padding: $space-3 $space-6 $space-3 $space-6;
+  border: 1px solid $neutral-300;
+  border-radius: $radius-lg;
+  background: $bg-surface;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color $transition-base, box-shadow $transition-base, background-color $transition-base;
+  color: $neutral-800;
+
+  &::placeholder { color: $neutral-400; }
+
+  &:focus {
+    border-color: $brand-primary;
+    box-shadow: 0 0 0 3px rgba(30, 157, 220, 0.15);
+    background: #fff;
   }
 
-// Input
-  input {
-    width: 100%;
-    padding: 12px 40px 12px 40px; // padding-left 40px nếu có icon bên trái dùng để cho icon không che lấp input
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background: #eaf1ff;
-    font-size: 16px;
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-
-    &:focus {
-      border-color: #3498db;
-    }
-  }
-  
-
-  
+  &.is-invalid { border-color: $brand-danger; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15); }
+  &.is-valid { border-color: $brand-success; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15); }
+}

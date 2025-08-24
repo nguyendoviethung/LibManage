@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import  '../reader-modal/Modal.scss';
 
 function AddBookModal({ show, hide, addBook}) {
   const [formData, setFormData] = useState({
@@ -108,7 +109,7 @@ function AddBookModal({ show, hide, addBook}) {
       </Form.Group>
     </Modal.Body>
     <Modal.Footer>
-      <Button variant="success" type="submit">Thêm sách</Button>
+      <Button className = "add-book-modal" type="submit">Add Book</Button>
     </Modal.Footer>
   </Form>
 </Modal>

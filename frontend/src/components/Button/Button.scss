@@ -1,33 +1,59 @@
+// IMPORT PHẢI NẰM Ở ĐẦU FILE
+@import '../../styles/variables';
+
 .custom-btn {
-    margin-top: 15px;
-    background-color: #007bff; // màu primary
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    display: block;
-    margin: 15px auto 0 auto; // top auto bottom auto ⇒ căn giữa ngang
-    &:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    }
-  
-    &:active {
-      background-color: #004099;
-      transform: translateY(0);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    }
-  
-    &:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
+  margin-top: $space-4;
+  background-color: $brand-primary;
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  padding: $space-3 $space-5;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color $transition-base, transform $transition-fast, box-shadow $transition-base;
+  box-shadow: $shadow-md;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+
+  &:hover {
+    background-color: $brand-primary-dark;
+    transform: translateY(-1px);
+    box-shadow: $shadow-lg;
   }
-    
+
+  &:active {
+    background-color: $brand-primary-600;
+    transform: translateY(0);
+    box-shadow: $shadow-sm;
+  }
+
+  &:disabled {
+    background-color: $neutral-300;
+    color: $neutral-600;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+.custom-btn.secondary {
+  background: $neutral-100;
+  color: $neutral-800;
+  border: 1px solid $neutral-300;
+}
+
+.custom-btn.secondary:hover {
+  background: $neutral-200;
+}
+
+.custom-btn.ghost {
+  background: transparent;
+  color: $brand-primary;
+  border: 1px solid transparent;
+}
+
+.custom-btn.ghost:hover {
+  background: rgba(30, 157, 220, 0.08);
+}

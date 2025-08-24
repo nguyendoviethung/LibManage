@@ -102,7 +102,7 @@ useEffect(() => {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" type="submit">Cập nhật</Button>
+          <Button className = "update-account-reader" type="submit">Update</Button>
         </Modal.Footer>
       </Form>
     </Modal>

@@ -11,7 +11,7 @@ import DashboardUser from './pages/user/DashboardUser.jsx';
 import Feedback from './pages/user/Feedback.jsx';
 import Profile from './pages/user/Profile.jsx';
 import UserLayout from './pages/user/UserLayout.jsx';
-
+import BookChat from './pages/admin/QAChat.jsx';
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +22,7 @@ function App() {
     {/* Layout cho admin */}
     <Route path="/admin-dashboard" element={<AdminLayout />}>  
         <Route index element={<AdminDashBoard />} />
+         <Route path="book-chat" element={<BookChat />} /> 
         <Route path="book-lending-and-returning-management" element={<BookLendingAndReturningManagement />} />
         <Route path="book-management" element={<BookManagement />} />
         <Route path="user-management" element={<ReaderManagement />} />

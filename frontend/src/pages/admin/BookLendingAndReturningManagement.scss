@@ -1,0 +1,28 @@
+@import '../../styles/variables';
+
+.option{
+  display: flex;
+  padding: $space-5;
+  background-color: #fff;
+  min-height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  box-shadow: $shadow-md;
+  border-radius: $radius-md;
+
+  .calendar {
+  position: absolute;
+  right: 265px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color:rgb(30, 157, 220);
+  height : 18px;
+  width : 18px;
+ }
+
+}
+  

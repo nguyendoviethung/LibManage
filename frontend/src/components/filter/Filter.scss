@@ -1,3 +1,4 @@
+@import '../../styles/variables';
 
 .filter-group {
   width: 280px;
@@ -9,42 +10,40 @@
   .filter-label {
     display: flex;
     align-items: center;
-    background: #f7fafc;
-    border-radius: 8px 8px 0 0;
+    background: $neutral-100;
+    border-radius: $radius-md $radius-md 0 0;
     padding: 6px 14px 6px 10px;
     font-weight: 600;
-    color: #1976d2;
+    color: $brand-primary;
     font-size: 1rem;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid $neutral-200;
     border-bottom: none;
     width: 100%;
     
     .filter-icon {
       margin-right: 8px;
-      color: #1976d2;
+      color: $brand-primary;
       font-size: 1.1rem;
     }
   }
 
   select, .form-select {
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 $radius-md $radius-md;
     border-top: none;
     width: 100%;
     font-size: 1rem;
     padding: 0.6rem 1rem;
-    border: 1.5px solid #e2e8f0;
-    background: #f7fafc;
-    transition: box-shadow 0.3s, border-color 0.3s;
+    border: 1.5px solid $neutral-200;
+    background: $neutral-100;
+    transition: box-shadow $transition-base, border-color $transition-base;
     &:focus {
-      border-color: #1e9ddc;
-      box-shadow: 0 0 0 2px #09a1ec33;
+      border-color: $brand-primary;
+      box-shadow: 0 0 0 2px rgba(30, 157, 220, 0.2);
       background: #fff;
     }
   }
 }
 
 .filter-group select,
-.filter-group .form-select {
-  max-width: 100%;
-}
-
+.filter-group .form-select { max-width: 100%; }
+ 
