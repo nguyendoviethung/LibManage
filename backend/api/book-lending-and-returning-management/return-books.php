@@ -51,7 +51,7 @@ try {
         if (!$resultQuantity || $stmt->rowCount() === 0) {
             $errors[] = "Không cập nhật được quantity cho sách ID: $bookId";
         }
-    }
+     }
 
     if (count($errors) === 0) {
         $pdo->commit();

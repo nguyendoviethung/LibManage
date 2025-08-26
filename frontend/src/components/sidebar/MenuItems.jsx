@@ -8,7 +8,7 @@ export const menuItemsAdmin = [
   { label: "Book Management", path: "/admin-dashboard/book-management", icon: faBook },
   { label: "Reader Management", path: "/admin-dashboard/user-management", icon: faUsers },
   { label: "Borrow Books", path: "/admin-dashboard/book-lending-and-returning-management", icon: faHandHolding },
-  { label: "Q&A Chat", path: "/admin-dashboard/book-chat", icon: faComments },
+  { label: "Q&A Chat", path: "/admin-chat", icon: faComments },
 ];
 
 //Lấy ID của tài khoản vừa đăng nhập ở trong local storage để sử dụng để điều hướng đến các trang liên quan của tài khoản đang dùng
