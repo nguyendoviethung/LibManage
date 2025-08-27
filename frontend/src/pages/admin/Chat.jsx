@@ -1,163 +1,245 @@
 import { useState, useEffect } from "react";
 import "./Chat.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import Navbar from '../../components/navbar/Navbar.jsx'
-import { useNavigate } from 'react-router-dom';
-import { apiChat , getChatList} from '../../api/ChatAPI';
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Navbar from "../../components/navbar/Navbar.jsx";
+import { useNavigate } from "react-router-dom";
+import { getChatList } from "../../api/ChatAPI";
+import { jwtDecode } from "jwt-decode";
+
+const token = localStorage.getItem("token");
 
 export default function QAChat() {
-
-  const token = localStorage.getItem("token"); 
-
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
-  const [selectedUser, setSelectedUser] = useState(1);
-  // mỗi ob gồm readerID, họ tên người chat và tin nhắn chat gần nhất của từng người đã chat 
-  const [chatListInfo, setChatListInfo] = useState([
-    
-  ]); 
-  // Tin nhắn của người chat gần nhất 
-  const [latestChat, setLastestChat] = useState([]);
-  const [messages, setMessages] = useState([]); 
-  const [myUserId, setMyUserId] = useState(null);
-  const [ws, setWs] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [chatListInfo, setChatListInfo] = useState([]);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [myUserId, setMyUserId] = useState("");
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      setMyUserId(decoded.data.id);
+    }
+  }, [token]);
 
-    // 1️. Danh sách người đã chat ( hiện tin nhắn vẫn còn) và tin nhắn của người chat gần nhất 
+  // Hàm gửi tin nhắn khi nhập từ bàn phím
+  const sendMessage = (msg) => {
+    if (socket && socket.readyState === WebSocket.OPEN && msg.trim() !== "") {
+      const currentChat = chatListInfo.find((u) => u.student_id === selectedUser);
+      if (!currentChat) return;
+
+      socket.send(
+        JSON.stringify({
+          type: "message",
+          text: msg,
+          chat_id: currentChat.chat_id,
+          time: new Date().toISOString(),
+          sender_id: myUserId,
+          receiver_id: selectedUser,
+          sender_type: "admin",
+        })
+      );
+      setMessage("");
+    }
+  };
+
+  // Hàm lấy tin nhắn của user đang chọn
+  const getMessages = () => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      const currentChat = chatListInfo.find((u) => u.student_id === selectedUser);
+      if (!currentChat) return;
+
+      socket.send(
+        JSON.stringify({
+          type: "get-message",
+          chat_id: currentChat.chat_id,
+          time: new Date().toISOString(),
+          mySelfID: myUserId,
+          enemyID: selectedUser,
+          sender_type: "admin",
+        })
+      );
+    }
+  };
+
+  //  Mount lần đầu
+  useEffect(() => {
     const fetchMessages = async () => {
       try {
         const result = await getChatList(token);
-        console.log("result",result)
         if (result.success) {
-         setChatListInfo(result.chats)
-         console.log("chat",chatListInfo)
-         setLastestChat(result.lastChatMessages)
-         console.log("last",latestChat)
+          setChatListInfo(result.chats || []);
+
+          if (result.chats.length > 0) {
+            // chọn user có tin nhắn gần nhất
+            setSelectedUser(result.chats[0].student_id);
+
+            // gán luôn tin nhắn của user gần nhất (trả về từ API)
+            setChatMessages(result.lastChatMessages || []);
+          }
         } else {
-          console.error("API không trả về mảng:", result);
           setChatListInfo([]);
-          setLastestChat()
+          setChatMessages([]);
         }
       } catch (error) {
-        console.error("Lỗi khi lấy danh sách người nhắn và tin nhắn gần nhất:", error);
+        console.error("Lỗi khi lấy danh sách chat:", error);
       }
     };
 
     fetchMessages();
 
-    // 2. Kết nối WebSocket
-    const socket = new WebSocket("ws://localhost:9000");
-
-    socket.onopen = () => {
-      console.log("Kết nối WebSocket thành công");
-      socket.send(JSON.stringify({ type: "auth", token }));
+    // Kết nối WebSocket
+    const s = new WebSocket(`ws://localhost:9000?token=${token}`);
+    s.onopen = () => {
+      console.log("Kết nối WebSocket thành công (đã kèm JWT)");
     };
 
-    socket.onmessage = (event) => {
+    s.onmessage = (event) => {
       const msg = JSON.parse(event.data);
-      if (msg.type === "auth_success") {
-        setMyUserId(msg.user_id);
-        return;
-      }
+
+      if (msg.type === "auth_success") return;
+
+      // Nhận tin nhắn mới
       if (msg.type === "message") {
-        const normalized = { sender_id: msg.user, content: msg.text, sent_at: msg.time };
-        setMessages((prev) => Array.isArray(prev) ? [...prev, normalized] : [normalized]);
+        const normalized = {
+          sender_id: msg.sender_id,
+          content: msg.text,
+          sent_at: msg.time,
+        };
+        setChatMessages((prev) => [...prev, normalized]);
+      }
+
+      // Nhận toàn bộ tin nhắn khi đổi user
+      if (msg.type === "get_messages") {
+        setChatMessages(msg.messages || []);
       }
     };
 
-    socket.onclose = () => {
+    s.onclose = () => {
       console.log("Mất kết nối WebSocket");
     };
 
-    setWs(socket);
-
-    return () => {
-      socket.close();
-    };
+    setSocket(s);
+    return () => s.close();
   }, [token]);
+
+  //  Khi đổi user → load lại tin nhắn từ server
+  useEffect(() => {
+    if (selectedUser) {
+      getMessages(); // chỉ gọi WS, KHÔNG clear chatMessages
+    }
+  }, [selectedUser]);
 
   return (
     <>
-    <Navbar />
-    <div className="qa-chat">
-      {/* Left: User List */}
-      <div className="chat-list">
-        <div className = "chat-list-back">
-         <div className = "back" onClick={handleBack}>
-        <FontAwesomeIcon icon = {faArrowLeft} />
-        </div>
-        <div className="chat-list-header">Chat list</div>
-         </div>
-      <div className="chat-users">
-  {chatListInfo.map((u) => (
-    <div
-      key={u.id}
-      className={`chat-user ${u.id === selectedUser ? "active" : ""}`}
-      onClick={() => setSelectedUser(u.id)}
-    >
-      <div className="avatar">{u.full_name.charAt(0)}</div>
-      <div className="info">
-        <div className="name">{u.full_name}</div>
-        <div className="last-msg">{u.message}</div>
-        <div className="time">{new Date(u.time_sent).toLocaleTimeString()}</div>
-        {!u.is_read && <span className="unread-dot"></span>}
-      </div>
-    </div>
-  ))}
-</div>
+      <Navbar />
+      <div className="qa-chat">
+        {/* Left: User List */}
+        <div className="chat-list">
+          <div className="chat-list-back">
+            <div className="back" onClick={handleBack}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </div>
+            <div className="chat-list-header">Chat list</div>
+          </div>
 
-      </div>
-
-      {/* Middle: Chat Window */}
-      <div className="chat-window">
-        <div className="chat-header">
-          <div className="chat-title">
-            {chatListInfo.length > 0 ? chatListInfo[0].full_name : "Chưa có cuộc trò chuyện"}
+          <div className="chat-users">
+            {chatListInfo.map((u) => (
+              <div
+                key={u.chat_id}
+                className={`chat-user ${u.student_id === selectedUser ? "active" : ""}`}
+                onClick={() => setSelectedUser(u.student_id)}
+              >
+                <div className="avatar">{u.full_name.charAt(0)}</div>
+                <div className="info">
+                  <div className="name">{u.full_name}</div>
+                  <div className="last-msg">{u.message}</div>
+                     <div className="time">
+                       {new Date(u.time_sent).toLocaleTimeString("vi-VN", {
+                         hour: "2-digit",
+                         minute: "2-digit"
+                       })}{" "}
+                       -{" "}
+                       {new Date(u.time_sent).toLocaleDateString("vi-VN", {
+                         day: "2-digit",
+                         month: "2-digit",
+                         year: "numeric"
+                       })}
+                     </div>
+                  {!u.is_read && <span className="unread-dot"></span>}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        </div>
-<div className="chat-messages">
-  {latestChat.map((msg) => (
-    <div
-      key={msg.message_id}
-      className={`chat-message ${msg.sender_type === "admin" ? "user" : "user"}`}
-    >
-      {msg.message_text}
-    </div>
-  ))}
-</div>
+        {/* Middle: Chat Window */}
+        <div className="chat-window">
+          <div className="chat-header">
+            <div className="chat-title">
+              {selectedUser
+                ? chatListInfo.find((u) => u.student_id === selectedUser)?.full_name
+                : "Chưa có cuộc trò chuyện"}
+            </div>
+          </div>
 
-        <div className="chat-input">
-          <input type="text" placeholder="Nhập tin nhắn..." />
-          <button>Gửi</button>
-        </div>
-      </div>
+          <div className="chat-messages">
+            {chatMessages.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`chat-message ${
+                  msg.sender_id === myUserId ? "admin" : "user"
+                }`}
+              >
+                {msg.content || msg.message_text}
+              </div>
+            ))}
+          </div>
 
-      {/* Right: Options */}
-      <div className="chat-options">
-        <div className="options-header">Tùy chọn</div>
-        <div className="options-section">
-          <h4>Link đã gửi</h4>
-          <ul>
-            <li><a href="#">http://example.com</a></li>
-          </ul>
+          <div className="chat-input">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Nhập tin nhắn..."
+            />
+            <button onClick={() => sendMessage(message)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            sendMessage(message);
+                             }}}
+                       >Send  
+            </button>
+          </div>
         </div>
-        <div className="options-section">
-          <h4>Ảnh đã gửi</h4>
-          <div className="image-grid">
-            <img src="https://via.placeholder.com/100" alt="img" />
-            <img src="https://via.placeholder.com/100" alt="img" />
+
+        {/* Right: Options */}
+        <div className="chat-options">
+          <div className="options-header">Tùy chọn</div>
+          <div className="options-section">
+            <h4>Link đã gửi</h4>
+            <ul>
+              <li>
+                <a href="#">http://example.com</a>
+              </li>
+            </ul>
+          </div>
+          <div className="options-section">
+            <h4>Ảnh đã gửi</h4>
+            <div className="image-grid">
+              <img src="https://via.placeholder.com/100" alt="img" />
+              <img src="https://via.placeholder.com/100" alt="img" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }

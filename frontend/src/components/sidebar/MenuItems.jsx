@@ -14,8 +14,9 @@ export const menuItemsAdmin = [
 //Lấy ID của tài khoản vừa đăng nhập ở trong local storage để sử dụng để điều hướng đến các trang liên quan của tài khoản đang dùng
 //Menu của reader
 export const menuItemsUser = [
-  { label: "Dashboard", path: `/user/`, icon: faHouse },
-  { label: "Tìm kiếm sách", path: `/user/books-search`, icon: faMagnifyingGlass },
-  { label: "Trang phản hồi", path: `/use/feedback`, icon: faCommentDots },
-  { label: "Thông tin cá nhân", path: `/user/profile`, icon: faUser },
+  { label: "Dashboard", path: ``, icon: faHouse },
+  { label: "Tìm kiếm sách", path: `books-search`, icon: faMagnifyingGlass },
+  { label: "Trang phản hồi", path: `feedback`, icon: faCommentDots },
+  { label: "Thông tin cá nhân", path: `profile`, icon: faUser },
+  { label: "Q&A Chat", path: `chat`, icon: faComments },
 ]

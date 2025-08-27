@@ -7,7 +7,7 @@ try {
 
     // 1. Lấy danh sách chat + tin nhắn gần nhất
     $query = "
-        SELECT c.chat_id AS id,
+        SELECT c.chat_id AS chat_id,
                r.full_name AS full_name ,
                r.student_id AS student_id,
                m.message_text AS message,
@@ -31,7 +31,7 @@ try {
     $chats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // 2. Lấy chat_id mới nhất
-    $lastChatID = $chats[0]['id'] ?? null;
+    $lastChatID = $chats[0]['chat_id'] ?? null;
     $lastChatMessages = [];
 
     if ($lastChatID) {
@@ -54,8 +54,7 @@ try {
     // Kết quả trả về
     echo json_encode([
         'success' => true,
-        'chats' => $chats,                 // danh sách các chat (giống inbox FB)
-        'lastChatId' => $lastChatID,       // id chat mới nhất
+        'chats' => $chats,                      // danh sách các chat (giống inbox FB)    
         'lastChatMessages' => $lastChatMessages // toàn bộ tin nhắn của chat mới nhất
     ]);
 

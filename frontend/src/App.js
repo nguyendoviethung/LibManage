@@ -12,6 +12,7 @@ import Feedback from './pages/user/Feedback.jsx';
 import Profile from './pages/user/Profile.jsx';
 import UserLayout from './pages/user/UserLayout.jsx';
 import QAChat from './pages/admin/Chat.jsx';
+import Chat from './pages/user/ChatUser.jsx'
 function App() {
   return (
     <BrowserRouter>
@@ -37,6 +38,7 @@ function App() {
       <Route path="books-search" element={<BookSearch />} />
       <Route path="feedback" element={<Feedback />} />
       <Route path="profile" element={<Profile />} />
+      <Route path="chat" element={<Chat />} />
     </Route> 
     
   </Routes>

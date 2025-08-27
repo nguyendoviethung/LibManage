@@ -16,13 +16,12 @@ function Login() {
   //Hàm xử lí khi người dùng nhấn nút Đăng Nhập 
   const handleLogin = async (e) => {
     e.preventDefault(); 
-
     try {
       const response = await axios.post(
         'http://localhost/LibManage/backend/api/auth/login.php',
         {
-          loginUsername: username,
-          loginPassword: password
+          loginUsername: username.trim(),
+          loginPassword: password.trim()
         },
         {
           withCredentials: true // Cho phép cookie đi kèm

@@ -25,14 +25,14 @@ export function SidebarUser() {
   return (
     <div className="sidebar">
       <ul className="sidebar-menu">
-        { menuItemsUser.map(item => ( //Lặp qua các item trong menuItems và tạo ra các thẻ <li> cho từng item
+        { menuItemsUser.map(item => (
           <li key={item.path}>
             <Link to={item.path} className="menu-link">
-              <FontAwesomeIcon icon={item.icon} style={{ marginRight: '12px' }} />
-              <span>{item.label}</span>
+              <FontAwesomeIcon icon={item.icon} className="sidebar-icon" />
+              <span className="item-label">{item.label}</span>
             </Link>
           </li>
-        ))}
+        )) }
       </ul>
     </div>
   );

@@ -1,13 +1,30 @@
-function Feedback(){
-    return (
-<h1>
-    Cho phép sinh viên gửi góp ý về hệ thống
+import Navbar from "../../components/navbar/Navbar";
+import "./DashboardUser.scss";
 
-Lưu vào database hoặc gửi qua email (tùy bạn)
+function Feedback() {
+  return (
+    <>
 
-Bonus điểm UX + database
-</h1>
-    )
+      <div className="user-dashboard">
+        <div className="main-content">
+          <div className="notifications-section">
+            <h2>Góp ý hệ thống</h2>
+            <div className="notifications-list" style={{ gap: 16 }}>
+              <div className="notification-item notification-info" style={{ width: "100%" }}>
+                <div className="notification-content" style={{ width: "100%" }}>
+                  <p>Nội dung góp ý</p>
+                  <textarea style={{ width: "100%", minHeight: 140 }} placeholder="Nhập góp ý của bạn..." />
+                  <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 12 }}>
+                    <button className="return-btn">Gửi góp ý</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default Feedback;
