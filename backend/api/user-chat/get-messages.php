@@ -1,6 +1,5 @@
 <?php
   require __DIR__ . '/../../middleware/auth-middleware.php';
-  require '../../helpers/validation.php'; 
   checkReaderRole($decode);
 
 try {
@@ -25,7 +24,14 @@ try {
     echo json_encode(['success' => true, 'message' => 'Tạo chat thành công']);
     exit;
 } else {
-    $query = "SELECT sender_id, message_text 
+    $query = "SELECT full_name FROM reader WHERE student_id = :student_id";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([
+          ':student_id' => $student_id
+    ]);    
+    $row_1 = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $query = "SELECT message_text AS text,sender_type 
               FROM messages
               WHERE chat_id = :chat_id";
     $stmt = $pdo->prepare($query);
@@ -37,6 +43,8 @@ try {
                       'chats' => $chats,
                       'admin_id' => "AdminLib2025",
                       'chat_id' => $row['chat_id'],
+                      'student_id' => $student_id,
+                      'full_name' => $row_1['full_name'],
                     ]);
 }
 

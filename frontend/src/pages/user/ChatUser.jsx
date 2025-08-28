@@ -1,5 +1,4 @@
-    import Navbar from "../../components/navbar/Navbar";
-    import "../admin/Chat.scss";
+    import "./ChatUser.scss";
     import { jwtDecode } from "jwt-decode";
     import { useState, useEffect } from "react";
     import axios from "axios";
@@ -10,26 +9,26 @@
     const [listMessages, setListMessages] = useState([]); // Đoạn tin nhắn từ trước đến giờ 
     const [message,setMessage] = useState("");
     const [socket, setSocket] = useState(null);
-    const [receicer_id,setReceiver_id] = useState();
+    const [receiver_id,setReceiver_id] = useState();
     const [myUserId, setMyUserId] = useState("");
     const [chat_id , setChat_id] = useState();
-    
+    const [full_name, setFull_Name] = useState("");
     const sendMessage = (msg) => {
         if (socket && socket.readyState === WebSocket.OPEN && msg.trim() !== "") {
       
       socket.send(
         JSON.stringify({
-          type: "message",
+          type: "reader_send_message",
           text: msg,
           chat_id: chat_id,
           time: new Date().toISOString(),
-          sender_id: myUserId,
-          receiver_id: receicer_id ,
-          sender_type: "admin",
+          receiver_id: receiver_id ,
+          sender_type: "reader",
+          full_name : full_name
         })
       );
       setMessage("");
-    }
+        }
     }
     useEffect(() => {
         if (token) {
@@ -41,18 +40,19 @@
     useEffect(() => {
         const fetchMessages = async () => {
         try {
-            // 🔹 Gọi API lấy tin nhắn trước đó với thủ thư
+            // Gọi API lấy tin nhắn trước đó với thủ thư
             const result = await axios.get(
             "http://localhost/LibManage/backend/api/user-chat/get-messages.php",
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
             );
-            console.log(result.data)
+            console.log("result",result.data)
             if (result.data.success) {
             setListMessages(result.data.chats || []);
             setReceiver_id(result.data.admin_id);
             setChat_id(result.data.chat_id);
+            setFull_Name(result.data.full_name);
             } else {
             setListMessages([]);
             }
@@ -76,12 +76,7 @@
 
         // Nhận tin nhắn mới
         if (msg.type === "message") {
-            const normalized = {
-            sender_id: msg.sender_id,
-            content: msg.text,
-            sent_at: msg.time,
-            };
-            setListMessages((prev) => [...prev, normalized]);
+            setListMessages((prev) => [...prev, msg]);
         }
         };
 
@@ -106,10 +101,10 @@
                 <div
                     key={idx}
                     className={`chat-message ${
-                    msg.sender_id === myUserId ? "admin" : "user"
+                    msg.sender_type === "reader" ? "self" : "other"
                     }`}
                 >
-                    {msg.message_text}
+                    {msg.text || msg.message_text}
                 </div>
                 ))}
             </div>

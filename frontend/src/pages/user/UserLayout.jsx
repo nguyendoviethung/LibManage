@@ -1,12 +1,9 @@
 // src/layouts/AdminLayout.jsx
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { SidebarUser } from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import { useEffect } from "react";
-import axios from "axios";
 
 const UserLayout = () => {
-
 
   return (
     <div className="layout-container">

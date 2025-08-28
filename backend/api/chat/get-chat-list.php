@@ -7,24 +7,33 @@ try {
 
     // 1. Lấy danh sách chat + tin nhắn gần nhất
     $query = "
-        SELECT c.chat_id AS chat_id,
-               r.full_name AS full_name ,
-               r.student_id AS student_id,
-               m.message_text AS message,
-               m.sent_at AS time_sent,
-               m.is_read AS is_read
-        FROM chats c
-        JOIN reader r ON c.student_id = r.student_id
-        JOIN LATERAL (
-            SELECT m2.message_text, m2.sent_at, m2.is_read
-            FROM messages m2
-            WHERE m2.chat_id = c.chat_id
-            ORDER BY m2.sent_at DESC
-            LIMIT 1
-        ) m ON TRUE
-        WHERE c.admin_id = :admin_id
-        ORDER BY m.sent_at DESC
-    ";
+        SELECT 
+    c.chat_id AS chat_id,
+    c.student_id AS student_id,            -- ⚡ thêm student_id của người đọc
+    r.full_name AS reader_name,            -- luôn là tên người đọc (chủ chat)
+    
+    CASE 
+        WHEN m.sender_type = 'reader' THEN r.full_name
+        ELSE 'Librarian'
+    END AS last_sender_name,               -- tên của người gửi tin cuối
+    
+    m.sender_id AS sender_id,
+    m.message_text AS text,
+    m.sent_at AS time,
+    m.is_read AS is_read
+FROM chats c
+JOIN reader r ON c.student_id = r.student_id
+JOIN LATERAL (
+    SELECT m2.message_text, m2.sent_at, m2.is_read, m2.sender_id, m2.sender_type
+    FROM messages m2
+    WHERE m2.chat_id = c.chat_id
+    ORDER BY m2.sent_at DESC
+    LIMIT 1
+) m ON TRUE
+WHERE c.admin_id = :admin_id
+ORDER BY m.sent_at DESC;
+
+     ";
 
     $stmt = $pdo->prepare($query);
     $stmt->execute([':admin_id' => $adminID]);
@@ -54,7 +63,7 @@ try {
     // Kết quả trả về
     echo json_encode([
         'success' => true,
-        'chats' => $chats,                      // danh sách các chat (giống inbox FB)    
+        'chats' => $chats,                       // danh sách các chat (giống inbox FB)    
         'lastChatMessages' => $lastChatMessages // toàn bộ tin nhắn của chat mới nhất
     ]);
 

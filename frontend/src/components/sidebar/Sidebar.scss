@@ -29,6 +29,13 @@
           color: $neutral-900;
           border-left-color: $brand-primary;
         }
+
+        &.active {
+          background: rgba(28, 159, 215, 0.466);
+          color: rgb(20, 9, 9);
+          border-left-color: $brand-primary;
+          font-weight: 600;
+        }
       }
     }
   }

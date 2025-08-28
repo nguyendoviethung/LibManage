@@ -57,11 +57,14 @@
             }
 
             switch ($data['type']) {
-                case 'message':
-                    $this->handleMessage($from, $data);
+                case 'admin_send_message':
+                    $this->handleAdminSendMessage($from, $data);
                     break;
-                case 'get-message':
-                    $this->handleGetMessages($from,$data);
+                case 'get_message_when_changing_conversation':
+                    $this->handleAdminGetMessages($from,$data);
+                    break;
+                case 'reader_send_message':
+                    $this->handleReaderSendMessages($from,$data);
                     break;
                 default:
                     $from->send(json_encode(['type'=>'error','message'=>'Unknown type']));
@@ -86,8 +89,8 @@
 
         // ===================== Các hàm xử lý =====================
 
-        // Hàm gửi tin nhắn thông thường
-private function handleMessage($conn, $data) {
+        //1. Hàm admin gửi tin nhắn thông thường
+private function handleAdminSendMessage($conn, $data) {
     $sender_id   = array_search($conn, $this->users); // user_id hiện tại
     $chat_id     = $data['chat_id'] ?? null;          // chat đang nhắn
     $message_text = trim($data['text'] ?? '');
@@ -124,10 +127,21 @@ private function handleMessage($conn, $data) {
     }
 
     $saved_at = $savedMessage['sent_at'] ?? date("H:i:s");
-// Gửi trực tiếp cho receiver nếu đang online
-if (isset($this->users[$receiver_id])) {
-    $this->users[$receiver_id]->send(json_encode([
-        'type'        => 'get-message',
+    // Gửi trực tiếp cho receiver nếu đang online
+    if (isset($this->users[$receiver_id])) {
+      $this->users[$receiver_id]->send(json_encode([
+        'type'        => 'message',
+        'chat_id'     => $chat_id,
+        'sender_id'   => $sender_id,
+        'sender_type' => $sender_type,
+        'text'        => $message_text,
+        'time'        => $saved_at
+    ]));
+  }
+
+    // Gửi lại cho chính mình 
+    $conn->send(json_encode([
+        'type'        => 'message',
         'chat_id'     => $chat_id,
         'sender_id'   => $sender_id,
         'sender_type' => $sender_type,
@@ -135,21 +149,9 @@ if (isset($this->users[$receiver_id])) {
         'time'        => $saved_at
     ]));
 }
-
-
-    // Gửi lại cho sender
-    $conn->send(json_encode([
-        'type'      => 'message',
-        'chat_id'   => $chat_id,
-        'sender_id' => $sender_id,
-        'sender_type' => $sender_type,
-        'text'      => $message_text,
-        'time'      => $saved_at
-    ]));
-}
         
-// Dành cho admin khi chọn một cuộc chat
-private function handleGetMessages($conn, $data) {
+// 2. Dành cho admin khi chọn một cuộc chat
+private function handleAdminGetMessages($conn, $data) {
     // Xác định admin hiện tại
     $admin_id = array_search($conn, $this->users);
     if ($admin_id === false) return;
@@ -187,7 +189,61 @@ private function handleGetMessages($conn, $data) {
     }
  }
 
+    // 3. Hàm reader gửi tin nhắn 
+    private function handleReaderSendMessages($conn, $data) {
+    $sender_id = array_search($conn, $this->users);
+    if ($sender_id === false) return;
+
+    $message_text  = $data['text'] ?? null;
+    $chat_id = $data['chat_id'] ?? null;
+    $time = $data['time'] ?? null;
+    $receiver_id = $data['receiver_id'] ?? null;
+    $sender_type = $data['sender_type'];
+    $full_name = $data['full_name'];
+    
+    try {
+        $stmt = $this->pdo->prepare("
+        INSERT INTO messages (chat_id, sender_type, sender_id, message_text)
+        VALUES (:chat_id, :sender_type, :sender_id, :message_text)
+        RETURNING message_id, sent_at
+        ");
+
+        $stmt->execute([
+                        ':chat_id'      => $chat_id,
+                        ':sender_type'  => $sender_type,
+                        ':sender_id'    => $sender_id,
+                        ':message_text' => $message_text                        
+            ]);
+        $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //    Gửi tin nhắn cho admin
+        if (isset($this->users[$receiver_id])) {
+      $this->users[$receiver_id]->send(json_encode([
+        'type'        => 'message',
+        'chat_id'     => $chat_id,
+        'sender_id'   => $sender_id,
+        'sender_type' => $sender_type,
+        'text'        => $message_text,
+        'time'        => $time,
+        'full_name'   => $full_name
+    ]));
+  }
+        // Gửi tin nhắn về cho bản thân 
+        $conn->send(json_encode([
+            'type' => 'message',
+            'text' => $message_text,
+            'time' => $time,
+            'sender_type' => $sender_type
+        ]));
+
+    } catch (\PDOException $e) {
+        $conn->send(json_encode([
+            'type'=>'error',
+            'message'=>'DB error: '.$e->getMessage()
+        ]));
     }
+   }
+ }
 
     // ===================== Run server =====================
     $port = 9000;

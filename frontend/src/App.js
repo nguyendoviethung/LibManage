@@ -15,7 +15,7 @@ import QAChat from './pages/admin/Chat.jsx';
 import Chat from './pages/user/ChatUser.jsx'
 function App() {
   return (
-    <BrowserRouter>
+<BrowserRouter>
   <Routes>    
     {/* Trang login chung */}
     <Route path="/" element={<Login />} />
@@ -40,7 +40,6 @@ function App() {
       <Route path="profile" element={<Profile />} />
       <Route path="chat" element={<Chat />} />
     </Route> 
-    
   </Routes>
 </BrowserRouter>
 

@@ -13,10 +13,18 @@ export const menuItemsAdmin = [
 
 //Lấy ID của tài khoản vừa đăng nhập ở trong local storage để sử dụng để điều hướng đến các trang liên quan của tài khoản đang dùng
 //Menu của reader
+// export const menuItemsUser = [
+//   { label: "Dashboard", path: "", icon: faHouse },
+//   { label: "Tìm kiếm sách", path: "books-search", icon: faMagnifyingGlass },
+//   { label: "Trang phản hồi", path: "feedback", icon: faCommentDots },
+//   { label: "Thông tin cá nhân", path: "profile", icon: faUser },
+//   { label: "Q&A Chat", path: `/user/chat/:id`, icon: faComments },
+// ]
+// MenuItems.js
 export const menuItemsUser = [
-  { label: "Dashboard", path: ``, icon: faHouse },
-  { label: "Tìm kiếm sách", path: `books-search`, icon: faMagnifyingGlass },
-  { label: "Trang phản hồi", path: `feedback`, icon: faCommentDots },
-  { label: "Thông tin cá nhân", path: `profile`, icon: faUser },
-  { label: "Q&A Chat", path: `chat`, icon: faComments },
-]
+  { label: "Dashboard", icon: faHouse, buildPath: id => `/user/${id}` },
+  { label: "Tìm kiếm sách", icon: faMagnifyingGlass, buildPath: id => `/user/${id}/books-search` },
+  { label: "Trang phản hồi", icon: faCommentDots, buildPath: id => `/user/${id}/feedback` },
+  { label: "Thông tin cá nhân", icon: faUser, buildPath: id => `/user/${id}/profile` },
+  { label: "Q&A Chat", icon: faComments, buildPath: id => `/user/${id}/chat` },
+];
