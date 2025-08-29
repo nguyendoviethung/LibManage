@@ -6,8 +6,8 @@ export default function HeaderLogin() {
       <div className="header-content">
         <Logo />
         <div>
-          <div className="header-title">ĐẠI HỌC CÔNG NGHỆ KẾT NỐI TOÀN CẦU</div>
-          <div className="header-subtitle">THƯ VIỆN TRI THỨC</div>
+          <div className="header-title">GLOBAL CONNECTED TECHNOLOGY UNIVERSITY</div>
+          <div className="header-subtitle">LIBRARY OF KNOWLEDGE</div>
         </div>
       </div>
     </header>

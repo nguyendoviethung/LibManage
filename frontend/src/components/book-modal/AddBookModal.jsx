@@ -18,31 +18,39 @@ function AddBookModal({ show, hide, addBook}) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-     e.preventDefault();
-     addBook(formData)
-    };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const trimmedData = {
+    ...formData,
+    title: formData.title.trim(),
+    lang: formData.lang.trim(),
+    location: formData.location.trim(),
+    author_name: formData.author_name.trim(),
+    genre: formData.genre.trim(),
+  };
+  addBook(trimmedData);
+};
 
   return (
    <Modal show={show} onHide={hide} centered>
   <Modal.Header closeButton>
-    <Modal.Title>Thêm sách</Modal.Title>
+    <Modal.Title>Add books</Modal.Title>
   </Modal.Header>
   <Form onSubmit={handleSubmit}>
     <Modal.Body>
       <Form.Group className="mb-3">
-        <Form.Label>Tên sách</Form.Label>
+        <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
           name="title"
           value={formData.title}
-          placeholder="Nhập vào tên sách"
+          placeholder="Enter the book name"
           onChange={handleChange}
           required
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Ngôn ngữ</Form.Label>
+        <Form.Label>Language</Form.Label>
         <Form.Control
           type="text"
           name="lang"
@@ -53,56 +61,56 @@ function AddBookModal({ show, hide, addBook}) {
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Năm xuất bản</Form.Label>
+        <Form.Label>Year of publication</Form.Label>
         <Form.Control
           type="number"
           name="publisher_year"
           value={formData.publisher_year}
-          placeholder="Nhập vào năm xuất bản"
+          placeholder="Enter year of publication"
           onChange={handleChange}
           required
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Vị trí</Form.Label>
+        <Form.Label>Location</Form.Label>
         <Form.Control
           type="text"
           name="location"
           value={formData.location}
-          placeholder="Nhập vào vị trí"
+          placeholder="Enter location"
           onChange={handleChange}
           required
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Số lượng</Form.Label>
+        <Form.Label>Quantity</Form.Label>
         <Form.Control
           type="number"
           name="quantity"
           value={formData.quantity}
-          placeholder="Nhập vào số lượng"
+          placeholder="Enter quantity"
           onChange={handleChange}
           required
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Tác giả</Form.Label>
+        <Form.Label>Author</Form.Label>
         <Form.Control
           type="text"
           name="author_name"
           value={formData.author_name}
-          placeholder="Nhập vào tên tác giả"
+          placeholder="Enter Author"
           onChange={handleChange}
           required
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Thể loại</Form.Label>
+        <Form.Label>Category</Form.Label>
         <Form.Control
           type="text"
           name="genre"
           value={formData.genre}
-          placeholder="Nhập vào thể loại sách"
+          placeholder="Enter book category"
           onChange={handleChange}
           required
         />

@@ -35,7 +35,7 @@ const BorrowChart = ({token}) => {
           labels,
           datasets: [
             {
-        label: "Lượt mượn",
+        label: "Borrowed",
         data: counts,
         borderColor: "#00C9FF",
         tension: 0.4,
@@ -50,7 +50,7 @@ const BorrowChart = ({token}) => {
     ]
   });
        }catch (error) {
-        console.error("Lỗi khi lấy dữ liệu biểu đồ:", error);
+        console.error("Error while getting chart data:", error);
       }
     };
 
@@ -61,15 +61,15 @@ const BorrowChart = ({token}) => {
     responsive: true, // Co dãn theo màn hình
     plugins: {
       legend: { position: "top" },
-      title: { display: true, text: "Số lượt mượn sách theo tháng" }
+      title: { display: true, text: "Number of books borrowed per month" }
     },
     scales: {
       y: { beginAtZero: true, ticks: { precision: 0 } },
-      x: { title: { display: true, text: "Tháng" } }
+      x: { title: { display: true, text: "Month" } }
     }
   };
 
-  if (!chartData) return <p>Đang tải biểu đồ...</p>;
+  if (!chartData) return <p>Loading chart...</p>;
 
   return (
     <div style={{ width: "100%", height: "400px" }}>

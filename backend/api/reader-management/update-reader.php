@@ -19,17 +19,12 @@ try {
     $stmt->execute([':phone' => $newPhone, ':student_id' => $studentID]);
 
     if ($stmt->rowCount() > 0) {
-        echo json_encode(['success' => false, 'message' => '❗Số điện thoại đã tồn tại.']);
+        echo json_encode(['success' => false, 'message' => 'Phone number already exists.']);
         exit;
     }
 
     if (!isValidPhoneNumber($newPhone)) {
-        echo json_encode(['success' => false, 'message' => '❗Số điện thoại không hợp lệ.']);
-        exit;
-    }
-
-    if (!isValidFaculty($newFaculty)) {
-        echo json_encode(['success' => false, 'message' => '❗Khoa không hợp lệ.']);
+        echo json_encode(['success' => false, 'message' => 'Invalid phone number.']);
         exit;
     }
 
@@ -82,15 +77,15 @@ try {
     
     if ($updateResult && $updateStatusResult && $autoEmailForwarding ) {
         $pdo->commit();
-        echo json_encode(['success' => true, 'message' => '✅ Cập nhật thông tin sinh viên thành công.']);
+        echo json_encode(['success' => true, 'message' => 'Successfully updated student information.']);
     } else {
         $pdo->rollBack();
-        echo json_encode(['success' => false, 'message' => '❌ Cập nhật thất bại.']);
+        echo json_encode(['success' => false, 'message' => 'Update failed.']);
     }
 
 } catch (PDOException $e) {
     if ($pdo->inTransaction())
     $pdo->rollBack();
-    echo json_encode(['success' => false, 'message' => '❌ Lỗi DB: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'DB error: ' . $e->getMessage()]);
     exit;
 }

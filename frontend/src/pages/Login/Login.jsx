@@ -55,7 +55,7 @@ function Login() {
     <>
       {loginStatus && (
         <AlertBox
-          message= "Tài khoản hoặc mật khẩu không chính xác"
+          message= "Incorrect account or password!"
           type= "error"
           onClose={() => setLoginStatus(false)}
         /> 

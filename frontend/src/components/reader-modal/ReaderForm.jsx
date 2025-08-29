@@ -91,42 +91,66 @@ const handleChange = (e) => {
 };
 
 
-    const handleSubmit = (e) => {
-    e.preventDefault();
-    actionState === 'update-info-reader'
-      ? handleUpdate( reader.student_id, reader )
-      : handleAddReader(reader);
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const trimmedReader = {
+    ...reader,
+    student_id: reader.student_id.trim(),
+    full_name: reader.full_name.trim(),
+    phone_number: reader.phone_number.trim(),
+    faculty: reader.faculty.trim(),
+  };
+
+  if (actionState === 'update-info-reader') {
+    await handleUpdate(trimmedReader.student_id, trimmedReader);
+  } else {
+    await handleAddReader(trimmedReader);
+    // reset form sau khi thêm thành công
+    setReader({
+      student_id: '',
+      full_name: '',
+      email: '@stu.gcut.edu.vn',
+      phone_number: '',
+      faculty: '',
+      status: '',
+      keepAccountStatus: false,
+    });
+  }
+};
+
+
+
     return (  
       <Modal show={show} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {actionState === 'update-info-reader' ? 'Cập nhật' : 'Thêm'} sinh viên
+            {actionState === 'update-info-reader' ? 'Update' : 'Add'} student
           </Modal.Title>
         </Modal.Header>
 
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
             <Form.Group className="mb-3">
-              <Form.Label>Mã sinh viên</Form.Label>
+              <Form.Label>Student ID</Form.Label>
               <Form.Control
                 type="text"
                 name="student_id"
                 value={reader.student_id}
                 onChange={handleChange}
-                placeholder="Nhập mã sinh viên"
+                placeholder="Enter student code"
                 disabled={actionState === 'update-info-reader'}
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Họ tên</Form.Label>
+              <Form.Label>Full Name</Form.Label>
               <Form.Control
                 type="text"
                 name="full_name"
                 value={reader.full_name}
                 onChange={handleChange}
-                placeholder="Nhập họ tên"
+                placeholder="Enter full name"
               />
             </Form.Group>
 
@@ -137,47 +161,47 @@ const handleChange = (e) => {
                 name="email"
                 value={reader.email}
                 onChange={handleChange}
-                
-                 disabled = {true}
-                placeholder="Nhập email"
+                disabled = {true}
+                placeholder="Enter email"
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Số điện thoại</Form.Label>
+              <Form.Label>Phone Number</Form.Label>
               <Form.Control
                 type="text"
                 name="phone_number"
                 value={reader.phone_number}
                 onChange={handleChange}
-                placeholder="Nhập số điện thoại"
+                placeholder="Enter phone number"
               />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Ngành học</Form.Label>
+              <Form.Label>Faculty</Form.Label>
               <Form.Select
                 name="faculty"
                 value={reader.faculty}
                 onChange={handleChange}
               >
-                <option value="">-- Chọn ngành học --</option>
-                <option value="Khoa Học Máy Tính">Khoa Học Máy Tính</option>
-                <option value="Tự Động Hóa & Điện Tử">Tự Động Hóa & Điện Tử</option>
-                <option value="Công Nghệ Thông Tin Toàn Cầu">Công Nghệ Thông Tin Toàn Cầu</option>
-                <option value="Kỹ Thuật Phần Mềm">Kỹ Thuật Phần Mềm</option>
-                <option value="Quản Trị Công Nghệ">Quản Trị Công Nghệ</option>
-                <option value="Thiết Kế & Truyền Thông Số">Thiết Kế & Truyền Thông Số</option>
-                <option value="Khoa Học Dữ Liệu & AI">Khoa Học Dữ Liệu & AI</option>
-                <option value="Ngoại Ngữ & Giao Tiếp">Ngoại Ngữ & Giao Tiếp</option>
-                <option value="Công Nghệ Sinh Học & Kỹ Thuật Y Sinh">Công Nghệ Sinh Học & Kỹ Thuật Y Sinh</option>
+                <option value="">-- Select faculty --</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Automation & Electronics">Automation & Electronics</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Automotive Engineering">Automotive Engineering</option>
+                <option value="Digital Media & Design">Digital Media & Design</option>
+                <option value="Data Science & AI">Data Science & AI</option>
+                <option value="Language & Communication">Language & Communication</option>
+                <option value="Biotechnology & Biomedical Engineering">Biotechnology & Biomedical Engineering</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
               </Form.Select>
             </Form.Group>
 
             {actionState === 'update-info-reader' && (
               <>
                 <Form.Group className="mb-3">
-                  <Form.Label>Trạng thái tài khoản</Form.Label>
+                  <Form.Label>Account Status</Form.Label>
                   <Form.Select
                     name="status"
                     value={reader.status}
@@ -199,7 +223,7 @@ const handleChange = (e) => {
           />
 
                <label className="ms-2 form-check-label">
-                 Đồng bộ trạng thái tài khoản với người dùng
+                Sync account status with reader status
                </label>
             </Form.Group>
 

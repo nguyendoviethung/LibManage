@@ -1,36 +1,47 @@
 <?php
 require __DIR__ . '/../../middleware/auth-middleware.php';
 
- checkAdminRole($decode);
+// Kiểm tra quyền admin
+checkAdminRole($decode);
 
-    try {
-        // Lấy 5 cuốn sách có số lượng nhiều nhất
-        $query = "
-            SELECT title, author_name, quantity
-            FROM public.books
-            ORDER BY quantity DESC
-            LIMIT 5
-        ";
+try {
+    // Chuẩn bị truy vấn: lấy 5 cuốn sách có số lượng nhiều nhất, không bị xóa
+    $query = "
+        SELECT title, author_name, quantity
+        FROM public.books
+        WHERE is_deleted = :status
+        ORDER BY quantity DESC
+        LIMIT 5
+    ";
 
-        $stmt = $pdo->query($query);
-        $new_books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare($query);
 
-        if (!$new_books) {
-            echo json_encode([
-                "status" => "error",
-                "message" => "Không có sách mới được thêm"
-            ]);
-        } else {
-            echo json_encode([
-                "status" => "success",
-                "data" => $new_books
-            ]);
-        }
-    } catch (PDOException $e) {
-        http_response_code(500);
+    // Gán giá trị boolean false cho is_deleted
+    $stmt->bindValue(':status', false, PDO::PARAM_BOOL);
+
+    // Thực thi truy vấn
+    $stmt->execute();
+
+    // Lấy dữ liệu
+    $new_books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Trả JSON
+    if (!$new_books) {
         echo json_encode([
             "status" => "error",
-            "message" => "Lỗi truy vấn cơ sở dữ liệu: " . $e->getMessage()
+            "message" => "No new books added"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "success",
+            "data" => $new_books
         ]);
     }
-
+} catch (PDOException $e) {
+    // Xử lý lỗi
+    http_response_code(500);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Database query error: " . $e->getMessage()
+    ]);
+}

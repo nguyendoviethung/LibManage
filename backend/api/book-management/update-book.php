@@ -15,7 +15,7 @@ try {
     $quantity = (is_numeric($data['quantity']) && $data['quantity'] !== '') ? (int)$data['quantity'] : null;
 
     if (!$bookId) {
-        echo json_encode(['success' => false, 'message' => 'Thiếu book_id để cập nhật.']);
+        echo json_encode(['success' => false, 'message' => 'Missing book_id to update.']);
         exit;
     }
 
@@ -46,10 +46,10 @@ try {
     ]);
 
     if ($result) {
-        echo json_encode(['success' => true, 'message' => 'Chỉnh sửa thành công']);
+        echo json_encode(['success' => true, 'message' => 'Successful book editing']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Không có thay đổi hoặc lỗi khi cập nhật']);
+        echo json_encode(['success' => false, 'message' => 'No changes or errors when updating']);
     }
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Lỗi DB: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'DB Error: ' . $e->getMessage()]);
 }

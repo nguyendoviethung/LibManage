@@ -32,15 +32,15 @@ try {
         ]);
 
         if ($result) {
-            echo json_encode(['success' => true, 'message' => 'Sách đã được thêm']);
+            echo json_encode(['success' => true, 'message' => 'Book has been added']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Không thể thêm sách']);
+            echo json_encode(['success' => false, 'message' => 'Unable to add book']);
         }
 
     } else {
-        echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
+        echo json_encode(['success' => false, 'message' => 'Invalid data']);
     }
 
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Lỗi CSDL: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Database Error: ' . $e->getMessage()]);
 }

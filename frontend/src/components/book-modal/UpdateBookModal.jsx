@@ -24,15 +24,25 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
   //Xử lí khi input thay đổi
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value.trim() }));
   };
 
   //Xử lí khi submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const success = await handleUpdate(formData.book_id,formData);
-    if (success) hide();
+//Xử lí khi submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  // trim dữ liệu trước khi gửi
+  const trimmedData = {
+    ...formData,
+    title: formData.title.trim(),
+    lang: formData.lang.trim(),
+    location: formData.location.trim(),
+    author_name: formData.author_name.trim(),
+    genre: formData.genre.trim(),
   };
+  const success = await handleUpdate(formData.book_id, trimmedData);
+  if (success) hide();
+};
 
   return (
     <Modal show={show} onHide={hide} centered>
@@ -42,7 +52,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3">
-           <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Book Title</Form.Label>
+           <Form.Label >Book Title</Form.Label>
 
             <Form.Control
               type="text"
@@ -55,7 +65,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Language</Form.Label>
+            <Form.Label >Language</Form.Label>
             <Form.Control
               type="text"
               name="lang"
@@ -67,7 +77,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Year of publication</Form.Label>
+            <Form.Label >Year of publication</Form.Label>
             <Form.Control
               type="number"
               name="publisher_year"
@@ -79,7 +89,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Location</Form.Label>
+            <Form.Label >Location</Form.Label>
             <Form.Control
               type="text"
               name="location"
@@ -91,7 +101,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Quantity</Form.Label>
+            <Form.Label >Quantity</Form.Label>
             <Form.Control
               type="number"
               name="quantity"
@@ -103,7 +113,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Author</Form.Label>
+            <Form.Label >Author</Form.Label>
             <Form.Control
               type="text"
               name="author_name"
@@ -115,7 +125,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: 500 , fontSize: 18 }}>Category</Form.Label>
+            <Form.Label >Category</Form.Label>
             <Form.Control
               type="text"
               name="genre"

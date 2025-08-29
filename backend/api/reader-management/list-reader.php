@@ -19,7 +19,7 @@
         $sortOrder = ($sortOrder === 'DESC') ? 'DESC' : 'ASC';
 
         $where  = ["student_id <> :id"];
-        $params = [":id" => "AdminLib2025"];
+        $params = [":id" => "AdminLibGCUT"];
 
 
         if ($search !== '') {
@@ -27,12 +27,12 @@
             $params[":search"] = "%" . $search . "%";
         }
 
-        if ($faculty !== '' && $faculty !== 'Tất cả') {
+        if ($faculty !== '' && $faculty !== 'All') {
             $where[] = "faculty = :faculty";
             $params[":faculty"] = $faculty;
         }
 
-        if ($status !== '' && $status !== 'Tất cả') {
+        if ($status !== '' && $status !== 'All') {
             $where[] = "status = :status";
             $params[":status"] = $status;
         }
@@ -75,8 +75,8 @@
             "success" => true,
             "data" => $readers,
             "filterOptions" => [
-            "faculties" => array_merge(['Tất cả'], $faculties ?: []),
-            "statuses"  => array_merge(['Tất cả'], ['Active','Disabled','Banned']),
+            "faculties" => array_merge(['All'], $faculties ?: []),
+            "statuses"  => array_merge(['All'], ['Active','Disabled','Banned']),
             ]
         ]);
 

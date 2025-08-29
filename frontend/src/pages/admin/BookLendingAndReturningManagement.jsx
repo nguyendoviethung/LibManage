@@ -11,7 +11,7 @@ import {
   faSortUp,
   faSortDown,
   faCalendar,
-  faBook,
+
 } from "@fortawesome/free-solid-svg-icons";
 import Search from "../../components/search-bar/Search.jsx";
 import Filter from "../../components/filter/Filter.jsx";
@@ -19,8 +19,7 @@ import ActionButton from "../../components/action-button/ActionButton.jsx";
 import BorrowBooks from "../../components/qrcode/Borrow";
 import ReturnBooks from "../../components/qrcode/Return.jsx";
 import "./BookLendingAndReturningManagement.scss";
-import {checkStudent,borrowBooks,getBorrowedBooks,returnBooks,listBorrowReturn} from '../../api/LendingService.jsx';
-import { maxTime } from "date-fns/constants";
+import {borrowBooks,returnBooks,listBorrowReturn} from '../../api/LendingService.jsx';
 import AlertBox from "../../components/alert-box/AlertBox.jsx";
 
 // Custom hook debounce
@@ -58,8 +57,9 @@ export default function BookLendingAndReturningManagement() {
       const d1 = date.start ? new Date(date.start) : null;
       const d2 = date.end ? new Date(date.end) : null;
       if (d1 && d2 && d2 < d1) {
-      alert("Ngày kết thúc phải sau ngày bắt đầu");
-      setLoading(false);
+      setNotification({type : "error", message : "End date must be greater than start date" })
+      setRecords([]);
+      setLoading(false  );
       return;
     }
     const finalParams = {
@@ -72,15 +72,12 @@ export default function BookLendingAndReturningManagement() {
           sortKey: params.sortKey ?? sortConfig.key,
           sortOrder: params.sortOrder ?? sortConfig.direction,
         };
-      console.log("dữ liệu gửi đi",finalParams)
         const res = await listBorrowReturn(finalParams, token)
 
         if (res.success) {
-          console.log("data trả về",res.data)
           setRecords(res.data.records);
           setTotalRecords(res.data.total);
         } else {
-          console.log("data trả về",res.data)
           setRecords([]);
           setTotalRecords(0);
         }
@@ -116,9 +113,9 @@ export default function BookLendingAndReturningManagement() {
   const renderSortIcon = (key) => {
     if (sortConfig.key !== key)
       return <FontAwesomeIcon icon={faSort} className="sort-icon inactive" />;
-    if (sortConfig.direction === "desc")
-      return <FontAwesomeIcon icon={faSortUp} className="sort-icon desc" />;
     if (sortConfig.direction === "asc")
+      return <FontAwesomeIcon icon={faSortUp} className="sort-icon desc" />;
+    if (sortConfig.direction === "desc")
       return <FontAwesomeIcon icon={faSortDown} className="sort-icon asc" />;
     return null;
   };
@@ -128,19 +125,19 @@ export default function BookLendingAndReturningManagement() {
     const res = await borrowBooks(data, token);
     if (res.success) {
       setNotification({
-        message: res.message || "Mượn sách thành công!",
+        message: res.message || "Borrowed book successfully!",
         type: "success"
       });
     } else {
       setNotification({
-        message: res.message || "Mượn sách thất bại!",
+        message: res.message || "Failed to borrow book!",
         type: "error"
       });
     }
   } catch (error) {
     console.error("Lỗi gọi API borrowBooks:", error);
     setNotification({
-      message: "Không thể kết nối đến server. Vui lòng thử lại!",
+      message: "Unable to connect to server. Please try again!",
       type: "error"
     });
   }
@@ -149,24 +146,23 @@ export default function BookLendingAndReturningManagement() {
   const handleReturnBooks = async ({ readerID, bookIDs }) => {
   try {
     const data = { readerID, bookIDs };
-    console.log(data)
     const res = await returnBooks( data, token);
 
     if (res.success) {
       setNotification({
-        message: res.message || "Trả sách thành công!",
+        message: res.message || "Book returned successfully!",
         type: "success",
       });
     } else {
       setNotification({
-        message: res.message || "Không thể trả sách!",
+        message: res.message || "Cannot return book!",
         type: "error",
       });
     }
   } catch (err) {
     console.error("Return book error:", err);
     setNotification({
-      message: "Lỗi kết nối máy chủ!",
+      message: "Server connection error!",
       type: "error",
     });
   }
@@ -192,20 +188,17 @@ export default function BookLendingAndReturningManagement() {
       pages.push(2, 3, 4, 5);
       pages.push("...");
       pages.push(totalPages);
-      console.log("pages",pages)  
     }  else if (currentPage > 4 && currentPage + 5 < totalPages) {
       // Ở giữa
       pages.push("...");
       pages.push(currentPage - 1, currentPage, currentPage + 1);
       pages.push("...");
       pages.push(totalPages);
-      console.log("pages",pages)
     }else if(currentPage + 5 >= totalPages){
       pages.push("...")
       for (let i = totalPages - 5; i <= totalPages ; i++){
         pages.push(i)
       }
-      console.log("pages",pages)
     }
   }
   return pages;
@@ -277,7 +270,7 @@ export default function BookLendingAndReturningManagement() {
       selected={date.start}
       onChange={(d) => setDate((prev) => ({ ...prev, start: d }))}
       dateFormat="dd/MM/yyyy"
-      placeholderText="Ngày bắt đầu: dd/mm/yyyy"
+      placeholderText="Start date: dd/mm/yyyy"
       className="datepicker-input"
     />
     <FontAwesomeIcon
@@ -287,23 +280,21 @@ export default function BookLendingAndReturningManagement() {
   </div>
 
   {/* End date */}
-  <div style={{ position: "relative" }}>
-    <DatePicker
-      selected={date.end}
-      onChange={(d) => setDate((prev) => ({ ...prev, end: d }))}
-      dateFormat="dd/MM/yyyy"
-      placeholderText="Ngày kết thúc: dd/mm/yyyy"
-      className="datepicker-input"
-    />
-    <FontAwesomeIcon
-      icon={faCalendar}
-      className = "calendar"
-    />
+    <div style={{ position: "relative" }}>
+      <DatePicker
+        selected={date.end}
+        onChange={(d) => setDate((prev) => ({ ...prev, end: d }))}
+        dateFormat="dd/MM/yyyy"
+        placeholderText="End date: dd/mm/yyyy"
+        className="datepicker-input"
+      />
+      <FontAwesomeIcon
+        icon={faCalendar}
+        className = "calendar"
+      />
+    </div>
   </div>
-</div>
-
-
-        </div>  
+</div>  
 
           {/* Bảng danh sách */}
           <div className="table-scroll-wrapper">
@@ -316,7 +307,7 @@ export default function BookLendingAndReturningManagement() {
                     style={{ cursor: "pointer" }}
                     onClick={() => handleSort("studentId")}
                   >
-                    Student ID {renderSortIcon("studentId")}
+                    Student ID 
                   </th>
                   <th className="text-center">Student Name</th>
                   <th className="text-center" >Title</th>

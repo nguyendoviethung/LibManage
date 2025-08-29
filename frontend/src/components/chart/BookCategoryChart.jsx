@@ -53,7 +53,7 @@ function BookCategoryChart({ token, theme = "vibrant" }) {
           labels,
           datasets: [
             {
-              label: 'Số lượng sách',
+              label: 'Number of books',
               data: counts,
               backgroundColor: themes[theme],
               borderColor: themes[theme].map(c => c.replace("0.8", "1")), // viền đậm
@@ -79,7 +79,7 @@ function BookCategoryChart({ token, theme = "vibrant" }) {
       },
       title: { 
         display: true, 
-        text: 'Số lượng sách theo thể loại',
+        text: 'Number of books by genre',
         font: { size: 18, weight: "bold" },
         color: "#333"
       }

@@ -18,6 +18,6 @@ try {
     ]);
 
 } catch (PDOException $e) {
-    die("Kết nối thất bại: " . $e->getMessage());
+    die("Connection failed:" . $e->getMessage());
 }
 ?>

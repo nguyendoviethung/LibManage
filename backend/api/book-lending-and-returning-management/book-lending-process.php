@@ -10,7 +10,7 @@ try {
     if (!$data || !$studentId || !is_array($bookIDs) || !$readerId) {
         echo json_encode([
             'success' => false,
-            'message' => 'Dữ liệu không hợp lệ'
+            'message' => 'Invalid data'
         ]);
         exit;
     }

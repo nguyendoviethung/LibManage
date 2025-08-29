@@ -11,7 +11,7 @@ try {
     if (!$bookID) {
         echo json_encode([
             'success' => false,
-            'message' => 'Thiếu book_id để xoá.'
+            'message' => 'Missing book_id to delete'
         ]);
         exit;
     }
@@ -24,18 +24,18 @@ try {
     if ($result) {
         echo json_encode([
             'success' => true,
-            'message' => 'Xóa sách thành công'
+            'message' => 'Delete book successfully'
         ]);
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Không thể xoá sách'
+            'message' => 'Cannot delete book'
         ]);
     }
 
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
-        'message' => 'Lỗi CSDL: ' . $e->getMessage()
+        'message' => 'Database Error: ' . $e->getMessage()
     ]);
 }

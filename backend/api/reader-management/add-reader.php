@@ -17,16 +17,10 @@ $faculty = $data['faculty'] ?? '';
 
 // --- Validate dữ liệu ---
 if (isValidStudentID($studentID) == false) {
-    echo json_encode(['success' => false, 'message' => 'Mã số sinh viên không hợp lệ.']);
-    exit;
-} else if (isValidSchoolEmail($email, $name, $studentID) == false) {
-    echo json_encode(['success' => false, 'message' => 'Email không hợp lệ.']);
+    echo json_encode(['success' => false, 'message' => 'Invalid student ID']);
     exit;
 } else if (isValidPhoneNumber($phoneNumber) == false) {
-    echo json_encode(['success' => false, 'message' => 'Số điện thoại không hợp lệ.']);
-    exit;
-} else if (isValidFaculty($faculty) == false) {
-    echo json_encode(['success' => false, 'message' => 'Tên khoa không hợp lệ.']);
+    echo json_encode(['success' => false, 'message' => 'Invalid phone number']);
     exit;
 } else {
     // 1. Kiểm tra xem mã số sinh viên đã tồn tại chưa
@@ -35,7 +29,7 @@ if (isValidStudentID($studentID) == false) {
     $stmt->execute(['student_id' => $studentID]);
 
     if ($stmt->fetch()) {
-        echo json_encode(['success' => false, 'message' => 'Mã số sinh viên này đã tồn tại']);
+        echo json_encode(['success' => false, 'message' => 'This student ID already exists']);
         exit;
     }
 
@@ -45,7 +39,7 @@ if (isValidStudentID($studentID) == false) {
     $stmt->execute(['phone_number' => $phoneNumber]);
 
     if ($stmt->fetch()) {
-        echo json_encode(['success' => false, 'message' => '❗ Số điện thoại này đã được sử dụng.']);
+        echo json_encode(['success' => false, 'message' => 'This phone number is already in use']);
         exit;
     }
 
@@ -92,29 +86,29 @@ if (isValidStudentID($studentID) == false) {
     $mail->isHTML(true);
     $mail->Subject = "Tài khoản thư viện của bạn";
     $mail->Body    = "
-        Xin chào <b>$name</b>,<br>
-        Tài khoản của bạn đã được tạo:<br>
+         Hello <b>$name</b>,<br>
+        Your account has been created:<br>
         Username: <b>$username</b><br>
         Password: <b>$password</b><br>
-        <i>Vui lòng đổi mật khẩu sau khi đăng nhập.</i>
+    <i>Please change your password after logging in.</i>
+
     ";
 
-    $mail->AltBody = "Xin chào $name, \n
-        Tài khoản của bạn đã được tạo: \n
-        Username: $username \n
-        Password: $password \n
-        Vui lòng đổi mật khẩu sau khi đăng nhập.";
-        
+         $mail->AltBody = "Hello $name,\n
+        Your account has been created:\n
+        Username: $username\n
+        Password: $password\n
+        Please change your password after logging in."; 
     }
   if ($success_1 && $success_2) {
     try {
         $mail->send();
-        echo json_encode(['success' => true, 'message' => 'Thêm thành công và mail đã gửi']);
+        echo json_encode(['success' => true, 'message' => 'More readers successfully added']);
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => 'Thêm thành công nhưng mail lỗi: ' . $mail->ErrorInfo]);
+        echo json_encode(['success' => false, 'message' => 'Add successfully but email error: ' . $mail->ErrorInfo]);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Có lỗi khi thêm sinh viên.']);
+    echo json_encode(['success' => false, 'message' => 'There was an error adding student.']);
 }
 
 } catch (PDOException $e) {

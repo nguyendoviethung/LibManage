@@ -18,26 +18,22 @@
         $where = ["is_deleted = :is_deleted"];
         $params = [":is_deleted" => 'false'];
 
-        if ($category && $category !== 'Tất cả') {
-            $where[] = "genre = :genre";
-            $params[":genre"] = $category;
-        }
-        if ($author && $author !== 'Tất cả') {
-            $where[] = "author_name = :author";
-            $params[":author"] = $author;
-        }
-        if ($year && $year !== 'Tất cả') {
-            $where[] = "publisher_year = :year";
-            $params[":year"] = $year;
-        }
-        if ($lang && $lang !== 'Tất cả') {
-            $where[] = "lang = :lang";
-            $params[":lang"] = $lang;
-        }
-        if ($search) {
-            $where[] = "title ILIKE :search";
-            $params[":search"] = '%' . $search . '%';
-        }
+        if ($category && $category !== 'All') {
+    $where[] = "genre = :genre";
+    $params[":genre"] = $category;
+}
+if ($author && $author !== 'All') {
+    $where[] = "author_name = :author";
+    $params[":author"] = $author;
+}
+if ($year && $year !== 'All') {
+    $where[] = "publisher_year = :year";
+    $params[":year"] = $year;
+}
+if ($lang && $lang !== 'All') {
+    $where[] = "lang = :lang";
+    $params[":lang"] = $lang;
+}
 
         $whereSql = implode(' AND ', $where);
 
@@ -75,10 +71,10 @@
         $categories = $pdo->query("SELECT DISTINCT genre FROM books WHERE is_deleted = false ORDER BY genre ASC")->fetchAll(PDO::FETCH_COLUMN);
 
         $filterOptions = [
-            'authors' => array_merge(['Tất cả'], $authors ?: []),
-            'years' => array_merge(['Tất cả'], $years ?: []),
-            'langs' => array_merge(['Tất cả'], $langs ?: []),
-            'categories' => array_merge(['Tất cả'], $categories ?: []),
+            'authors' => array_merge(['All'], $authors ?: []),
+            'years' => array_merge(['All'], $years ?: []),
+            'langs' => array_merge(['All'], $langs ?: []),
+            'categories' => array_merge(['All'], $categories ?: []),
         ];
 
         echo json_encode([
@@ -92,6 +88,6 @@
     } catch (PDOException $e) {
         echo json_encode([
             "success" => false,
-            "message" => "Lỗi CSDL: " . $e->getMessage()
+            "message" => "Database Error: " . $e->getMessage()
         ]);
     }

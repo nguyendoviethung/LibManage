@@ -166,3 +166,24 @@
     }
   }
 }
+
+/* trực tiếp trên class được gắn vào modal-dialog */
+.custom-modal {
+  max-width:  600px;  // rộng hơn
+  width: 90%;
+  min-height: 200px;
+  
+  margin: 0 auto;               
+  position: relative;            
+  top: 30%;                      
+  transform: translateY(-50%);   
+}
+
+.custom-modal .modal-content {
+  padding: 20px;
+}
+
+.custom-modal .modal-body {
+  max-height: 70vh;
+  
+}

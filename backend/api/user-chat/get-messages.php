@@ -21,7 +21,7 @@ try {
         ':created_at' => date('Y-m-d H:i:s')
     ]);
 
-    echo json_encode(['success' => true, 'message' => 'Tạo chat thành công']);
+    echo json_encode(['success' => true, 'message' => 'Chat created successfully']);
     exit;
 } else {
     $query = "SELECT full_name FROM reader WHERE student_id = :student_id";
@@ -41,7 +41,7 @@ try {
     $chats = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode(['success' => true, 
                       'chats' => $chats,
-                      'admin_id' => "AdminLib2025",
+                      'admin_id' => "AdminLibGCUT",  // Đoạn này là cố định chat với một quản trị viên , sau này mở rộng fix lại
                       'chat_id' => $row['chat_id'],
                       'student_id' => $student_id,
                       'full_name' => $row_1['full_name'],
@@ -49,7 +49,7 @@ try {
 }
 
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Lỗi PDO: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'PDO Error: ' . $e->getMessage()]);
     exit;
 }
 ?>

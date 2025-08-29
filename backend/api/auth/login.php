@@ -20,7 +20,6 @@ try {
 
         echo json_encode([
             "success" => true,
-            "message" => "Đăng nhập thành công!",
             "username" => $row['username'],
             "role" => $row['role'],
             "userID" => $row['student_id'],
@@ -31,14 +30,14 @@ try {
     } else {
         echo json_encode([
             "success" => false,
-            "message" => "Tài khoản hoặc mật khẩu không đúng!"
+            "message" => "Incorrect account or password!"
         ]);
         exit;
     }
 } catch (PDOException $e) {
     echo json_encode([
         "success" => false,
-        "message" => "Lỗi server: " . $e->getMessage()
+        "message" => "Server error: " . $e->getMessage()
     ]);
     exit;
 }

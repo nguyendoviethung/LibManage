@@ -22,7 +22,11 @@
       background: #fff;
       border-radius: 8px 8px 0 0; // Bo góc trên
     }
-
+    .chat-title {
+      font-size: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #141619;
+    }
     .chat-messages {
       flex: 1;
       padding: 16px;

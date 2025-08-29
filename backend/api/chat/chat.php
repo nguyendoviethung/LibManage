@@ -152,33 +152,24 @@ private function handleAdminSendMessage($conn, $data) {
         
 // 2. Dành cho admin khi chọn một cuộc chat
 private function handleAdminGetMessages($conn, $data) {
-    // Xác định admin hiện tại
     $admin_id = array_search($conn, $this->users);
     if ($admin_id === false) return;
 
-    // Xác định người đọc (reader) muốn lấy tin nhắn
-    $reader_id = $data['enemyID'] ?? null;
-    if (!$reader_id) {
-        $conn->send(json_encode(['type'=>'error','message'=>'Missing enemyID']));
-        return;
-    }
+    $chat_id = $data['chat_id'];
 
     try {
         $stmt = $this->pdo->prepare("
-            SELECT message_id, chat_id, sender_type, sender_id, message_text, sent_at, is_read
+            SELECT sender_type, sender_id, message_text, sent_at
             FROM messages
             WHERE chat_id = :chat_id
             ORDER BY sent_at ASC
         ");
+        $stmt->execute([':chat_id' => $chat_id]);
+        $savedMessages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $stmt->execute([':chat_id' => $data['chat_id']]);
-        $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Gửi danh sách tin nhắn về cho admin
         $conn->send(json_encode([
-            'type' => 'get_messages',
-            'chat_id' => $data['chat_id'],
-            'messages' => $messages
+            'type' => 'get_message_when_changing_conversation',
+            'messages' => $savedMessages
         ]));
 
     } catch (\PDOException $e) {
@@ -187,7 +178,8 @@ private function handleAdminGetMessages($conn, $data) {
             'message'=>'DB error: '.$e->getMessage()
         ]));
     }
- }
+}
+
 
     // 3. Hàm reader gửi tin nhắn 
     private function handleReaderSendMessages($conn, $data) {
@@ -231,9 +223,12 @@ private function handleAdminGetMessages($conn, $data) {
         // Gửi tin nhắn về cho bản thân 
         $conn->send(json_encode([
             'type' => 'message',
+            'chat_id' => $chat_id,
             'text' => $message_text,
             'time' => $time,
-            'sender_type' => $sender_type
+            'sender_type' => $sender_type,
+            'sender_id' => $sender_id,
+            'full_name' => $full_name
         ]));
 
     } catch (\PDOException $e) {

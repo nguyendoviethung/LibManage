@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { getChatList } from "../../api/ChatAPI";
 import { jwtDecode } from "jwt-decode";
 
-const token = localStorage.getItem("token");
-
 export default function QAChat() {
   const navigate = useNavigate();
   const handleBack = () => {
@@ -21,12 +19,20 @@ export default function QAChat() {
   const [message, setMessage] = useState("");
   const [myUserId, setMyUserId] = useState("");
   const [socket, setSocket] = useState(null);
+  const [token, setToken] = useState(null);
   
-  // 
+ // Khởi tạo token khi gắn kết
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+
+// Cập nhật myUserId khi mã thông báo thay đổi
   useEffect(() => {
     if (token) {
       const decoded = jwtDecode(token);
       setMyUserId(decoded.data.id);
+    } else {
+      setMyUserId("");
     }
   }, [token]);
 
@@ -35,14 +41,6 @@ export default function QAChat() {
     if (socket && socket.readyState === WebSocket.OPEN && msg.trim() !== "") {
       const currentChat = chatListInfo.find((u) => u.student_id === selectedUser);
       if (!currentChat) return;
-      const data = {
-          type: "admin_send_message",
-          text: msg,
-          chat_id: currentChat.chat_id,
-          time: new Date().toISOString(),
-          receiver_id: selectedUser,
-          sender_type: "admin",
-        }
       socket.send(
         JSON.stringify({
           type: "admin_send_message",
@@ -54,8 +52,6 @@ export default function QAChat() {
         })
       );
       setMessage("");
-      console.log("admin gửi ",data)
-       console.log(myUserId)
     }
   };
 
@@ -76,28 +72,34 @@ export default function QAChat() {
     }
   };
 
-  //  Mount lần đầu
   useEffect(() => {
-      const fetchMessages = async () => {
-    try {
-     const result = await getChatList(token);
-      if (result.success) {    
-        setChatListInfo(result.chats);   
-        console.log("chats",result.chats)
-      if (result.chats.length > 0) {
-         setSelectedUser(result.chats[0].student_id);  // chọn user đầu tiên
-         setChatMessages(result.lastChatMessages || []); // load luôn tin nhắn gần nhất
-        }} else {
-           setChatListInfo([]);
+    if (!token) return;
+    
+    setChatMessages([]);
+    setChatListInfo([]);
+    setSelectedUser(null);
+
+    const fetchMessages = async () => {
+      try {
+        const result = await getChatList(token);
+        if (result.success) {
+          setChatListInfo(result.chats);
+          if (result.chats.length > 0) {
+            setSelectedUser(result.chats[0].student_id);
+            setChatMessages(result.lastChatMessages || []);
+          }
+        } else {
+          setChatListInfo([]);
           setChatMessages([]);
-    }} catch (error) {
+        }
+      } catch (error) {
         console.error("Lỗi khi lấy danh sách chat:", error);
       }
     };
 
     fetchMessages();
 
-    // Kết nối WebSocket
+    // Kết nối WebSocket với token hiện hành
     const s = new WebSocket(`ws://localhost:9000?token=${token}`);
     s.onopen = () => {
       console.log("Kết nối WebSocket thành công (đã kèm JWT)");
@@ -106,70 +108,55 @@ export default function QAChat() {
     s.onmessage = (event) => {
       const msg = JSON.parse(event.data);
       if (msg.type === "auth_success") return;
-console.log("nhận lại ",msg)
       // Nhận tin nhắn mới
- if (msg.type === "message") {
-    // 1. Thêm tin nhắn mới vào danh sách hội thoại hiện tại
-    setChatMessages((prev) => [...prev, msg]);
+if (msg.type === "message") {
+  // 1. Thêm tin nhắn mới vào danh sách hội thoại hiện tại
+  setChatMessages((prev) => [...prev, msg]);
 
-    // 2. Cập nhật danh sách "chatListInfo"
-if (msg.sender_type === "reader") {
+  // 2. Cập nhật + sắp xếp danh sách chatListInfo
   setChatListInfo((prev) => {
     const index = prev.findIndex((u) => u.chat_id === msg.chat_id);
+    let updated;
 
     if (index !== -1) {
       // Đã có → cập nhật
-      const updated = [...prev];
+      updated = [...prev];
       updated[index] = {
         ...updated[index],
         text: msg.text,
         time: msg.time,
         is_read: msg.is_read ?? false,
-        sender_id: msg.sender_id, 
+        sender_id: msg.sender_id,
+        full_name: msg.sender_type === "reader" 
+          ? msg.full_name ?? "Người dùng" 
+          : "Librarian",
       };
-      return updated;
     } else {
       // Chưa có → thêm mới
-      return [
+      updated = [
         ...prev,
         {
           chat_id: msg.chat_id,
           reader_name: msg.full_name ?? "Người dùng",
-          full_name: msg.full_name ?? "Người dùng",
-          student_id: msg.sender_id,   // ⚡ lưu đúng field để đồng bộ
+          full_name: msg.sender_type === "reader" 
+            ? msg.full_name ?? "Người dùng" 
+            : "Librarian",
+          student_id: msg.sender_id,
           text: msg.text,
           time: msg.time,
-          sender_id: msg.sender_id, 
+          sender_id: msg.sender_id,
           is_read: msg.is_read ?? false,
         },
       ];
     }
+
+    // Sort theo thời gian giảm dần (tin nhắn mới nhất lên đầu)
+    return updated.sort((a, b) => new Date(b.time) - new Date(a.time));
   });
 }
- else {
-  setChatListInfo((prev) => {
-    const index = prev.findIndex((u) => u.chat_id === msg.chat_id);
-    if (index !== -1) {
-      const updated = [...prev];
-      updated[index] = {
-        ...updated[index],
-        full_name: "Librarian",
-        text: msg.text,
-        time: msg.time,
-        is_read: msg.is_read ?? false,
-      };
-      return updated;
-    }
-    return prev; // nếu không tìm thấy thì giữ nguyên
-  });
-  console.log("chatlistinfo",chatListInfo)
-}
 
-
-    // 3. Nếu là admin → không đụng chatListInfo, chỉ để hiển thị "Bạn: text"
-  }
       // Nhận toàn bộ tin nhắn khi đổi user
-      if (msg.type === "get_messages") {
+      if (msg.type === "get_message_when_changing_conversation") {
         setChatMessages(msg.messages || []);
       }
     };
@@ -210,14 +197,13 @@ if (msg.sender_type === "reader") {
                 className={`chat-user ${u.sender_id === selectedUser ? "active" : ""}`}
                 onClick={() => setSelectedUser(u.student_id)}
               >
-                <div className="avatar">{u.reader_name.split(" ")[0]}</div>
+                <div className="avatar">{u.reader_name.split(" ").pop().charAt(0)}</div>
                 <div className="info">
                   <div className="name">{u.reader_name}</div>
                 <div className="last-msg">
                   {u.sender_id === myUserId
-  ? `Bạn: ${u.text.length > 15 ? u.text.slice(0, 15) + "..." : u.text}`
-  : `${(u.reader_name ?? u.full_name ?? "Người dùng").split(" ")[0]}: ${u.text.length > 15 ? u.text.slice(0, 15) + "..." : u.text}`}
-
+                  ? `My message: ${u.text.length > 15 ? u.text.slice(0, 15) + "..." : u.text}`
+                  : `${(u.reader_name ??  "Reader").split(" ").pop()}: ${u.text.length > 15 ? u.text.slice(0, 15) + "..." : u.text}`}
                 </div>
                      <div className="time">
                        {new Date(u.time).toLocaleTimeString("vi-VN", {
@@ -231,20 +217,20 @@ if (msg.sender_type === "reader") {
                          year: "numeric"
                        })}
                      </div>
-                  {!u.is_read && <span className="unread-dot"></span>}
+                  {/* {!u.is_read && <span className="unread-dot"></span>} */}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Middle: Chat Window */}
+        {/* Cửa sổ chat */}
         <div className="chat-window">
           <div className="chat-header">
             <div className="chat-title">
               {selectedUser
-                ? chatListInfo.find((u) => u.student_id === selectedUser)?.full_name
-                : "Chưa có cuộc trò chuyện"}
+                ? chatListInfo.find((u) => u.student_id === selectedUser)?.reader_name
+                : "There are no conversations"}
             </div>
           </div>
 
@@ -267,18 +253,18 @@ if (msg.sender_type === "reader") {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Enter message..."
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                   sendMessage(message);
+                             }}}
             />
             <button onClick={() => sendMessage(message)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            sendMessage(message);
-                             }}}
                        >Send  
             </button>
           </div>
         </div>
 
-        {/* Right: Options */}
+        {/* Tùy chọn */}
         <div className="chat-options">
           <div className="options-header">Options</div>
           <div className="options-section">

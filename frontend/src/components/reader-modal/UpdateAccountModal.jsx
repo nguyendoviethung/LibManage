@@ -38,15 +38,15 @@ useEffect(() => {
   };
 
   //Xử lí khi submit form
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
   const payload = {
-    password: form.password || null,
+    password: form.password.trim() || null, 
     username: form.username,
     status: form.status
   };
-  
-  const result = await handleUpdateAccount(readerData.student_id,payload);
+
+  const result = await handleUpdateAccount(readerData.student_id, payload);
   if (result.success) {
     onHide();
     setForm({ username: '', password: '', confirmPassword: '', status: '' });
@@ -56,43 +56,43 @@ useEffect(() => {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Cập nhật tài khoản </Modal.Title>
+        <Modal.Title>Update account</Modal.Title>
       </Modal.Header>
 
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Tên đăng nhập</Form.Label>
+            <Form.Label>User name</Form.Label>
             <Form.Control type="text" value={form.username} disabled />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Mật khẩu mới (bỏ qua nếu không đổi)</Form.Label>
+            <Form.Label>New password (skip if not changed)</Form.Label>
             <Form.Control
               type="password"
               name="password"
               value={form.password}
               onChange={handleChange}
-              placeholder="Nhập mật khẩu mới"
+              placeholder="Enter new password"
               autoComplete="new-password"
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Xác nhận mật khẩu</Form.Label>
+            <Form.Label>Confirm new password</Form.Label>
             <Form.Control
               type="password"
               name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange}
-              placeholder="Xác nhận mật khẩu"
+              placeholder="Confirm Password"
               autoComplete="new-password"
 
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Trạng thái</Form.Label>
+            <Form.Label>Status</Form.Label>
             <Form.Select name="status" value={form.status} onChange={handleChange}>
               <option value="Active">Active</option>
               <option value="Disabled">Disabled</option>

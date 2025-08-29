@@ -37,10 +37,10 @@
     const [selectedBook, setSelectedBook] = useState(null); // Sách được chọn
     const [alertBox, setAlertBox] = useState(null); // Thông báo
     const [searchTerm, setSearchTerm] = useState(''); // Input tìm kiếm
-    const [filterCategory, setFilterCategory] = useState('Tất cả');
-    const [filterAuthor, setFilterAuthor] = useState('Tất cả');
-    const [filterYear, setFilterYear] = useState('Tất cả');
-    const [filterLang, setFilterLang] = useState('Tất cả');
+    const [filterCategory, setFilterCategory] = useState('All');
+    const [filterAuthor, setFilterAuthor] = useState('All');
+    const [filterYear, setFilterYear] = useState('All');
+    const [filterLang, setFilterLang] = useState('All');
     const [sortConfig, setSortConfig] = useState({ key: '', direction: 'desc' });
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -130,21 +130,37 @@ const handleChangePage = (newPage) => {
 
     // Thanh chuyển trang
     const totalPages = Math.ceil(totalBooks / booksPerPage);
-    const getPages = () => {
-      let pages = [];
-      if (totalPages <= 7) {
-        for (let i = 1; i <= totalPages; i++) pages.push(i);
-      } else {
-        if (currentPage <= 4) {
-          pages = [1, 2, 3, 4, 5, '...', totalPages];
-        } else if (currentPage >= totalPages - 3) {
-          pages = [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-        } else {
-          pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
-        }
+ const getPages = () => {
+  let pages = [];
+
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  } else {
+    // Luôn có trang 1
+    pages.push(1);
+
+    if (currentPage <= 4) {
+      // Gần đầu
+      pages.push(2, 3, 4, 5);
+      pages.push("...");
+      pages.push(totalPages);
+    }  else if (currentPage > 4 && currentPage + 5 < totalPages) {
+      // Ở giữa
+      pages.push("...");
+      pages.push(currentPage - 1, currentPage, currentPage + 1);
+      pages.push("...");
+      pages.push(totalPages);
+    }else if(currentPage + 5 >= totalPages){
+      pages.push("...")
+      for (let i = totalPages - 5; i <= totalPages ; i++){
+        pages.push(i)
       }
-      return pages;
-    };
+    }
+  }
+  return pages;
+};
 
     // Xử lý thêm sách
     const handleAdd = async (data) => {
@@ -209,10 +225,10 @@ const handleUpdate = async (id,data) => {
       };
 
     // Lấy giá trị filter từ API nếu có, nếu không thì lấy từ dữ liệu hiện tại
-    const uniqueAuthors = filterOptions.authors.length > 0 ? filterOptions.authors : ['Tất cả'];
-    const uniqueYears = filterOptions.years.length > 0 ? filterOptions.years : ['Tất cả'];
-    const uniqueLangs = filterOptions.langs.length > 0 ? filterOptions.langs : ['Tất cả'];
-    const uniqueCategories = filterOptions.categories.length > 0 ? filterOptions.categories : ['Tất cả'];
+    const uniqueAuthors = filterOptions.authors.length > 0 ? filterOptions.authors : ['All'];
+    const uniqueYears = filterOptions.years.length > 0 ? filterOptions.years : ['All'];
+    const uniqueLangs = filterOptions.langs.length > 0 ? filterOptions.langs : ['All'];
+    const uniqueCategories = filterOptions.categories.length > 0 ? filterOptions.categories : ['All'];
 
   return (
     <Container className="mt-4">
@@ -230,7 +246,7 @@ const handleUpdate = async (id,data) => {
             {/* Bộ lọc thể loại sách */}
             <Filter
               icon={faFilter}
-              filterTitle="Lọc theo thể loại sách"
+              filterTitle="Category"
               filterName={filterCategory}
               setFilter={setFilterCategory}
               uniqueKeyword={uniqueCategories}
@@ -238,7 +254,7 @@ const handleUpdate = async (id,data) => {
             {/* Bộ lọc tác giả */}
             <Filter
               icon={faUser}
-              filterTitle="Lọc theo tác giả"
+              filterTitle="Author"
               filterName={filterAuthor}
               setFilter={setFilterAuthor}
               uniqueKeyword={uniqueAuthors}
@@ -246,7 +262,7 @@ const handleUpdate = async (id,data) => {
             {/* Bộ lọc năm xuất bản */}
             <Filter
               icon={faCalendar}
-              filterTitle="Lọc theo năm xuất bản"
+              filterTitle="Year of publication"
               filterName={filterYear} 
               setFilter={setFilterYear}
               uniqueKeyword={uniqueYears}
@@ -254,7 +270,7 @@ const handleUpdate = async (id,data) => {
             {/* Bộ lọc ngôn ngữ */}
             <Filter
               icon={faGlobe}
-              filterTitle="Lọc theo ngôn ngữ"
+              filterTitle="Language"
               filterName={filterLang}
               setFilter={setFilterLang}
               uniqueKeyword={uniqueLangs}
@@ -265,7 +281,7 @@ const handleUpdate = async (id,data) => {
               <Search
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
-                placeholder="Tìm kiếm sách theo tên"
+                placeholder="Search books by title"
               />
             </div>
          <div className = "mr-3">
@@ -304,20 +320,26 @@ const handleUpdate = async (id,data) => {
           <Table striped bordered hover responsive className="custom-table">
            <thead>
   <tr>
-    <th className="text-center" style={{ width: '7%' }}>STT</th>
-    <th className="text-center" style={{ width: '8%' }}>Mã sách</th>
+    <th className="text-center" style={{ width: '7%' }}>No.</th>
+    <th className="text-center" style={{ width: '11%' }}>Book code</th>
     <th className="text-center" style={{ width: '11%', cursor: 'pointer' }}>
-      Tên sách 
+      Title
     </th>
     <th className="text-center" style={{ width: '15%', cursor: 'pointer'}}>
-      Tác giả 
+      Author
     </th>
-    <th className="text-center" style={{ width: '18%' }}>Vị trí</th>
+   <th className="text-center" style={{ width: '15%' }}>
+  <div>Location</div>
+  <small style={{ display: 'block', fontSize: '0.9em', color: '#555' }}>
+    ( floor-room-shelf )
+  </small>
+</th>
+
     <th className="text-center" style={{ width: '10%', cursor: 'pointer' }} onClick={() => handleSort('quantity')}>
-      Số lượng {renderSortIcon('quantity')}
+      Quantity {renderSortIcon('quantity')}
     </th>
-    <th className="text-center" style={{ width: '15%' }}>Thể loại</th>
-    <th className="text-center" style={{ width: '18%' }}>Hành động</th>
+    <th className="text-center" style={{ width: '15%' }}>Category</th>
+    <th className="text-center" style={{ width: '18%' }}>Action</th>
   </tr>
 </thead>
 
@@ -332,7 +354,7 @@ const handleUpdate = async (id,data) => {
               ) : books.length === 0 ? (
                 <tr>
                   <td colSpan={11} style={{ textAlign: 'center', padding: '48px 0', color: '#888' }}>
-                    Không tìm thấy sách nào phù hợp.
+                    No matching books were found.
                   </td>
                 </tr>
               ) : (
@@ -394,23 +416,22 @@ const handleUpdate = async (id,data) => {
               >
                 &lt;
               </Button>
-              {getPages().map((p, i) =>
-                p === '...' ? (
-                  <span key={i} style={{ margin: '0 6px', color: '#888', fontWeight: 600 }}>...</span>
+                {getPages().map((p, i) =>
+                 p === '...' ? (
+                   <span key={`dots-${i}`} style={{ margin: '0 6px', color: '#888', fontWeight: 600 }}>...</span>
                 ) : (
-                  <Button
-                    key={p}
-                    variant={currentPage === p ? 'primary' : 'outline-primary'}
-                    size="sm"
-                    className="mx-1"
-                    onClick={() => {
-                      handleChangePage(p)
-                    }}
+                   <Button
+                     key={`page-${p}-${i}`}   
+                     variant={currentPage === p ? 'primary' : 'outline-primary'}
+                     size="sm"
+                     className="mx-1"
+                     onClick={() => handleChangePage(p)}
                   >
-                    {p}
-                  </Button>
-                )
-              )}
+                     {p}
+                   </Button>
+                    )
+                 )}
+
               <Button
                 variant="outline-primary"
                 size="sm"
@@ -460,25 +481,25 @@ const handleUpdate = async (id,data) => {
       {/* Modal xem chi tiết sách */}
       <Modal show={detailModal} onHide={() => setDetailModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Chi tiết sách</Modal.Title>
+          <Modal.Title>Book details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {detailBook && (
             <div style={{ display: 'flex', gap: 30 }}>
               <img
                 src={detailBook.cover_url || defaultBookCover}
-                alt="Ảnh bìa sách"
+                alt=""
                 style={{ width: 135, height: 190, objectFit: 'cover', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.10)' }}
               />
               <div style={{ flex: 1 }}>
-                <div><b>Mã sách:</b> {detailBook.book_id}</div>
-                <div><b>Tên sách:</b> {detailBook.title}</div>
-                <div><b>Tác giả:</b> {detailBook.author_name}</div>
-                <div><b>Ngôn ngữ:</b> {detailBook.lang}</div>
-                <div><b>Năm xuất bản:</b> {detailBook.publisher_year}</div>
-                <div><b>Vị trí:</b> {detailBook.location}</div>
-                <div><b>Số lượng:</b> {detailBook.quantity}</div>
-                <div><b>Thể loại:</b> {detailBook.genre}</div>
+                <div><b>Book code:</b> {detailBook.book_id}</div>
+                <div><b>Title:</b> {detailBook.title}</div>
+                <div><b>Author:</b> {detailBook.author_name}</div>
+                <div><b>Language:</b> {detailBook.lang}</div>
+                <div><b>Year of publication:</b> {detailBook.publisher_year}</div>
+                <div><b>Location:</b> {detailBook.location}</div>
+                <div><b>Quantity:</b> {detailBook.quantity}</div>
+                <div><b>Category:</b> {detailBook.genre}</div>
               </div>
             </div>
           )}

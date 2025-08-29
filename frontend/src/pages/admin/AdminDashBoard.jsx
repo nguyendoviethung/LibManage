@@ -50,10 +50,10 @@ import StatCard from '../../components/stat-card/stat-card';
 
       <div className="stats-section">
         <div className="stats-grid">
-          <StatCard icon = {faBook} value={stats.totalBooks} label="Tổng số sách" />
-          <StatCard icon = {faUsers} value={stats.totalReaders} label="Tổng số độc giả" />
-          <StatCard icon = {faBookOpen} value={stats.borrowedBooks} label="Sách đang mượn" />
-          <StatCard icon = {faClock} value={stats.overdueBooks} label="Sách quá hạn" />
+          <StatCard icon = {faBook} value={stats.totalBooks} label="Total number of books" />
+          <StatCard icon = {faUsers} value={stats.totalReaders} label="Total readers" />
+          <StatCard icon = {faBookOpen} value={stats.borrowedBooks} label="Books on loan" />
+          <StatCard icon = {faClock} value={stats.overdueBooks} label="Overdue books" />
         </div>
       </div>
 
@@ -61,26 +61,26 @@ import StatCard from '../../components/stat-card/stat-card';
       <div className="main-content">
         <div className="charts-section">
           <div className="chart-container">
-            <h2>Thống kê sách theo thể loại</h2>
+            <h2>Book statistics by genre</h2>
             <BookCategoryChart token ={token}  />
           </div>
           
           <div className="chart-container">
-            <h2>Lượt mượn sách theo tháng</h2>
+            <h2>Number of books borrowed per month</h2>
             <BorrowChart token = {token} />
           </div>
         </div>
 
         <div className="data-section">
           <div className="recent-books">
-            <h2>Sách mới thêm</h2>
+            <h2>New books added</h2>
             <div className="table-container">
               <table>
                 <thead>
                   <tr>
-                    <th>Tên sách</th>
-                    <th>Tác giả</th>
-                    <th>Số lượng hiện tại</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Current Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -98,14 +98,14 @@ import StatCard from '../../components/stat-card/stat-card';
           </div>
 
           <div className="recent-readers">
-            <h2>Sách được mượn nhiều nhất từ trước đến nay</h2>
+            <h2>Most borrowed book ever</h2>
             <div className="table-container">
               <table>
                 <thead>
                   <tr>
-                    <th>Tên sách</th>
-                    <th>Tác giả</th>
-                    <th>Số lượt mượn</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Number of loans</th>
                   </tr>
                 </thead>
           <tbody>

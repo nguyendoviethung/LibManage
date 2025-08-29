@@ -3,10 +3,9 @@
     import { useState, useEffect } from "react";
     import axios from "axios";
 
-    const token = localStorage.getItem("token");
-
     export default function Chat() {
     const [listMessages, setListMessages] = useState([]); // Đoạn tin nhắn từ trước đến giờ 
+    const [token, setToken] = useState(null);
     const [message,setMessage] = useState("");
     const [socket, setSocket] = useState(null);
     const [receiver_id,setReceiver_id] = useState();
@@ -30,14 +29,23 @@
       setMessage("");
         }
     }
+    // Lấy token khi component mount (hoặc sau khi đăng nhập điều hướng tới)
     useEffect(() => {
-        if (token) {
-        const decoded = jwtDecode(token);
-        setMyUserId(decoded.data.id); // lấy user_id từ token
-        }
+        setToken(localStorage.getItem("token"));
     }, []);
 
+    // Cập nhật myUserId theo token hiện tại
     useEffect(() => {
+        if (token) {
+            const decoded = jwtDecode(token);
+            setMyUserId(decoded.data.id);
+        } else {
+            setMyUserId("");
+        }
+    }, [token]);
+
+    useEffect(() => {
+        if (!token) return;
         const fetchMessages = async () => {
         try {
             // Gọi API lấy tin nhắn trước đó với thủ thư
@@ -93,7 +101,7 @@
         <div className="qa-chat">
             <div className="chat-window">
             <div className="chat-header">
-                <div className="chat-title">Thư viện</div>
+                <div className="chat-title">Librarian</div>
             </div>
 
             <div className="chat-messages">
@@ -110,16 +118,22 @@
             </div>
 
             <div className="chat-input">
-                <input placeholder="Nhập tin nhắn..." value = {message} onChange={e => setMessage(e.target.value)
-                } />
-                <button onClick = {()=> sendMessage(message)}>Gửi</button>
+                <input placeholder="Enter message..." 
+                 value = {message} 
+                 onChange={e => setMessage(e.target.value)}
+                onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                            sendMessage(message);
+                             }}}
+                />
+                <button onClick = {()=> sendMessage(message)}>Send</button>
             </div>
             </div>
 
             <div className="chat-options">
-            <div className="options-header">Tùy chọn</div>
+            <div className="options-header">Options</div>
             <div className="options-section">
-                <h4>Link đã gửi</h4>
+                <h4>Link sent</h4>
                 <ul>
                 <li>
                     <a href="#">http://example.com</a>
@@ -127,7 +141,7 @@
                 </ul>
             </div>
             <div className="options-section">
-                <h4>Ảnh đã gửi</h4>
+                <h4>Photos sent </h4>
                 <div className="image-grid">
                 <img src="https://via.placeholder.com/100" alt="img" />
                 <img src="https://via.placeholder.com/100" alt="img" />

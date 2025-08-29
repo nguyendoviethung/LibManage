@@ -12,15 +12,15 @@ function verify_jwt($jwt) {
         return $decoded; 
     } catch (\Firebase\JWT\ExpiredException $e) {
         http_response_code(401);
-        echo json_encode(["status" => false, "error" => "Token đã hết hạn"]);
+        echo json_encode(["status" => false, "error" => "Token has expired"]);
         exit();
     } catch (\Firebase\JWT\SignatureInvalidException $e) {
         http_response_code(401);
-        echo json_encode(["status" => false, "error" => "Token không hợp lệ"]);
+        echo json_encode(["status" => false, "error" => "Invalid Token"]);
         exit();
     } catch (Exception $e) {
         http_response_code(401);
-        echo json_encode(["status" => false, "error" => "Lỗi khi giải mã token"]);
+        echo json_encode(["status" => false, "error" => "Error while decoding token"]);
         exit();
     }
 }

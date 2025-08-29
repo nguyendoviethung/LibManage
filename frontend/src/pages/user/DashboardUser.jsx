@@ -33,7 +33,7 @@ function DashboardUser() {
       totalBorrowed: 25,
       currentlyBorrowed: 3,
       overdueBooks: 1,
-      favoriteGenre: 'Văn học'
+      favoriteGenre: 'Literature'
     });
 
     // TODO: Fetch user's borrowed books
@@ -69,19 +69,19 @@ function DashboardUser() {
       {
         id: 1,
         type: 'warning',
-        message: 'Sách "Nhà Giả Kim" đã quá hạn 5 ngày',
+        message: 'Book "Nhà Kim Giả" is 5 days overdue.',
         date: '2024-01-20'
       },
       {
         id: 2,
         type: 'info',
-        message: 'Sách "Tuổi Trẻ Đáng Giá Bao Nhiêu" sắp hết hạn trong 3 ngày',
+        message: 'Book "Tuổi Trẻ Đáng Giá Bao Nhiêu" is expiring in 3 days',
         date: '2024-01-18'
       },
       {
         id: 3,
         type: 'success',
-        message: 'Đã trả sách "Đắc Nhân Tâm" thành công',
+        message: 'Book "Đắc Nhân Tâm" returned successfully',
         date: '2024-01-15'
       }
     ]);
@@ -116,7 +116,7 @@ function DashboardUser() {
             </div>
             <div className="stat-content">
               <h3>{userStats.totalBorrowed}</h3>
-              <p>Tổng sách đã mượn</p>
+              <p>Total books borrowed</p>
             </div>
           </div>
           
@@ -126,7 +126,7 @@ function DashboardUser() {
             </div>
             <div className="stat-content">
               <h3>{userStats.currentlyBorrowed}</h3>
-              <p>Sách đang mượn</p>
+              <p>Books on loan</p>
             </div>
           </div>
           
@@ -136,7 +136,7 @@ function DashboardUser() {
             </div>
             <div className="stat-content">
               <h3>{userStats.overdueBooks}</h3>
-              <p>Sách quá hạn</p>
+              <p>Overdue books</p>
             </div>
           </div>
           
@@ -146,7 +146,7 @@ function DashboardUser() {
             </div>
             <div className="stat-content">
               <h3>{userStats.favoriteGenre}</h3>
-              <p>Thể loại yêu thích</p>
+              <p>Favorite genre</p>
             </div>
           </div>
         </div>
@@ -157,10 +157,10 @@ function DashboardUser() {
         {/* Borrowed Books Section */}
         <div className="borrowed-books-section">
           <div className="section-header">
-            <h2>Sách đang mượn</h2>
+            <h2>Books on loan</h2>
             <button className="export-btn">
               <FontAwesomeIcon icon={faFilePdf} />
-              <span>Xuất PDF</span>
+              <span>Export PDF</span>
             </button>
           </div>
           
@@ -171,17 +171,17 @@ function DashboardUser() {
                   <h3>{book.title}</h3>
                   <p className="author">Tác giả: {book.author}</p>
                   <div className="dates">
-                    <p>Ngày mượn: {new Date(book.borrowDate).toLocaleDateString('vi-VN')}</p>
+                    <p>Borrowed date: {new Date(book.borrowDate).toLocaleDateString('vi-VN')}</p>
                     <p className={book.isOverdue ? 'overdue-date' : ''}>
-                      Hạn trả: {new Date(book.dueDate).toLocaleDateString('vi-VN')}
+                      Payment date: {new Date(book.dueDate).toLocaleDateString('vi-VN')}
                     </p>
                   </div>
                 </div>
                 <div className="book-actions">
                   {book.isOverdue && (
-                    <span className="overdue-badge">Quá hạn</span>
+                    <span className="overdue-badge">Overdue</span>
                   )}
-                  <button className="return-btn">Trả sách</button>
+                  <button className="return-btn">Return book</button>
                 </div>
               </div>
             ))}
@@ -190,7 +190,7 @@ function DashboardUser() {
 
         {/* Notifications Section */}
         <div className="notifications-section">
-          <h2>Thông báo hệ thống</h2>
+          <h2>System Notifications</h2>
           <div className="notifications-list">
             {notifications.map(notification => (
               <div key={notification.id} className={`notification-item ${getNotificationClass(notification.type)}`}>
@@ -211,34 +211,34 @@ function DashboardUser() {
 
       {/* Quick Actions Section */}
       <div className="quick-actions">
-        <h2>Thao tác nhanh</h2>
+        <h2>Quick Action</h2>
         <div className="actions-grid">
           <button className="action-btn">
             <span className="action-icon">
               <FontAwesomeIcon icon={faSearch} />
             </span>
-            <span>Tìm kiếm sách</span>
+            <span>Search for books</span>
           </button>
           
           <button className="action-btn">
             <span className="action-icon">
               <FontAwesomeIcon icon={faBookReader} />
             </span>
-            <span>Mượn sách</span>
+            <span>Borrow books</span>
           </button>
           
           <button className="action-btn">
             <span className="action-icon">
               <FontAwesomeIcon icon={faHistory} />
             </span>
-            <span>Lịch sử mượn</span>
+            <span>Borrowing history</span>
           </button>
           
           <button className="action-btn">
             <span className="action-icon">
               <FontAwesomeIcon icon={faUserEdit} />
             </span>
-            <span>Cập nhật thông tin</span>
+            <span>Update information</span>
           </button>
         </div>
       </div>
