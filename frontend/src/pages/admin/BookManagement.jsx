@@ -279,9 +279,10 @@ const handleUpdate = async (id,data) => {
           <div className="search-row" >
             <div style={{ marginRight: '20px' }}>
               <Search
+                style = {{ minWidth : "425px"}}
                 setSearchTerm={setSearchTerm}
                 searchTerm={searchTerm}
-                placeholder="Search books by title"
+                placeholder="Search by book title, author name or book genre"
               />
             </div>
          <div className = "mr-3">

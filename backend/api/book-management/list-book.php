@@ -17,22 +17,26 @@
         // Điều kiện WHERE
         $where = ["is_deleted = :is_deleted"];
         $params = [":is_deleted" => 'false'];
-
-        if ($category && $category !== 'All') {
-    $where[] = "genre = :genre";
-    $params[":genre"] = $category;
+    
+if ($search && $search !== '') {
+    $where[] = "(title LIKE :search OR author_name LIKE :search OR genre LIKE :search)";
+    $params[":search"] = "%" . $search . "%"; 
 }
-if ($author && $author !== 'All') {
-    $where[] = "author_name = :author";
-    $params[":author"] = $author;
+    if ($category && $category !== 'All') {
+        $where[] = "genre = :genre";
+        $params[":genre"] = $category;
 }
-if ($year && $year !== 'All') {
-    $where[] = "publisher_year = :year";
-    $params[":year"] = $year;
+    if ($author && $author !== 'All') {
+        $where[] = "author_name = :author";
+        $params[":author"] = $author;
+}
+    if ($year && $year !== 'All') {
+        $where[] = "publisher_year = :year";
+        $params[":year"] = $year;
 }
 if ($lang && $lang !== 'All') {
-    $where[] = "lang = :lang";
-    $params[":lang"] = $lang;
+        $where[] = "lang = :lang";
+        $params[":lang"] = $lang;
 }
 
         $whereSql = implode(' AND ', $where);

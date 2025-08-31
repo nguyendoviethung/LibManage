@@ -218,6 +218,76 @@ VALUES
 ('Structural Dynamics and Vibrations', 'English', 2013, '8-1-8', 9, 'Mario Paz', 'Engineering'),
 ('Probability Theory Essentials', 'English', 2012, '9-4-3', 6, 'Sheldon Ross', 'Mathematics'),
 ('Applied Quantum Mechanics', 'English', 2018, '10-2-9', 7, 'Griffiths', 'Science');
+INSERT INTO books (title, lang, publisher_year, location, quantity, author_name, genre)
+VALUES
+('Whisper of the Bamboo Forest', 'Vietnamese', 2018, '10-2-1', 10, 'Nguyen Minh Duc', 'Fiction'),
+('The Last Autumn in Hanoi', 'Vietnamese', 2020, '10-2-2', 7, 'Tran Thi Hoa', 'Romance'),
+('Echoes of the Red River', 'Vietnamese', 2017, '10-2-3', 12, 'Le Van Huy', 'Historical'),
+('Dream of the Lotus Lake', 'Vietnamese', 2019, '10-2-4', 6, 'Pham Thi Lan', 'Drama'),
+('Silent Streets of Saigon', 'Vietnamese', 2021, '10-2-5', 9, 'Hoang Anh Tuan', 'Thriller'),
+('Waves of the East Sea', 'Vietnamese', 2016, '10-2-6', 8, 'Do Thi Mai', 'Adventure'),
+('Tales of the Ancient Village', 'Vietnamese', 2015, '10-2-7', 11, 'Bui Van Quang', 'Folklore'),
+('Light over the Mekong', 'Vietnamese', 2022, '10-2-8', 13, 'Nguyen Thu Ha', 'Travel'),
+('The Forgotten Pagoda', 'Vietnamese', 2014, '10-2-9', 5, 'Vu Van Long', 'Mystery'),
+('Song of the Lotus Child', 'Vietnamese', 2019, '10-2-10', 14, 'Dang Thi Kim', 'Children'),
+
+('Moonlight over Kyoto', 'Japanese', 2018, '11-3-1', 10, 'Satoshi Tanaka', 'Romance'),
+('Samurai''s Silent Oath', 'Japanese', 2016, '11-3-2', 7, 'Kenji Nakamura', 'Historical'),
+('Beyond Mount Fuji', 'Japanese', 2020, '11-3-3', 9, 'Haruka Suzuki', 'Travel'),
+('Cherry Blossoms in Winter', 'Japanese', 2019, '11-3-4', 15, 'Yuki Yamamoto', 'Drama'),
+('Shadow of the Shogun', 'Japanese', 2015, '11-3-5', 6, 'Takashi Mori', 'Thriller'),
+('Spirit of the Crane', 'Japanese', 2021, '11-3-6', 12, 'Aya Kobayashi', 'Folklore'),
+('The Lantern Festival', 'Japanese', 2017, '11-3-7', 8, 'Naoki Fujimoto', 'Culture'),
+('Whispers from Edo', 'Japanese', 2014, '11-3-8', 5, 'Hiroshi Kato', 'Mystery'),
+('Voices of Okinawa', 'Japanese', 2019, '11-3-9', 11, 'Mika Hayashi', 'Anthology'),
+('The Rising Sun Legacy', 'Japanese', 2022, '11-3-10', 13, 'Ryo Watanabe', 'Fiction');
+INSERT INTO books (title, lang, publisher_year, location, quantity, author_name, genre)
+VALUES
+
+('Legends of the Perfume River', 'Vietnamese', 2016, '12-1-1', 9, 'Nguyen Van Nam', 'Folklore'),
+('The Hanoi Midnight Rain', 'Vietnamese', 2021, '12-1-2', 12, 'Pham Thi Huong', 'Romance'),
+('Winds over Ha Long Bay', 'Vietnamese', 2018, '12-1-3', 8, 'Le Van Tuan', 'Travel'),
+('The Hidden Alley of Hue', 'Vietnamese', 2019, '12-1-4', 10, 'Tran Thi Mai', 'Drama'),
+('Shadows under the Banyan Tree', 'Vietnamese', 2017, '12-1-5', 6, 'Bui Van Hung', 'Mystery'),
+('The Fisherman''s Song', 'Vietnamese', 2015, '12-1-6', 11, 'Hoang Thi Lan', 'Anthology'),
+('Voices of the Central Highlands', 'Vietnamese', 2022, '12-1-7', 13, 'Dang Van Quoc', 'Culture'),
+('Autumn Leaves in Da Lat', 'Vietnamese', 2020, '12-1-8', 7, 'Vu Thi Phuong', 'Romance'),
+('The Old Quarter Diaries', 'Vietnamese', 2014, '12-1-9', 5, 'Nguyen Van Khoa', 'Historical'),
+('Song of the Rice Fields', 'Vietnamese', 2019, '12-1-10', 14, 'Tran Thi Kim', 'Children'),
+
+('Path of the Koi Fish', 'Japanese', 2016, '13-2-1', 10, 'Kazuki Saito', 'Folklore'),
+('Haiku under the Moon', 'Japanese', 2018, '13-2-2', 12, 'Akira Yamashita', 'Poetry'),
+('The Last Ronin', 'Japanese', 2020, '13-2-3', 8, 'Shinji Takeda', 'Historical'),
+('Kimono Secrets', 'Japanese', 2019, '13-2-4', 11, 'Aiko Nishida', 'Drama'),
+('Tokyo Twilight', 'Japanese', 2021, '13-2-5', 9, 'Rina Matsumoto', 'Fiction'),
+('The Noh Mask Mystery', 'Japanese', 2015, '13-2-6', 7, 'Kenta Okada', 'Mystery'),
+('Song of the Torii Gate', 'Japanese', 2017, '13-2-7', 13, 'Mai Shimizu', 'Culture'),
+('Samurai''s Daughter', 'Japanese', 2014, '13-2-8', 5, 'Takeshi Kobayashi', 'Romance'),
+('Storm over Hokkaido', 'Japanese', 2018, '13-2-9', 10, 'Sora Arai', 'Adventure'),
+('The Eternal Sakura', 'Japanese', 2022, '13-2-10', 15, 'Haruto Ishikawa', 'Romance');
+INSERT INTO books (title, lang, publisher_year, location, quantity, author_name, genre)
+VALUES
+('The Red River Tales', 'Vietnamese', 2016, '14-3-1', 8, 'Nguyen Thi Hoa', 'Folklore'),
+('Whispers of Saigon', 'Vietnamese', 2019, '14-3-2', 12, 'Pham Van Long', 'Drama'),
+('The Mekong Journey', 'Vietnamese', 2018, '14-3-3', 10, 'Tran Thi Lan', 'Travel'),
+('Moonlight over My Son', 'Vietnamese', 2021, '14-3-4', 7, 'Le Van Phuc', 'Historical'),
+('The Bamboo Flute', 'Vietnamese', 2017, '14-3-5', 9, 'Bui Thi Thanh', 'Children'),
+('Dreams of the Highlands', 'Vietnamese', 2020, '14-3-6', 14, 'Hoang Van Minh', 'Romance'),
+('The Old Pagoda', 'Vietnamese', 2015, '14-3-7', 6, 'Vu Thi Huong', 'Culture'),
+('Song of Hue Perfume River', 'Vietnamese', 2019, '14-3-8', 11, 'Dang Van Tien', 'Anthology'),
+('The Village Drum', 'Vietnamese', 2014, '14-3-9', 13, 'Nguyen Van Duc', 'Folklore'),
+('Autumn in Hanoi', 'Vietnamese', 2022, '14-3-10', 15, 'Tran Thi Phuong', 'Romance'),
+
+('Whispers of Kyoto', 'Japanese', 2017, '15-4-1', 12, 'Aya Takahashi', 'Drama'),
+('The Shogun''s Legacy', 'Japanese', 2016, '15-4-2', 9, 'Ryo Watanabe', 'Historical'),
+('Cherry Blossoms Dream', 'Japanese', 2019, '15-4-3', 14, 'Hana Suzuki', 'Romance'),
+('Voices of Mount Fuji', 'Japanese', 2015, '15-4-4', 8, 'Daichi Yamada', 'Culture'),
+('Kamikura Mysteries', 'Japanese', 2020, '15-4-5', 11, 'Ren Fujimoto', 'Mystery'),
+('The Lantern Festival', 'Japanese', 2018, '15-4-6', 10, 'Mika Hoshino', 'Folklore'),
+('Silent Streets of Osaka', 'Japanese', 2021, '15-4-7', 7, 'Takumi Mori', 'Fiction'),
+('The Samurai''s Promise', 'Japanese', 2014, '15-4-8', 6, 'Kenji Nakamura', 'Historical'),
+('Dance of the Cranes', 'Japanese', 2019, '15-4-9', 13, 'Airi Hayashi', 'Culture'),
+('Winter in Sapporo', 'Japanese', 2022, '15-4-10', 15, 'Sho Tanaka', 'Romance');
 
 -- reader
 

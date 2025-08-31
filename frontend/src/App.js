@@ -13,9 +13,12 @@ import Profile from './pages/user/Profile.jsx';
 import UserLayout from './pages/user/UserLayout.jsx';
 import QAChat from './pages/admin/Chat.jsx';
 import Chat from './pages/user/ChatUser.jsx'
+import FaviconManager from './components/FaviconManager.jsx';
+
 function App() {
   return (
 <BrowserRouter>
+  <FaviconManager />
   <Routes>    
     {/* Trang login chung */}
     <Route path="/" element={<Login />} />

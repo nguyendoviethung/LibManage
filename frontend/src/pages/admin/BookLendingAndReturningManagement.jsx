@@ -248,7 +248,7 @@ export default function BookLendingAndReturningManagement() {
             <Search
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
-              placeholder="Search borrow records..."
+              placeholder="Search by student ID "
             />
 
             <ActionButton

@@ -39,6 +39,21 @@ button.btn-custom-update-reader{
   }
 }
 
+button.btn-custom-update-book{
+    height: 40px;
+    width: 100px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    background: #23b5eb;
+    &:hover {
+    background: #0993c6;
+    color: #fff;
+    transform: translateY(-1.2px) scale(1);
+    box-shadow: 0 6px 18px rgba(255,179,0,0.13);
+  }
+}
+
 button.btn-add-reader{
     height: 40px;
     width: 120px;

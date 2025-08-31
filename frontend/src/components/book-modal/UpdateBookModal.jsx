@@ -138,7 +138,7 @@ const handleSubmit = async (e) => {
         </Modal.Body>
         <Modal.Footer>
          
-          <Button variant="info" type="submit">Update</Button>
+          <Button className = "btn-custom-update-book" type="submit">Update</Button>
         </Modal.Footer>
       </Form>
     </Modal>
