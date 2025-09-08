@@ -208,7 +208,7 @@ private function handleAdminGetMessages($conn, $data) {
             ]);
         $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //    Gửi tin nhắn cho admin
+        // Gửi tin nhắn cho admin
         if (isset($this->users[$receiver_id])) {
       $this->users[$receiver_id]->send(json_encode([
         'type'        => 'message',

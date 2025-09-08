@@ -221,7 +221,7 @@ export default function ReaderManagement() {
             />
             <Filter
               icon={faUser}
-              filterTitle="Status"
+              filterTitle="Reader Status"
               filterName={filterStatus}
               setFilter={setFilterStatus}
               uniqueKeyword={uniqueStatuses}

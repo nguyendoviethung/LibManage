@@ -57,17 +57,17 @@ try {
     if ($successCount === count($bookIDs)) {
         echo json_encode([
             'success' => true,
-            'message' => 'Mượn tất cả sách thành công!'
+            'message' => 'Borrow all the books successfully'
         ]);
     } elseif ($successCount > 0) {
         echo json_encode([
             'success' => true,
-            'message' => "Mượn một phần thành công ($successCount/" . count($bookIDs) . ")"
+            'message' => "Borrow a part of success ($successCount/" . count($bookIDs) . ")"
         ]);
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Không thể mượn sách nào.'
+            'message' => 'Cannot borrow any books'
         ]);
     }
 } catch (PDOException $e) {
@@ -76,6 +76,6 @@ try {
     }
     echo json_encode([
         'success' => false,
-        'message' => 'Lỗi CSDL: ' . $e->getMessage()
+        'message' => 'Database Error: ' . $e->getMessage()
     ]);
 }

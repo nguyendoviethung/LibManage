@@ -28,7 +28,17 @@ const handleSubmit = async (e) => {
     author_name: formData.author_name.trim(),
     genre: formData.genre.trim(),
   };
-  addBook(trimmedData);
+ if( addBook(trimmedData)){
+  setFormData({
+    title: '',
+    lang: '',
+    publisher_year: '',
+    location: '',
+    quantity: '',
+    author_name: '',
+    genre: ''
+  })
+ };
 };
 
   return (

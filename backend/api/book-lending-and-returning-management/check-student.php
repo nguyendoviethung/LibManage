@@ -9,7 +9,7 @@ try {
     if (!$studentId) {
         echo json_encode([
             'success' => false,
-            'message' => '❌ Thiếu mã sinh viên'
+            'message' => 'Missing student ID'
         ]);
         exit;
     }
@@ -29,7 +29,7 @@ try {
     if (!$result_1) {
         echo json_encode([
             'success' => false,
-            'message' => '❌ Sinh viên không tồn tại hoặc thẻ thư viện đã bị khóa'
+            'message' => 'Student does not exist or library card is locked'
         ]);
         exit;
     }
@@ -51,7 +51,7 @@ try {
     if (!$result_2) {
         echo json_encode([
             'success' => false,
-            'message' => '❌ Tài khoản đăng nhập của sinh viên đã bị khóa'
+            'message' => 'Student login account has been locked'
         ]);
         exit;
     }
@@ -71,7 +71,7 @@ try {
     if ($result_3) {
         echo json_encode([
             'success' => false,
-            'message' => '❌ Sinh viên đang có sách quá hạn chưa trả'
+            'message' => 'Students have overdue books that have not been returned'
         ]);
         exit;
     }
@@ -88,7 +88,7 @@ try {
     if ($row && $row['borrowed_count'] >= 5) { // ví dụ giới hạn là 5 cuốn
         echo json_encode([
             'success' => false,
-            'message' => '❌ Sinh viên đã mượn quá số lượng sách cho phép (tối đa 5 cuốn)'
+            'message' => 'The student has borrowed more books than allowed (maximum 5 books)'
         ]);
         exit;
     }
@@ -97,12 +97,12 @@ try {
     echo json_encode([
         'success'   => true,
         'reader_id' => $readerID,
-        'message'   => '✅ Sinh viên này đủ điều kiện để mượn sách'
+        'message'   => 'This student is eligible to borrow books'
     ]);
     
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
-        'message' => '❌ Lỗi hệ thống: ' . $e->getMessage()
+        'message' => 'System error:' . $e->getMessage()
     ]);
 }

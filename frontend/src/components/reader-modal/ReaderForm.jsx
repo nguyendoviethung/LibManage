@@ -140,6 +140,7 @@ const handleSubmit = async (e) => {
                 onChange={handleChange}
                 placeholder="Enter student code"
                 disabled={actionState === 'update-info-reader'}
+                required
               />
             </Form.Group>
 
@@ -151,6 +152,7 @@ const handleSubmit = async (e) => {
                 value={reader.full_name}
                 onChange={handleChange}
                 placeholder="Enter full name"
+                required
               />
             </Form.Group>
 
@@ -163,6 +165,7 @@ const handleSubmit = async (e) => {
                 onChange={handleChange}
                 disabled = {true}
                 placeholder="Enter email"
+                required
               />
             </Form.Group>
 
@@ -174,6 +177,7 @@ const handleSubmit = async (e) => {
                 value={reader.phone_number}
                 onChange={handleChange}
                 placeholder="Enter phone number"
+                required
               />
             </Form.Group>
 
@@ -195,6 +199,7 @@ const handleSubmit = async (e) => {
                 <option value="Language & Communication">Language & Communication</option>
                 <option value="Biotechnology & Biomedical Engineering">Biotechnology & Biomedical Engineering</option>
                 <option value="Mechanical Engineering">Mechanical Engineering</option>
+                required
               </Form.Select>
             </Form.Group>
 
@@ -210,6 +215,7 @@ const handleSubmit = async (e) => {
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     <option value="Banned">Banned</option>
+                    required
                   </Form.Select>
                 </Form.Group>
           

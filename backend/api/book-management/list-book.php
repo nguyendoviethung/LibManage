@@ -19,9 +19,12 @@
         $params = [":is_deleted" => 'false'];
     
 if ($search && $search !== '') {
-    $where[] = "(title LIKE :search OR author_name LIKE :search OR genre LIKE :search)";
-    $params[":search"] = "%" . $search . "%"; 
+    $where[] = "(LOWER(title) LIKE LOWER(:search) 
+                 OR LOWER(author_name) LIKE LOWER(:search) 
+                 OR LOWER(genre) LIKE LOWER(:search))";
+    $params[":search"] = "%" . strtolower($search) . "%";
 }
+
     if ($category && $category !== 'All') {
         $where[] = "genre = :genre";
         $params[":genre"] = $category;
@@ -58,7 +61,14 @@ if ($lang && $lang !== 'All') {
         $stmt->bindValue(":offset", ($page - 1) * $limit, PDO::PARAM_INT);
         $stmt->execute();
         $books = $stmt->fetchAll() ?: [];
-        
+
+      // Nếu không có bản ghi và page > 1 thì quay về trang 1
+        if (empty($books) && $page > 1) {
+            $page = 1;
+            $stmt->bindValue(":offset", 0, PDO::PARAM_INT); // offset phải về 0
+            $stmt->execute();
+            $books = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        }
         // Query đếm tổng số
         $queryCount = "SELECT COUNT(*) FROM books WHERE $whereSql";
         $stmtCount = $pdo->prepare($queryCount);

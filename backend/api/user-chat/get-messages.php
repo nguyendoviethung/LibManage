@@ -12,18 +12,38 @@ try {
    $stmt->execute([':student_id' => $student_id]);
    $row = $stmt->fetch(PDO::FETCH_ASSOC);
   if (!$row) {
+    // Tạo mới chat và trả về đầy đủ thông tin để FE không cần reload
     $query = "INSERT INTO chats (student_id, admin_id, created_at) 
-              VALUES (:student_id, :admin_id, :created_at)";
+              VALUES (:student_id, :admin_id, :created_at) RETURNING chat_id";
     $stmt = $pdo->prepare($query);
     $stmt->execute([
         ':student_id' => $student_id,
-        ':admin_id'   => "AdminLib2025",
+        ':admin_id'   => "AdminLibGCUT",
         ':created_at' => date('Y-m-d H:i:s')
     ]);
+    $created = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    echo json_encode(['success' => true, 'message' => 'Chat created successfully']);
+    // Lấy tên bạn đọc
+    $query = "SELECT full_name FROM reader WHERE student_id = :student_id";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([':student_id' => $student_id]);
+    $reader = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    echo json_encode([
+      'success'    => true,
+      'chats'      => [],
+      'admin_id'   => 'AdminLibGCUT',
+      'chat_id'    => $created['chat_id'] ?? null,
+      'student_id' => $student_id,
+      'full_name'  => $reader['full_name'] ?? ''
+    ]);
     exit;
 } else {
+    // Đồng bộ admin_id cũ (nếu có) về AdminLibGCUT để trang admin nhìn thấy đầy đủ
+    if (($row['admin_id'] ?? '') !== 'AdminLibGCUT') {
+        $fix = $pdo->prepare("UPDATE chats SET admin_id = :aid WHERE chat_id = :cid");
+        $fix->execute([':aid' => 'AdminLibGCUT', ':cid' => $row['chat_id']]);
+    }
     $query = "SELECT full_name FROM reader WHERE student_id = :student_id";
     $stmt = $pdo->prepare($query);
     $stmt->execute([

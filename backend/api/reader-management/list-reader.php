@@ -67,7 +67,7 @@
     WHERE student_id <> :id
     ";
     $stmt_3 = $pdo->prepare($query_2);
-    $stmt_3->bindValue(":id", "AdminLib2025", PDO::PARAM_STR);
+    $stmt_3->bindValue(":id", "AdminLibGCUT", PDO::PARAM_STR);
     $stmt_3->execute();
     $faculties = $stmt_3->fetchAll(PDO::FETCH_COLUMN);
 
@@ -76,7 +76,7 @@
             "data" => $readers,
             "filterOptions" => [
             "faculties" => array_merge(['All'], $faculties ?: []),
-            "statuses"  => array_merge(['All'], ['Active','Disabled','Banned']),
+            "statuses"  => array_merge(['All'], ['Active','Inactive','Banned']),
             ]
         ]);
 

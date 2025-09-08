@@ -19,3 +19,5 @@ const FaviconManager = () => {
 };
 
 export default FaviconManager;
+
+

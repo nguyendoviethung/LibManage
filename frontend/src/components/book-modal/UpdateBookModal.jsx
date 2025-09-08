@@ -24,7 +24,7 @@ function UpdateBookModal({ show, hide, handleUpdate, bookData}) {
   //Xử lí khi input thay đổi
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value.trim() }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   //Xử lí khi submit

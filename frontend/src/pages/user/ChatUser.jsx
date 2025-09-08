@@ -121,7 +121,7 @@
                 <input placeholder="Enter message..." 
                  value = {message} 
                  onChange={e => setMessage(e.target.value)}
-                onKeyDown={(e) => {
+                 onKeyDown={(e) => {
                             if (e.key === "Enter") {
                             sendMessage(message);
                              }}}

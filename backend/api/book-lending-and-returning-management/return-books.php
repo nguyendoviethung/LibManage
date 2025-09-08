@@ -6,7 +6,7 @@ try {
     if (!isset($data['readerID']) || !isset($data['bookIDs']) || !is_array($data['bookIDs'])) {
         echo json_encode([
             'success' => false,
-            'message' => 'Thiếu dữ liệu readerID hoặc bookIDs'
+            'message' => 'Missing readerID or bookIDs data'
         ]);
         exit;
     }
@@ -19,6 +19,7 @@ try {
     $errors = [];
 
     foreach ($bookIDs as $bookId) {
+        
         // 1. Cập nhật return_date trong bảng borrowrecords
         $queryReturn = "
             UPDATE borrowrecords br
@@ -35,7 +36,7 @@ try {
         ]);
 
         if (!$resultReturn || $stmt->rowCount() === 0) {
-            $errors[] = "Không cập nhật được borrowrecords cho sách ID: $bookId";
+            $errors[] = "Failed to update borrowrecords for ID book: $bookId";
             continue;
         }
 
@@ -49,7 +50,7 @@ try {
         $resultQuantity = $stmt->execute([':book_id' => $bookId]);
 
         if (!$resultQuantity || $stmt->rowCount() === 0) {
-            $errors[] = "Không cập nhật được quantity cho sách ID: $bookId";
+            $errors[] = "Unable to update quantity for book ID: $bookId";
         }
      }
 
@@ -57,13 +58,13 @@ try {
         $pdo->commit();
         echo json_encode([
             'success' => true,
-            'message' => 'Trả sách thành công.'
+            'message' => 'Returned book successfully'
         ]);
     } else {
         $pdo->rollBack();
         echo json_encode([
             'success' => false,
-            'message' => 'Một số sách trả không thành công.',
+            'message' => 'Some books returned unsuccessfully',
             'errors'  => $errors
         ]);
     }
@@ -74,7 +75,7 @@ try {
     }
     echo json_encode([
         'success' => false,
-        'message' => 'Lỗi CSDL: ' . $e->getMessage()
+        'message' => 'Database Error: ' . $e->getMessage()
     ]);
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
@@ -82,6 +83,6 @@ try {
     }
     echo json_encode([
         'success' => false,
-        'message' => 'Lỗi hệ thống: ' . $e->getMessage()
+        'message' => 'System error: ' . $e->getMessage()
     ]);
 }

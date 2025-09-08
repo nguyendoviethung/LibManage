@@ -7,9 +7,17 @@ $loginUsername = $data['loginUsername'];
 $loginPassword = $data['loginPassword'];
 
 try {
-    $stmt = $pdo->prepare("SELECT * FROM readeraccounts WHERE username = :username");
+    $stmt = $pdo->prepare("SELECT * FROM readeraccounts WHERE username = :username ");
     $stmt->execute(['username' => $loginUsername]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if($row['status'] !== 'Active'){
+        echo json_encode([
+            "success" => false,
+            "message" => "Tài khoản này không được phép truy cập vào hệ thống . Vui lòng liên hệ với quản trị viên."
+        ]);
+        exit;
+    }
 
     if ($row && password_verify($loginPassword, $row['password'])) {
         

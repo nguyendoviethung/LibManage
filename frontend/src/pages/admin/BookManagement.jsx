@@ -50,7 +50,7 @@
     const booksPerPage = 8; // Số sách hiển thị trên mỗi trang
     
     // Debounce cho searchTerm
-    const debouncedSearchTerm = useDebounce(searchTerm, 700);
+    const debouncedSearchTerm = useDebounce(searchTerm, 800);
 
     // Hàm fetch sách từ server (API hỗ trợ phân trang, filter, search, sort)
         const fetchBooks = useCallback(async (params = {}) => {
@@ -59,7 +59,7 @@
               const finalParams = {
         page: params.page ?? currentPage,
         limit: params.limit ?? booksPerPage,
-        search: params.search ?? debouncedSearchTerm,
+        search: params.search ?? debouncedSearchTerm.trim(),
         category: params.category ?? filterCategory,
         author: params.author ?? filterAuthor,
         year: params.year ?? filterYear,
@@ -75,7 +75,7 @@
             } else {
               setBooks([]); 
               setTotalBooks(0);
-           
+  
               setAlertBox({ message: res.message, type: 'error' });
             }
           } catch (err) {

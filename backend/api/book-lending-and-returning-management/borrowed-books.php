@@ -8,7 +8,7 @@ try {
     if (!$studentID) {
         echo json_encode([
             'success' => false,
-            'message' => 'Thiếu studentID'
+            'message' => 'Missing studentID'
         ]);
         exit;
     }
@@ -35,18 +35,18 @@ try {
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Không có sách nào được mượn'
+            'message' => 'No books are available for loan'
         ]);
     }
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
-        'message' => 'Lỗi CSDL: ' . $e->getMessage()
+        'message' => 'Database Error: ' . $e->getMessage()
     ]);
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,
-        'message' => 'Lỗi hệ thống: ' . $e->getMessage()
+        'message' => 'System error: ' . $e->getMessage()
     ]);
 }
 ?>

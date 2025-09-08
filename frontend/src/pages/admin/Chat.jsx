@@ -82,6 +82,7 @@ export default function QAChat() {
     const fetchMessages = async () => {
       try {
         const result = await getChatList(token);
+        console.log("result", result);
         if (result.success) {
           setChatListInfo(result.chats);
           if (result.chats.length > 0) {
@@ -194,7 +195,7 @@ if (msg.type === "message") {
             {chatListInfo.map((u) => (
               <div
                 key={`${u.chat_id}-${u.student_id}`}
-                className={`chat-user ${u.sender_id === selectedUser ? "active" : ""}`}
+                className={`chat-user ${u.student_id === selectedUser ? "active" : ""}`}
                 onClick={() => setSelectedUser(u.student_id)}
               >
                 <div className="avatar">{u.reader_name.split(" ").pop().charAt(0)}</div>

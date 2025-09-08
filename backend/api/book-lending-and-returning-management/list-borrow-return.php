@@ -82,6 +82,6 @@ try {
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,
-        'message' => 'Lỗi CSDL: ' . $e->getMessage()
+        'message' => 'Database Error: ' . $e->getMessage()
     ]);
 }

@@ -9,7 +9,7 @@ try {
     $query = "
         SELECT 
     c.chat_id AS chat_id,
-    c.student_id AS student_id,            -- ⚡ thêm student_id của người đọc
+    c.student_id AS student_id,            -- thêm student_id của người đọc
     r.full_name AS reader_name,            -- luôn là tên người đọc (chủ chat)
     
     CASE 
@@ -23,13 +23,14 @@ try {
     m.is_read AS is_read
 FROM chats c
 JOIN reader r ON c.student_id = r.student_id
-JOIN LATERAL (
+LEFT JOIN LATERAL (
     SELECT m2.message_text, m2.sent_at, m2.is_read, m2.sender_id, m2.sender_type
     FROM messages m2
     WHERE m2.chat_id = c.chat_id
     ORDER BY m2.sent_at DESC
     LIMIT 1
 ) m ON TRUE
+
 WHERE c.admin_id = :admin_id
 ORDER BY m.sent_at DESC;
 

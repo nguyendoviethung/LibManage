@@ -22,7 +22,7 @@ try {
 
     // So sánh mật khẩu mới với mật khẩu cũ
     if (!empty($newPassword) && password_verify($newPassword, $oldPasswordHash)) {
-        echo json_encode(['success' => false, 'message' => 'Mật khẩu mới không được trùng với mật khẩu cũ.']);
+        echo json_encode(['success' => false, 'message' => 'The new password cannot be the same as the old password ']);
         exit;
     }
 
@@ -39,13 +39,13 @@ try {
     ]);
 
     if ($success) {
-        echo json_encode(['success' => true, 'message' => 'Cập nhật mật khẩu và trạng thái thành công!']);
+        echo json_encode(['success' => true, 'message' => 'Update account information successfully']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Lỗi khi cập nhật cơ sở dữ liệu.']);
+        echo json_encode(['success' => false, 'message' => 'Update failed']);
     }
 
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Lỗi PDO: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'PDO Error: ' . $e->getMessage()]);
     exit;
 }
 ?>
