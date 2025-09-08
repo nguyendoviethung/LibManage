@@ -15,7 +15,7 @@ export default function QAChat() {
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [chatListInfo, setChatListInfo] = useState([]);
-  const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessages, setChatMessages] = useState([]); // Tin nhắn của user đang chọn
   const [message, setMessage] = useState("");
   const [myUserId, setMyUserId] = useState("");
   const [socket, setSocket] = useState(null);
@@ -112,7 +112,14 @@ export default function QAChat() {
       // Nhận tin nhắn mới
 if (msg.type === "message") {
   // 1. Thêm tin nhắn mới vào danh sách hội thoại hiện tại
-  setChatMessages((prev) => [...prev, msg]);
+   
+    setChatMessages((prev) => 
+    {
+      if (msg.chat_id === chatListInfo.find((u) => u.student_id === selectedUser)?.chat_id) {
+        return [...prev, msg.text];
+      }
+      return prev;
+    });
 
   // 2. Cập nhật + sắp xếp danh sách chatListInfo
   setChatListInfo((prev) => {
@@ -240,7 +247,7 @@ if (msg.type === "message") {
               <div
                 key={idx}
                 className={`chat-message ${
-                  msg.sender_type === "admin" ? "self" : "other"
+                msg.sender_type === "admin" ? "self" : "other"
                 }`}
               >
                   {msg.text || msg.message_text}
