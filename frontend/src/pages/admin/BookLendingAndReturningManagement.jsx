@@ -16,21 +16,16 @@ import {
 import Search from "../../components/search-bar/Search.jsx";
 import Filter from "../../components/filter/Filter.jsx";
 import ActionButton from "../../components/action-button/ActionButton.jsx";
+import useDebounce from '../../shared/hooks/useDebounce';
+import Pagination from '../../shared/components/Pagination';
+import SortIcon from '../../shared/components/SortIcon';
 import BorrowBooks from "../../components/qrcode/Borrow";
 import ReturnBooks from "../../components/qrcode/Return.jsx";
 import "./BookLendingAndReturningManagement.scss";
 import {borrowBooks,returnBooks,listBorrowReturn} from '../../api/LendingService.jsx';
 import AlertBox from "../../components/alert-box/AlertBox.jsx";
 
-// Custom hook debounce
-function useDebounce(value, delay) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-  return debouncedValue;
-}
+// useDebounce moved to shared
 
 export default function BookLendingAndReturningManagement() {
   const token = localStorage.getItem("token");
@@ -110,15 +105,9 @@ export default function BookLendingAndReturningManagement() {
     });
   };
 
-  const renderSortIcon = (key) => {
-    if (sortConfig.key !== key)
-      return <FontAwesomeIcon icon={faSort} className="sort-icon inactive" />;
-    if (sortConfig.direction === "asc")
-      return <FontAwesomeIcon icon={faSortUp} className="sort-icon desc" />;
-    if (sortConfig.direction === "desc")
-      return <FontAwesomeIcon icon={faSortDown} className="sort-icon asc" />;
-    return null;
-  };
+  const renderSortIcon = (key) => (
+    <SortIcon currentKey={key} sortKey={sortConfig.key} direction={sortConfig.direction} />
+  );
 
   const handleBorrowBooks = async (data) => {
   try {
@@ -355,48 +344,12 @@ export default function BookLendingAndReturningManagement() {
                 )}
               </tbody>
             </Table>
-              {totalPages > 1 && (
-            <div className="pagination-wrapper d-flex justify-content-center align-items-center">
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="mx-1"
-                disabled={currentPage === 1}
-                onClick={() => {
-                handleChangePage(currentPage - 1)
-                }}
-              >
-                &lt;
-              </Button>
-                {getPages().map((p, i) =>
-                 p === '...' ? (
-                   <span key={`dots-${i}`} style={{ margin: '0 6px', color: '#888', fontWeight: 600 }}>...</span>
-                ) : (
-                   <Button
-                     key={`page-${p}-${i}`}   
-                     variant={currentPage === p ? 'primary' : 'outline-primary'}
-                     size="sm"
-                     className="mx-1"
-                     onClick={() => handleChangePage(p)}
-                  >
-                     {p}
-                   </Button>
-                    )
-                 )}
-
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="mx-1 btn-pagination"
-                disabled={currentPage === totalPages}
-                onClick={() => {
-                  handleChangePage (currentPage + 1)
-                }}
-              >
-                &gt;
-              </Button>
-            </div>
-          )}
+              <Pagination
+                currentPage={currentPage}
+                totalItems={totalRecords}
+                pageSize={recordsPerPage}
+                onChangePage={handleChangePage}
+              />
           </div>
         </div>
         

@@ -3,7 +3,7 @@ import { Container, Button, Table, Modal, Spinner } from 'react-bootstrap';
 import AlertBox from '../../components/alert-box/AlertBox';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSort, faSortUp, faSortDown, faPlus, faUser, faBuilding, faAddressCard } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faUser, faBuilding, faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import {
 listReader,
 updateReader,
@@ -17,16 +17,11 @@ import './ReaderManagement.scss';
 import Filter from '../../components/filter/Filter.jsx';
 import Search from '../../components/search-bar/Search.jsx';
 import ActionButton from '../../components/action-button/ActionButton.jsx';
+import useDebounce from '../../shared/hooks/useDebounce';
+import Pagination from '../../shared/components/Pagination';
+import SortIcon from '../../shared/components/SortIcon';
 
-// Custom hook debounce
-function useDebounce(value, delay) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-  return debouncedValue;
-}
+// useDebounce moved to shared
 
 export default function ReaderManagement() {
   const token = localStorage.getItem("token"); 
@@ -97,45 +92,11 @@ export default function ReaderManagement() {
     });
   };
 
-  const renderSortIcon = (key) => {
-    if (sortConfig.key !== key) return <FontAwesomeIcon icon={faSort} className="sort-icon inactive" />;
-    if (sortConfig.direction === 'asc') return <FontAwesomeIcon icon={faSortUp} className="sort-icon asc" />;
-    if (sortConfig.direction === 'desc') return <FontAwesomeIcon icon={faSortDown} className="sort-icon desc" />;
-    return null;
-  };
+  const renderSortIcon = (key) => (
+    <SortIcon currentKey={key} sortKey={sortConfig.key} direction={sortConfig.direction} />
+  );
 
   const totalPages = Math.ceil(totalReaders / readersPerPage);
-  const getPages = () => {
-  let pages = [];
-
-  if (totalPages <= 7) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-  } else {
-    // Luôn có trang 1
-    pages.push(1);
-
-    if (currentPage <= 4) {
-      // Gần đầu
-      pages.push(2, 3, 4, 5);
-      pages.push("...");
-      pages.push(totalPages);
-    }  else if (currentPage > 4 && currentPage + 5 < totalPages) {
-      // Ở giữa
-      pages.push("...");
-      pages.push(currentPage - 1, currentPage, currentPage + 1);
-      pages.push("...");
-      pages.push(totalPages);
-    }else if(currentPage + 5 >= totalPages){
-      pages.push("...")
-      for (let i = totalPages - 5; i <= totalPages ; i++){
-        pages.push(i)
-      }
-    }
-  }
-  return pages;
-};
   const handleAddReader = async (data) => {
     try {
       const res = await addReader(data, token);
@@ -309,48 +270,12 @@ export default function ReaderManagement() {
           </Table>
 
           {/* Pagination */}
-                   {totalPages > 1 && (
-            <div className="pagination-wrapper d-flex justify-content-center align-items-center">
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="mx-1"
-                disabled={currentPage === 1}
-                onClick={() => {
-                  handleChangePage(currentPage - 1)
-                }}
-              >
-                &lt;
-              </Button>
-                {getPages().map((p, i) =>
-                 p === '...' ? (
-                   <span key={`dots-${i}`} style={{ margin: '0 6px', color: '#888', fontWeight: 600 }}>...</span>
-                ) : (
-                   <Button
-                     key={`page-${p}-${i}`}   
-                     variant={currentPage === p ? 'primary' : 'outline-primary'}
-                     size="sm"
-                     className="mx-1"
-                     onClick={() => handleChangePage(p)}
-                  >
-                     {p}
-                   </Button>
-                    )
-                 )}
-
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="mx-1 btn-pagination"
-                disabled={currentPage === totalPages}
-                onClick={() => {
-                  handleChangePage (currentPage + 1)
-                }}
-              >
-                &gt;
-              </Button>
-            </div>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalItems={totalReaders}
+            pageSize={readersPerPage}
+            onChangePage={handleChangePage}
+          />
         </div>
         {crudAction === 'update-account' && <UpdateAccountModal show={true} onHide={()=>setCrudAction('')} handleUpdateAccount={handleUpdateAccount} readerData={selectedReader} token = {token} />}
         {crudAction === 'update-info-reader' && <ReaderForm show={true} onHide={()=>setCrudAction('')} handleUpdate={handleUpdateInfoReader} readerData={selectedReader} actionState = {'update-info-reader'}/>}

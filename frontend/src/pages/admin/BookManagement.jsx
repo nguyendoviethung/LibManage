@@ -18,16 +18,11 @@
   import Filter from '../../components/filter/Filter.jsx';
   import Search from '../../components/search-bar/Search.jsx';
   import ActionButton from '../../components/action-button/ActionButton.jsx';
+  import useDebounce from '../../shared/hooks/useDebounce';
+  import Pagination from '../../shared/components/Pagination';
+  import SortIcon from '../../shared/components/SortIcon';
 
-  // Custom hook debounce
-  function useDebounce(value, delay) {
-    const [debouncedValue, setDebouncedValue] = useState(value);
-    useEffect(() => {
-      const handler = setTimeout(() => setDebouncedValue(value), delay);
-      return () => clearTimeout(handler);
-    }, [value, delay]);
-    return debouncedValue;
-  }
+  // useDebounce moved to shared
 
   function BookManagement() {
     const token = localStorage.getItem("token"); // token 
@@ -115,52 +110,12 @@ const handleChangePage = (newPage) => {
     };
 
     // Hiển thị icon sắp xếp
-    const renderSortIcon = (key) => {
-      if (sortConfig.key !== key) return (
-        <FontAwesomeIcon icon={faSort} className="sort-icon inactive" />
+    const renderSortIcon = (key) => (
+      <SortIcon currentKey={key} sortKey={sortConfig.key} direction={sortConfig.direction} />
     );
-      if (sortConfig.direction === 'asc')return (
-        <FontAwesomeIcon icon={faSortUp} className="sort-icon asc" />
-    );
-      if (sortConfig.direction === 'desc') return (
-        <FontAwesomeIcon icon={faSortDown} className="sort-icon desc" />
-    );
-      return null;
-    };
 
     // Thanh chuyển trang
     const totalPages = Math.ceil(totalBooks / booksPerPage);
- const getPages = () => {
-  let pages = [];
-
-  if (totalPages <= 7) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-  } else {
-    // Luôn có trang 1
-    pages.push(1);
-
-    if (currentPage <= 4) {
-      // Gần đầu
-      pages.push(2, 3, 4, 5);
-      pages.push("...");
-      pages.push(totalPages);
-    }  else if (currentPage > 4 && currentPage + 5 < totalPages) {
-      // Ở giữa
-      pages.push("...");
-      pages.push(currentPage - 1, currentPage, currentPage + 1);
-      pages.push("...");
-      pages.push(totalPages);
-    }else if(currentPage + 5 >= totalPages){
-      pages.push("...")
-      for (let i = totalPages - 5; i <= totalPages ; i++){
-        pages.push(i)
-      }
-    }
-  }
-  return pages;
-};
 
     // Xử lý thêm sách
     const handleAdd = async (data) => {
@@ -404,48 +359,12 @@ const handleUpdate = async (id,data) => {
             </tbody>
           </Table>
           {/* Thanh phân trang hiện đại */}
-          {totalPages > 1 && (
-            <div className="pagination-wrapper d-flex justify-content-center align-items-center">
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="mx-1"
-                disabled={currentPage === 1}
-                onClick={() => {
-                  handleChangePage(currentPage - 1)
-                }}
-              >
-                &lt;
-              </Button>
-                {getPages().map((p, i) =>
-                 p === '...' ? (
-                   <span key={`dots-${i}`} style={{ margin: '0 6px', color: '#888', fontWeight: 600 }}>...</span>
-                ) : (
-                   <Button
-                     key={`page-${p}-${i}`}   
-                     variant={currentPage === p ? 'primary' : 'outline-primary'}
-                     size="sm"
-                     className="mx-1"
-                     onClick={() => handleChangePage(p)}
-                  >
-                     {p}
-                   </Button>
-                    )
-                 )}
-
-              <Button
-                variant="outline-primary"
-                size="sm"
-                className="mx-1 btn-pagination"
-                disabled={currentPage === totalPages}
-                onClick={() => {
-                  handleChangePage (currentPage + 1)
-                }}
-              >
-                &gt;
-              </Button>
-            </div>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalItems={totalBooks}
+            pageSize={booksPerPage}
+            onChangePage={handleChangePage}
+          />
         </div>
         {/* Modal thêm sách */}
         {crudAction === 'add' && (
