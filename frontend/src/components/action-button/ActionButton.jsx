@@ -1,6 +1,6 @@
   import './ActionButton.scss';
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-  import { Button } from 'react-bootstrap';
+
   function ActionButton({ onClick, label, icon, className }) {
     return (
       <button
