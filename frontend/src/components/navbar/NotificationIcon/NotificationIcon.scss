@@ -1,26 +1,59 @@
+.notification-wrapper {
+  position: relative;
+}
+
 .bell-icon {
-    position: relative;
-    display: block;
-    font-size: 20px; // kích thước icon
-    color: #000b00;
-    cursor: pointer;
-    transition: color 0.3s ease;
-   
-    &:hover {
-      color: #81d4ee; // đổi màu khi hover
-    }
-  
-   .notification-count{
-      display: block;
-      position: absolute;
-      top: -6px;
-      right: -12px;
-      background-color: #f14734; // màu nền đỏ
-      color: white; // màu chữ trắng
-      border-radius: 50%;
-      padding: 2px 6px;
-      font-size: 12px; // kích thước chữ
-      font-weight: bold; // đậm chữ
-   }
+  position: relative;
+  font-size: 20px;
+  color: #000b00;
+  cursor: pointer;
+
+  &:hover {
+    color: #81d4ee;
   }
-  
+
+  .notification-count {
+    position: absolute;
+    top: -6px;
+    right: -12px;
+    background: #f14734;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+}
+
+.notification-dropdown {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  width: 260px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  padding: 12px;
+  z-index: 999;
+
+  h4 {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .review-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+
+    button {
+      background: #81d4ee;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+  }
+}

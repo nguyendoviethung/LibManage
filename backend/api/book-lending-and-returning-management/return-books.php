@@ -2,87 +2,177 @@
 require __DIR__ . '/../../middleware/auth-middleware.php';
 checkAdminRole($decode);
 
+if (!isset($data)) {
+    $raw = file_get_contents("php://input");
+    $data = json_decode($raw, true);
+}
+
+// Validate input
+if (
+    !$data ||
+    !isset($data['readerID']) ||
+    !isset($data['bookIDs']) ||
+    !is_array($data['bookIDs'])
+) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid data format'
+    ]);
+    exit;
+}
+
+$readerId = intval($data['readerID']);
+$bookIDs  = array_map('intval', $data['bookIDs']);
+$returnAt = date("Y-m-d H:i:s");
+
 try {
-    if (!isset($data['readerID']) || !isset($data['bookIDs']) || !is_array($data['bookIDs'])) {
+    $pdo->beginTransaction();
+
+    // 1) Tìm borrowrecord
+    $stmtFindBorrow = $pdo->prepare("
+        SELECT record_id
+        FROM borrowrecords
+        WHERE reader_id = :reader_id
+          AND book_id   = :book_id
+          AND return_date IS NULL
+        ORDER BY borrow_date DESC
+        LIMIT 1
+    ");
+
+    // 2) Insert vào return_records
+    $stmtInsertReturn = $pdo->prepare("
+        INSERT INTO return_records (record_id, reader_id, book_id, returned_at, is_reviewed)
+        VALUES (:record_id, :reader_id, :book_id, :returned_at, false)
+        RETURNING return_id
+    ");
+
+    // ❗ FIX QUAN TRỌNG – Update borrowrecords
+    $stmtUpdateBorrow = $pdo->prepare("
+        UPDATE borrowrecords
+        SET return_date = :returned_at
+        WHERE record_id = :record_id
+    ");
+
+    // 3) Update quantity sách
+    $stmtUpdateQuantity = $pdo->prepare("
+        UPDATE books
+        SET quantity = quantity + 1
+        WHERE book_id = :book_id
+    ");
+
+    // 4) Lấy tên sách
+    $stmtGetBookTitle = $pdo->prepare("
+        SELECT title FROM books WHERE book_id = :book_id
+    ");
+
+    // 5) Insert notification
+    $stmtInsertNotification = $pdo->prepare("
+        INSERT INTO notifications (reader_id, return_id, book_id, type, payload, is_read, created_at)
+        VALUES (
+            :reader_id,
+            :return_id,
+            :book_id,
+            'request_review',
+            :payload::jsonb,
+            false,
+            NOW()
+        )
+        RETURNING notification_id
+    ");
+
+    $results = [];
+    $errors = [];
+
+    foreach ($bookIDs as $bookId) {
+
+        // 1) Find borrow record
+        $stmtFindBorrow->execute([
+            ':reader_id' => $readerId,
+            ':book_id'   => $bookId
+        ]);
+        $recordId = $stmtFindBorrow->fetchColumn();
+
+        if (!$recordId) {
+            $errors[] = "No active borrow record for book $bookId";
+            $results[] = ["book_id" => $bookId, "status" => "failed"];
+            continue;
+        }
+
+        // 2) Insert return record
+        $stmtInsertReturn->execute([
+            ':record_id'   => $recordId,
+            ':reader_id'   => $readerId,
+            ':book_id'     => $bookId,
+            ':returned_at' => $returnAt
+        ]);
+        $returnId = $stmtInsertReturn->fetchColumn();
+
+        // ❗ FIX QUAN TRỌNG – cập nhật borrowrecords
+        $stmtUpdateBorrow->execute([
+            ':returned_at' => $returnAt,
+            ':record_id'   => $recordId
+        ]);
+
+        // 3) Update quantity
+        $stmtUpdateQuantity->execute([':book_id' => $bookId]);
+
+        // 4) Lấy tên sách
+        $stmtGetBookTitle->execute([':book_id' => $bookId]);
+        $bookTitle = $stmtGetBookTitle->fetchColumn() ?: 'Unknown Book';
+
+        // 5) Tạo payload JSON
+        $payload = json_encode([
+            'title'       => $bookTitle,
+            'message'     => 'Thank you for returning the book. Please rate this book!',
+            'returned_at' => $returnAt
+        ]);
+
+        // 6) Insert notification
+        $stmtInsertNotification->execute([
+            ':reader_id' => $readerId,
+            ':return_id' => $returnId,
+            ':book_id'   => $bookId,
+            ':payload'   => $payload
+        ]);
+
+        $notificationId = $stmtInsertNotification->fetchColumn();
+
+        $results[] = [
+            'book_id'        => $bookId,
+            'record_id'      => $recordId,
+            'return_id'      => $returnId,
+            'notification_id'=> $notificationId,
+            'status'         => 'success'
+        ];
+    }
+
+    // Nếu có lỗi trong bất kỳ cuốn nào → rollback
+    if (!empty($errors)) {
+        $pdo->rollBack();
         echo json_encode([
             'success' => false,
-            'message' => 'Missing readerID or bookIDs data'
+            'message' => 'Some returns failed',
+            'errors'  => $errors,
+            'details' => $results
         ]);
         exit;
     }
 
-    $readerID = $data['readerID'];
-    $bookIDs = $data['bookIDs'];
-    $returnDate = date("Y-m-d H:i:s");
+    // Commit
+    $pdo->commit();
 
-    $pdo->beginTransaction();
-    $errors = [];
-
-    foreach ($bookIDs as $bookId) {
-        
-        // 1. Cập nhật return_date trong bảng borrowrecords
-        $queryReturn = "
-            UPDATE borrowrecords br
-            SET return_date = :return_date
-            WHERE reader_id = :reader_id
-            AND book_id = :book_id
-            AND return_date IS NULL
-        ";
-        $stmt = $pdo->prepare($queryReturn);
-        $resultReturn = $stmt->execute([
-            ':return_date' => $returnDate,
-            ':reader_id'   => $readerID,
-            ':book_id'     => $bookId
-        ]);
-
-        if (!$resultReturn || $stmt->rowCount() === 0) {
-            $errors[] = "Failed to update borrowrecords for ID book: $bookId";
-            continue;
-        }
-
-        // 2. Cập nhật quantity trong bảng books
-        $queryQuantity = "
-            UPDATE books
-            SET quantity = quantity + 1
-            WHERE book_id = :book_id
-        ";
-        $stmt = $pdo->prepare($queryQuantity);
-        $resultQuantity = $stmt->execute([':book_id' => $bookId]);
-
-        if (!$resultQuantity || $stmt->rowCount() === 0) {
-            $errors[] = "Unable to update quantity for book ID: $bookId";
-        }
-     }
-
-    if (count($errors) === 0) {
-        $pdo->commit();
-        echo json_encode([
-            'success' => true,
-            'message' => 'Returned book successfully'
-        ]);
-    } else {
-        $pdo->rollBack();
-        echo json_encode([
-            'success' => false,
-            'message' => 'Some books returned unsuccessfully',
-            'errors'  => $errors
-        ]);
-    }
-
-} catch (PDOException $e) {
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
     echo json_encode([
-        'success' => false,
-        'message' => 'Database Error: ' . $e->getMessage()
+        'success' => true,
+        'message' => 'Books returned successfully',
+        'results' => $results
     ]);
+
 } catch (Exception $e) {
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
-    }
+    if ($pdo->inTransaction()) $pdo->rollBack();
+
     echo json_encode([
         'success' => false,
-        'message' => 'System error: ' . $e->getMessage()
+        'message' => 'Error: ' . $e->getMessage()
     ]);
 }
+?>
