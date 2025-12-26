@@ -3,15 +3,12 @@ require __DIR__ . '/../../middleware/auth-middleware.php';
 checkReaderRole($decode);
 
 try {
-    // Lấy student_id từ token (vì token chứa student_id chứ không phải reader_id)
+    // Lấy student_id từ token
     $studentID = null;
     
-    // Thử truy cập như object
     if (is_object($decode) && isset($decode->data)) {
         $studentID = $decode->data->id ?? $decode->data->student_id ?? null;
-    }
-    // Thử truy cập như array
-    else if (is_array($decode) && isset($decode['data'])) {
+    } else if (is_array($decode) && isset($decode['data'])) {
         $studentID = $decode['data']['id'] ?? $decode['data']['student_id'] ?? null;
     }
 
@@ -23,8 +20,8 @@ try {
         exit;
     }
 
-    // Query notifications thông qua student_id
-    // JOIN với bảng reader để lấy reader_id từ student_id
+    // Query notifications - CHỈ LẤY SÁCH CHƯA ĐÁNH GIÁ
+    // LEFT JOIN với reviews để kiểm tra xem return_id đã được đánh giá chưa
     $query = "
         SELECT 
             n.notification_id,
@@ -37,7 +34,10 @@ try {
             n.created_at
         FROM notifications n
         INNER JOIN reader r ON n.reader_id = r.reader_id
+        LEFT JOIN reviews rev ON rev.return_id = n.return_id
         WHERE r.student_id = :student_id
+        AND rev.review_id IS NULL  -- Chỉ lấy những return_id chưa có review
+        AND n.type = 'request_review'
         ORDER BY n.is_read ASC, n.created_at DESC
     ";
     
@@ -52,18 +52,11 @@ try {
         }
     }
 
-    if ($notifications && count($notifications) > 0) {
-        echo json_encode([
-            'success' => true,
-            'data' => $notifications
-        ]);
-    } else {
-        echo json_encode([
-            'success' => true,
-            'data' => [],
-            'message' => 'No notifications found'
-        ]);
-    }
+    echo json_encode([
+        'success' => true,
+        'data' => $notifications,
+        'message' => count($notifications) > 0 ? null : 'No notifications found'
+    ]);
 
 } catch (PDOException $e) {
     echo json_encode([

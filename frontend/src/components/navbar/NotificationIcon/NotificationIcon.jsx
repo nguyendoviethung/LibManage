@@ -32,9 +32,7 @@ function NotificationIcon() {
         const token = localStorage.getItem("token");
         const res = await axios.get(
           "http://localhost/LibManage/backend/api/notifications/get-notifications.php",
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
 
         if (res.data.success) {
@@ -51,46 +49,84 @@ function NotificationIcon() {
     return () => clearInterval(interval);
   }, [readerID]);
 
+  // Hàm đánh dấu đã đọc
+  const markAsRead = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost/LibManage/backend/api/notifications/mark-notifications-read.php",
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      // Cập nhật local state
+      setNotifications(prev => 
+        prev.map(n => ({ ...n, is_read: true }))
+      );
+    } catch (err) {
+      console.error("Error marking notifications as read:", err);
+    }
+  };
+
+  // Handle click icon
+  const handleIconClick = () => {
+    if (!showDropdown) {
+      // Nếu đang đóng → mở và đánh dấu đã đọc
+      markAsRead();
+    }
+    setShowDropdown(!showDropdown);
+  };
+
+  // Đếm số thông báo CHƯA ĐỌC
+  const unreadCount = notifications.filter(n => !n.is_read).length;
+
   return (
-    <div className="notification-wrapper">
-      <div
-        className="bell-icon"
-        onClick={() => setShowDropdown(!showDropdown)}
-      >
+    <div className="notification-icon">
+      <div className="icon-wrapper" onClick={handleIconClick}>
         <FontAwesomeIcon icon={faBell} />
-        {notifications.length > 0 && (
-          <span className="notification-count">{notifications.length}</span>
+        {unreadCount > 0 && (
+          <span className="badge">{unreadCount}</span>
         )}
       </div>
 
       {showDropdown && (
         <div className="notification-dropdown">
-          <h4> Đánh giá sách</h4>
-
-          {notifications.length === 0 ? (
-            <p>Không có sách cần đánh giá</p>
-          ) : (
-            notifications.map(item => (
-              <div key={item.borrow_id} className="review-item">
-                <span>{item.payload.title}</span>
-                <button onClick={() => setSelectedBook(item)}>
-                  Đánh giá
-                </button>
+          <div className="dropdown-header">
+            Đánh giá sách
+          </div>
+          <div className="dropdown-content">
+            {notifications.length === 0 ? (
+              <div className="empty-message">
+                Không có sách cần đánh giá
               </div>
-            ))
-          )}
+            ) : (
+              notifications.map(item => (
+                <div key={item.notification_id} className="notification-item">
+                  <span className="book-title">{item.payload.title}</span>
+                  <button
+                    className="review-btn"
+                    onClick={() => setSelectedBook(item)}
+                  >
+                    Đánh giá
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       )}
 
       {selectedBook && (
         <ReviewModal
-          book={selectedBook}
+          bookId={selectedBook.book_id}
+          returnId={selectedBook.return_id}
           onClose={() => setSelectedBook(null)}
           onSuccess={() => {
             setSelectedBook(null);
-            // setNotifications(prev =>
-            //   prev.filter(n => n.borrow_id !== selectedBook.borrow_id)
-            // );
+            // Xóa notification đã đánh giá khỏi danh sách
+            setNotifications(prev =>
+              prev.filter(n => n.notification_id !== selectedBook.notification_id)
+            );
           }}
         />
       )}
