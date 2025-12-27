@@ -86,3 +86,4 @@ Bạn sẽ thấy:
 - Hoặc dùng `psycopg2-binary` (đã có trong requirements.txt)
 
 
+
