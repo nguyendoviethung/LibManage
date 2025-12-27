@@ -4,15 +4,23 @@ import pickle
 import pandas as pd
 import numpy as np
 from datetime import datetime
-import mysql.connector
-from mysql.connector import Error
+import psycopg2
+from psycopg2 import Error, pool
+from psycopg2.extras import RealDictCursor
+
+# Import scikit-learn models để pickle có thể load
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 
 # Thêm thư mục gốc vào sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import database utilities nếu có
 try:
-    from utils.db_fetcher import get_connection
+    from config.database import init_connection_pool, get_connection
     USE_DB_UTILS = True
 except:
     USE_DB_UTILS = False
@@ -95,85 +103,42 @@ class SentimentAnalyzer:
             return True  # Cho phép tiếp tục
     
     def connect_database(self, host='localhost', database='LibManage', 
-                        user='root', password=''):
-        """Kết nối đến database"""
+                        user='postgres', password='', port=5432):
+        """Kết nối đến PostgreSQL database"""
         try:
-            print(f"🔌 Đang kết nối đến database {database}...")
+            print(f"🔌 Đang kết nối đến PostgreSQL database {database}...")
             
-            # Thử kết nối với tên database được cung cấp
-            try:
-                if USE_DB_UTILS:
-                    # Sử dụng utility có sẵn
-                    self.db_connection = get_connection()
-                else:
-                    # Kết nối trực tiếp
-                    self.db_connection = mysql.connector.connect(
-                        host=host,
-                        database=database,
-                        user=user,
-                        password=password,
-                        charset='utf8mb4',
-                        collation='utf8mb4_unicode_ci'
-                    )
-            except Error as e:
-                # Nếu lỗi là database không tồn tại, thử các tên khác
-                if "Unknown database" in str(e):
-                    print(f"⚠️  Database '{database}' không tồn tại!")
-                    print("🔍 Đang tìm kiếm database khả dụng...")
-                    
-                    # Kết nối không chỉ định database để list
-                    temp_conn = mysql.connector.connect(
-                        host=host,
-                        user=user,
-                        password=password
-                    )
-                    cursor = temp_conn.cursor()
-                    cursor.execute("SHOW DATABASES")
-                    databases = [db[0] for db in cursor.fetchall()]
-                    cursor.close()
-                    temp_conn.close()
-                    
-                    print(f"📋 Các database khả dụng: {', '.join(databases)}")
-                    
-                    # Tìm database có tên tương tự
-                    possible_names = [
-                        'LibManage', 'libmanage', 'lib_manage', 
-                        'library_management', 'library', 'lib'
-                    ]
-                    
-                    found_db = None
-                    for db_name in possible_names:
-                        if db_name in databases:
-                            found_db = db_name
-                            break
-                    
-                    if found_db:
-                        print(f"✓ Tìm thấy database: {found_db}")
-                        self.db_connection = mysql.connector.connect(
-                            host=host,
-                            database=found_db,
-                            user=user,
-                            password=password,
-                            charset='utf8mb4',
-                            collation='utf8mb4_unicode_ci'
-                        )
-                    else:
-                        print(f"✗ Vui lòng chỉ định đúng tên database!")
-                        print(f"   Sửa dòng: 'db_name': 'YOUR_DATABASE_NAME'")
-                        return False
-                else:
-                    raise e
+            if USE_DB_UTILS:
+                # Sử dụng utility có sẵn
+                self.db_connection = get_connection()
+                print("✓ Sử dụng connection pool từ config")
+            else:
+                # Kết nối trực tiếp
+                self.db_connection = psycopg2.connect(
+                    host=host,
+                    database=database,
+                    user=user,
+                    password=password,
+                    port=port
+                )
             
-            if self.db_connection.is_connected():
-                db_info = self.db_connection.get_server_info()
-                print(f"✓ Kết nối database thành công! (MySQL version: {db_info})")
+            if self.db_connection:
+                # Test connection
+                cursor = self.db_connection.cursor()
+                cursor.execute('SELECT version();')
+                db_version = cursor.fetchone()
+                cursor.close()
+                print(f"✓ Kết nối PostgreSQL thành công!")
+                print(f"  Database version: {db_version[0][:50]}...")
                 return True
+                
         except Error as e:
-            print(f"✗ Lỗi kết nối database: {str(e)}")
+            print(f"✗ Lỗi kết nối PostgreSQL: {str(e)}")
             print(f"\n💡 Hướng dẫn khắc phục:")
-            print(f"   1. Kiểm tra MySQL đã chạy chưa")
+            print(f"   1. Kiểm tra PostgreSQL đã chạy chưa")
             print(f"   2. Kiểm tra username/password")
-            print(f"   3. Kiểm tra tên database")
+            print(f"   3. Kiểm tra tên database: {database}")
+            print(f"   4. Kiểm tra port: {port} (mặc định là 5432)")
             return False
     
     def preprocess_text(self, text):
@@ -241,11 +206,12 @@ class SentimentAnalyzer:
             return None
     
     def get_reviews_from_db(self, table_name='reviews', limit=None):
-        """Lấy các review chưa phân tích từ database"""
+        """Lấy các review chưa phân tích từ PostgreSQL database"""
         try:
-            cursor = self.db_connection.cursor(dictionary=True)
+            cursor = self.db_connection.cursor(cursor_factory=RealDictCursor)
             
             # Query lấy reviews chưa được phân tích
+            # PostgreSQL sử dụng %s thay vì ? cho placeholders
             query = f"""
                 SELECT id, review_text, user_id, book_id, created_at 
                 FROM {table_name} 
@@ -267,10 +233,11 @@ class SentimentAnalyzer:
             return []
     
     def save_sentiment_to_db(self, review_id, sentiment_result, table_name='reviews'):
-        """Lưu kết quả phân tích sentiment vào database"""
+        """Lưu kết quả phân tích sentiment vào PostgreSQL database"""
         try:
             cursor = self.db_connection.cursor()
             
+            # PostgreSQL sử dụng %s cho tất cả placeholders
             update_query = f"""
                 UPDATE {table_name} 
                 SET sentiment = %s, 
@@ -296,7 +263,8 @@ class SentimentAnalyzer:
             
         except Error as e:
             print(f"✗ Lỗi khi lưu sentiment (review_id={review_id}): {str(e)}")
-            # In chi tiết lỗi
+            # Rollback nếu có lỗi
+            self.db_connection.rollback()
             import traceback
             traceback.print_exc()
             return False
@@ -352,7 +320,7 @@ class SentimentAnalyzer:
     def run_analysis(self, batch_size=100, table_name='reviews'):
         """Chạy toàn bộ quy trình phân tích sentiment"""
         print("=" * 80)
-        print("  SENTIMENT ANALYSIS - LibManage System")
+        print("  SENTIMENT ANALYSIS - LibManage System (PostgreSQL)")
         print("=" * 80)
         
         # Load model
@@ -381,7 +349,7 @@ class SentimentAnalyzer:
         success, fail = self.analyze_and_save_batch(reviews, table_name)
         
         # Đóng kết nối
-        if self.db_connection and self.db_connection.is_connected():
+        if self.db_connection:
             self.db_connection.close()
             print("\n✓ Đã đóng kết nối database")
         
@@ -393,28 +361,31 @@ class SentimentAnalyzer:
     
     def close(self):
         """Đóng tất cả kết nối"""
-        if self.db_connection and self.db_connection.is_connected():
+        if self.db_connection:
             self.db_connection.close()
 
 
 def main():
     """Main function"""
-    print("\n🚀 Khởi động Sentiment Analysis System...\n")
+    print("\n🚀 Khởi động Sentiment Analysis System (PostgreSQL)...\n")
     
-    # Cấu hình - Database và Model settings
+    # Cấu hình PostgreSQL - ĐIỀU CHỈNH THEO HỆ THỐNG CỦA BẠN
     CONFIG = {
         'model_path': 'models/sentiment_model_bilingual.pkl',
         'vectorizer_path': 'models/tfidf_vectorizer.pkl',
         'db_host': 'localhost',
-        'db_name': 'LibManage',  # ✓ Đã xác nhận tên database
-        'db_user': 'root',
-        'db_password': '',  # Thêm password nếu MySQL của bạn có password
-        'table_name': 'reviews',  # Bảng chứa reviews cần phân tích
-        'batch_size': 100  # Số lượng reviews phân tích mỗi lần
+        'db_name': 'LibManage',  # Tên database PostgreSQL
+        'db_user': 'postgres',   # User PostgreSQL (mặc định là postgres)
+        'db_password': '',       # ⚠️ THÊM PASSWORD POSTGRESQL CỦA BẠN
+        'db_port': 5432,         # Port PostgreSQL (mặc định là 5432)
+        'table_name': 'reviews', # Bảng chứa reviews
+        'batch_size': 100        # Số lượng reviews phân tích mỗi lần
     }
     
     print("⚙️  Cấu hình hiện tại:")
-    print(f"   📊 Database: {CONFIG['db_name']}")
+    print(f"   🐘 Database: PostgreSQL - {CONFIG['db_name']}")
+    print(f"   🔌 Host: {CONFIG['db_host']}:{CONFIG['db_port']}")
+    print(f"   👤 User: {CONFIG['db_user']}")
     print(f"   📋 Table: {CONFIG['table_name']}")
     print(f"   📦 Model: {CONFIG['model_path']}")
     print(f"   🔢 Batch size: {CONFIG['batch_size']}")
@@ -435,9 +406,11 @@ def main():
         else:
             print("\n❌ Có lỗi xảy ra trong quá trình chạy!")
             print("\n💡 Hãy kiểm tra:")
-            print("   1. Tên database có đúng không?")
-            print("   2. Bảng 'reviews' có tồn tại không?")
-            print("   3. User có quyền truy cập không?")
+            print("   1. PostgreSQL đã chạy chưa?")
+            print("   2. Database 'LibManage' có tồn tại không?")
+            print("   3. Bảng 'reviews' có tồn tại không?")
+            print("   4. User có quyền truy cập không?")
+            print("   5. Password có đúng không?")
             
     except KeyboardInterrupt:
         print("\n\n⚠ Người dùng dừng chương trình!")
