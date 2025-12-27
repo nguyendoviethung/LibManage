@@ -55,7 +55,7 @@ function NotificationIcon() {
       const token = localStorage.getItem("token");
       await axios.post(
         "http://localhost/LibManage/backend/api/notifications/mark-notifications-read.php",
-        {},
+        { mark_all: true },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
@@ -118,8 +118,12 @@ function NotificationIcon() {
 
       {selectedBook && (
         <ReviewModal
-          bookId={selectedBook.book_id}
-          returnId={selectedBook.return_id}
+          book={{
+            book_id: selectedBook.book_id,
+            return_id: selectedBook.return_id,
+            reader_id: selectedBook.reader_id,
+            book_title: selectedBook.payload?.title || 'Sách'
+          }}
           onClose={() => setSelectedBook(null)}
           onSuccess={() => {
             setSelectedBook(null);

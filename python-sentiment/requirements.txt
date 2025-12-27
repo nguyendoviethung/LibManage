@@ -1,0 +1,22 @@
+# Python Sentiment Analysis Service Requirements
+
+# Database
+psycopg2-binary==2.9.9
+
+# Data Processing
+pandas==2.1.4
+numpy==1.24.3
+
+# Machine Learning
+scikit-learn==1.3.2
+joblib==1.3.2
+
+# Vietnamese NLP
+underthesea==1.3.3
+
+# Optional: Environment variables (recommended)
+python-dotenv==1.0.0
+
+# Optional: For better performance
+# numba==0.58.1
+
